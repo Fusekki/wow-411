@@ -15,3 +15,17 @@ wowApp.controller('homeController', ['$scope', '$location', 'characterService', 
     }
     
 }]);
+
+
+
+wowApp.controller('realmController', ['$scope', '$resource', 'realmService', function ($scope, $resource, realmService) {
+    
+    $scope.region = "en_US";
+    $scope.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
+    $scope.realmsResult = realmService.GetRealms($scope.region, $scope.privateKey);
+    
+    $scope.sortType = 'name';
+    $scope.sortReverse = false;
+    $scope.searchRealms = '';
+
+}]);

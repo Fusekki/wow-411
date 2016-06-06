@@ -19,4 +19,16 @@ wowApp.config(function ($routeProvider) {
         controller: 'homeController'
     })
     
+    .when('/realms', {
+        templateUrl: 'pages/realms.htm',
+        controller: 'realmController'
+    })
+
+    .when('/realms/', {
+        templateUrl: 'pages/realms.htm',
+        controller: 'realmController'
+    })
+    
+    
+    
 });

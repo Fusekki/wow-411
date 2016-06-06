@@ -1,0 +1,85 @@
+<p>
+    <a href = "#/">Back to Search</a>
+</p>
+Realms for {{ region }}
+<hr />
+Realms
+<hr />
+  <div class="alert alert-info">
+    <p>Sort Type: {{ sortType }}</p>
+    <p>Sort Reverse: {{ sortReverse }}</p>
+    <p>Search Query: {{ searchFish }}</p>
+  </div>
+
+  <form>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+
+        <input type="text" class="form-control" placeholder="Search realms" ng-model="searchRealms">
+
+      </div>      
+    </div>
+  </form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <td>
+                <a href="" ng-click="sortType = 'index'; sortReverse = !sortReverse">        
+                    Index
+                <span ng-show="sortType == 'index' && !sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="sortType == 'index' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                    Name
+                    <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="" ng-click="sortType = 'type'; sortReverse = !sortReverse">
+                    Type
+                    <span ng-show="sortType == 'type' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'type' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="" ng-click="sortType = 'population'; sortReverse = !sortReverse">
+                    Population
+                    <span ng-show="sortType == 'population' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'population' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="" ng-click="sortType = 'timezone'; sortReverse = !sortReverse">
+                    Timezone
+                    <span ng-show="sortType == 'timezone' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'timezone' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="" ng-click="sortType = 'queue'; sortReverse = !sortReverse">
+                    Queue
+                    <span ng-show="sortType == 'queue' && !sortReverse" class="fa fa-caret-down"></span> 
+                    <span ng-show="sortType == 'queue' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr ng-repeat="r in realmsResult.realms | orderBy:sortType:sortReverse | filter:searchRealms" ng-class-even="'success'" ng-class-odd="'info'">
+<!--            <realm-report realm-name="r"></realm-report>-->
+            <td>{{ $index + 1 }}</td>
+            <td>{{ r.name }}</td>
+            <td>{{ r.type }}</td>
+            <td>{{ r.population }}</td>
+            <td>{{ r.timezone }}</td>
+            <td>{{ r.queue }}</td>
+        </tr>
+    </tbody>
+
+</table>

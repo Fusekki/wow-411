@@ -17,4 +17,6 @@ $('.navbar-collapse ul li a').click(function() {
   }
 });
 
+//MODULE
+
 var wowApp = angular.module('wowApp', ['ngRoute', 'ngResource']);
