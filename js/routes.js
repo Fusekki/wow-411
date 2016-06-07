@@ -16,7 +16,7 @@ wowApp.config(function ($routeProvider) {
     
     .when('/characterResult', {
         templateUrl: 'pages/characterResult.htm',
-        controller: 'homeController'
+        controller: 'characterController'
     })
     
     .when('/realms', {

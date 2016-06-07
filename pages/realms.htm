@@ -8,7 +8,7 @@ Realms
   <div class="alert alert-info">
     <p>Sort Type: {{ sortType }}</p>
     <p>Sort Reverse: {{ sortReverse }}</p>
-    <p>Search Query: {{ searchFish }}</p>
+    <p>Search Query: {{ searchRealms }}</p>
   </div>
 
   <form>
@@ -25,6 +25,7 @@ Realms
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
+<!--
             <td>
                 <a href="" ng-click="sortType = 'index'; sortReverse = !sortReverse">        
                     Index
@@ -32,6 +33,7 @@ Realms
                 <span ng-show="sortType == 'index' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
+-->
             <td>
                 <a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse">
                     Name
@@ -73,11 +75,11 @@ Realms
     <tbody>
         <tr ng-repeat="r in realmsResult.realms | orderBy:sortType:sortReverse | filter:searchRealms" ng-class-even="'success'" ng-class-odd="'info'">
 <!--            <realm-report realm-name="r"></realm-report>-->
-            <td>{{ $index + 1 }}</td>
+<!--            <td>{{ $index + 1 }}</td>-->
             <td>{{ r.name }}</td>
             <td>{{ r.type }}</td>
             <td>{{ r.population }}</td>
-            <td>{{ r.timezone }}</td>
+            <td>{{ sliceCountryFromTimezone( r.timezone  ) }}</td>
             <td>{{ r.queue }}</td>
         </tr>
     </tbody>

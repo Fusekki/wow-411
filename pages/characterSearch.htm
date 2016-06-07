@@ -3,8 +3,12 @@
         <h4>Character by Server</h4>
         <form ng-submit="submit()">
             <div class="form-group">
-                <input type="text" ng-model="name" class="form-control" />
+                <input type="text" ng-model="name" class="form-control" placeholder="Enter a name"/>
             </div>
+                <label for="realmSelect"> Realm: </label>
+                <select name="realmSelect" ng-model="selectedRealm">
+                  <option ng-repeat="r in realmsResult.realms" value="{{ r.name }}" >{{ r.name }}</option>
+                </select>
         <input type="submit" class="btn btn-primary" value="Get Character" />
         </form>
     </div>

@@ -2,7 +2,8 @@
 
 wowApp.service('characterService', function() {
     
-    this.name = "Enter a name";
+    this.name = null;
+    this.selectedRealm = null;
                 
 });
 
