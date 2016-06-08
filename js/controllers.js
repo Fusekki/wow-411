@@ -70,15 +70,15 @@ wowApp.controller('realmController', ['$scope', '$resource', 'realmService', fun
 
 }]);
 
-wowApp.controller('characterController', ['$scope', '$location', 'characterService', 'realmService', function ($scope, $location, characterService, realmService) {
+wowApp.controller('characterController', ['$scope', '$resource', '$location', 'characterService', 'realmService', function ($scope, $resource, $location, characterService, realmService) {
     
     $scope.region = "en_US";
     $scope.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
-    $scope.realmsResult = realmService.GetRealms($scope.region, $scope.privateKey);
     $scope.name = characterService.name;
     $scope.selectedRealm = characterService.selectedRealm;
+    $scope.characterResult = characterService.GetCharacter($scope.region, $scope.privateKey, $scope.name, $scope.selectedRealm);
     
-    
+    console.log($scope.privateKey);
     $scope.$watch('name', function () {
         characterService.name = $scope.name;
     })
@@ -87,11 +87,6 @@ wowApp.controller('characterController', ['$scope', '$location', 'characterServi
         characterService.selectedRealm = $scope.selectedRealm;
     })
     
-    
-    $scope.submit = function() {
-        $location.path("/characterResult");
-        console.log($scope.selectedRealm);
-        console.log($scope.name);
-    }
+
     
 }]);

@@ -4,12 +4,22 @@
 
 Results for {{ name }} on {{ selectedRealm }}
 <hr />
-Days <a href="#/forecast/2" ng-class="{ 'bg-primary' : days === '2' } ">2</a> | <a href="#/forecast/5" ng-class="{ 'bg-primary' : days === '5' } ">5</a> | <a href="#/forecast/7" ng-class="{ 'bg-primary' : days === '7' } ">7</a>
-<hr />
-<div ng-repeat="w in weatherResult.list">
-    <div class="row">
-        <div class="col-md-12">
-            <weather-report weather-day="w" convert-to-standard="convertToFahrenheit(daytimeTemp)" convert-to-date="convertToDate(dt)" date-format="MMM d, y"></weather-report>
-        </div>
-    </div>
+<div ng-repeat="c in characterResult">
+<!--            <realm-report realm-name="r"></realm-report>-->
+<!--            <td>{{ $index + 1 }}</td>-->
+Last Modified: {{ c.lastModified }}
+Name: {{ c }}
+Realm: {{ c }}
+Battlegroup: {{ c }}
+Class: {{ c }}
+Race: {{ c }}
+Gender: {{ c }}
+Level: {{ c }}
+AchievementPoints: {{ c }}
+Thumbnail: {{ c }}
+CalcClass: {{ c }}
+Faction: {{ c }}
+TotalHonorableKills": {{ c }}
+    
+
 </div>
