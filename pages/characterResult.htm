@@ -1,25 +1,24 @@
 <p>
     <a href = "#/">Back to Search</a>
 </p>
-
 Results for {{ name }} on {{ selectedRealm }}
 <hr />
-<div ng-repeat="c in characterResult">
-<!--            <realm-report realm-name="r"></realm-report>-->
-<!--            <td>{{ $index + 1 }}</td>-->
-Last Modified: {{ c.lastModified }}
-Name: {{ c }}
-Realm: {{ c }}
-Battlegroup: {{ c }}
-Class: {{ c }}
-Race: {{ c }}
-Gender: {{ c }}
-Level: {{ c }}
-AchievementPoints: {{ c }}
-Thumbnail: {{ c }}
-CalcClass: {{ c }}
-Faction: {{ c }}
-TotalHonorableKills": {{ c }}
-    
 
+<div class="media">
+  <div class="media-left media-top">
+    <a href="#">
+      <img class="media-object" src="http://render-api-us.worldofwarcraft.com/static-render/us/{{ characterResult.thumbnail }}" alt="...">
+    </a>
+  </div>
+  <div class="media-body">
+    <h2 class="media-heading">{{ characterResult.name }}</h2>
+    <h3>{{ characterResult.level }} {{ raceMap[characterResult.race] }} {{ classMap[characterResult.class] }}, {{ characterResult.realm }}</h3>
+      
+      <b>Faction</b>: {{ factionMap[characterResult.faction] }} <br>  
+      <b>Gender</b>: {{ genderMap[characterResult.gender] }} <br>        
+      <b>Battlegroup</b> : {{ characterResult.battlegroup }} <br> 
+      <b>AchievementPoints</b>: {{ characterResult.achievementPoints }} <br> 
+      <b>Total Honorable Kills</b>: {{ characterResult.totalHonorableKills }} <br>         
+      <b>Last Modified</b>: {{ convertToStandard(characterResult.lastModified) }} 
+  </div>
 </div>

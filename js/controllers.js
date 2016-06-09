@@ -78,6 +78,8 @@ wowApp.controller('characterController', ['$scope', '$resource', '$location', 'c
     $scope.selectedRealm = characterService.selectedRealm;
     $scope.characterResult = characterService.GetCharacter($scope.region, $scope.privateKey, $scope.name, $scope.selectedRealm);
     
+    console.log($scope.characterResult);
+    
     console.log($scope.privateKey);
     $scope.$watch('name', function () {
         characterService.name = $scope.name;
@@ -87,6 +89,26 @@ wowApp.controller('characterController', ['$scope', '$resource', '$location', 'c
         characterService.selectedRealm = $scope.selectedRealm;
     })
     
-
+    $scope.classMap = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"];
+    $scope.genderMap = ["Male", "Female"];
+    $scope.raceMap = {  1 : "Human",
+                        2: "Orc",
+                        3: "Dwarf",
+                        4: "Night Elf",
+                        5: "Undead",
+                        6: "Tauren",
+                        7: "Gnome",
+                        8: "Troll",
+                        9: "Goblin",
+                        10: "Bloodelf", 
+                        11: "Draenei",
+                        22: "Worgen",
+                        24: "Pandaren - Neutral",
+                        25: "Pandaren - Alliance",
+                        26: "Pandaren - Horde" };   
+    $scope.factionMap = ["Alliance", "Horde"];
     
+    $scope.convertToStandard = function(lastModified) {
+      return new Date(lastModified).toUTCString();
+    };
 }]);
