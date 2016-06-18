@@ -22,18 +22,9 @@ Realms
     </div>
   </form>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered">
     <thead>
         <tr>
-<!--
-            <td>
-                <a href="" ng-click="sortType = 'index'; sortReverse = !sortReverse">        
-                    Index
-                <span ng-show="sortType == 'index' && !sortReverse" class="fa fa-caret-down"></span>
-                <span ng-show="sortType == 'index' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </td>
--->
             <td>
                 <a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse">
                     Name
@@ -73,9 +64,7 @@ Realms
     </thead>
     
     <tbody>
-        <tr ng-repeat="r in realmsResult.realms | orderBy:sortType:sortReverse | filter:searchRealms" ng-class-even="'success'" ng-class-odd="'info'">
-<!--            <realm-report realm-name="r"></realm-report>-->
-<!--            <td>{{ $index + 1 }}</td>-->
+        <tr ng-repeat="r in realmsResult.realms | orderBy:sortType:sortReverse | filter:searchRealms" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
             <td>{{ r.name }}</td>
             <td>{{ r.type }}</td>
             <td>{{ r.population }}</td>

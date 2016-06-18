@@ -1,12 +1,11 @@
 //DIRECTIVES
 
-wowApp.directive("realmReport", function() {
+angular.module('wowApp')
+
+.directive("realmReport", function() {
     return {
-        restrict: 'E',
         templateUrl: 'directives/realmReport.html',
+        controller: 'realmController',
         replace: true
-//        scope: {
-//            realmName: "="      
-//        }   
     }
-});
+})

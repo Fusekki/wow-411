@@ -22,5 +22,7 @@ $('.navbar-collapse ul li a').click(function() {
 var wowApp = angular.module('wowApp', ['ngRoute', 'ngResource']);
 wowApp.config(['$resourceProvider', function($resourceProvider) {
   // Don't strip trailing slashes from calculated URLs
-  $resourceProvider.defaults.stripTrailingSlashes = false;
+    $resourceProvider.defaults.stripTrailingSlashes = false;    
+
 }]);
+

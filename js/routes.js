@@ -6,29 +6,22 @@ wowApp.config(function ($routeProvider) {
     
     .when('/', {
         templateUrl: 'pages/home.htm',
-        controller: 'homeController'
+        controller: 'homeCtrl'
     })
     
    .when('/characterSearch', {
         templateUrl: 'pages/characterSearch.htm',
-        controller: 'homeController'
+        controller: 'characterSearchCtrl'
     })
     
     .when('/characterResult', {
         templateUrl: 'pages/characterResult.htm',
-        controller: 'characterController'
+        controller: 'characterCtrl'
     })
     
     .when('/realms', {
         templateUrl: 'pages/realms.htm',
-        controller: 'realmController'
+        controller: 'realmCtrl'
     })
-
-    .when('/realms/', {
-        templateUrl: 'pages/realms.htm',
-        controller: 'realmController'
-    })
-    
-    
     
 });

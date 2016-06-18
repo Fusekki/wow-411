@@ -1,14 +1,33 @@
 //CONTROLLERS
 
+angular.module('wowApp')
 
-wowApp.controller('homeController', ['$scope', '$location', 'characterService', 'realmService', function ($scope, $location, characterService, realmService) {
+.controller('homeCtrl', function () {
     
-    $scope.region = "en_US";
-    $scope.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
-    $scope.realmsResult = realmService.GetRealms($scope.region, $scope.privateKey);
-    $scope.name = characterService.name;
+})
+
+
+.controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, realmService) {
+    
+
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+    
     $scope.selectedRealm = characterService.selectedRealm;
     
+    // Populate the Realms drop down
+        realmService.getRealms(function(response){
+        console.log(response.data);
+        $scope.realmsResult = response.data;
+    }, function(err) {
+        console.log(err.status);
+
+    });
+//    $scope.realmsResult = realmService.GetRealms(this.region, this.keyValue);
+    
+    
+    
+    console.log(characterService.name);
     
     $scope.$watch('name', function () {
         characterService.name = $scope.name;
@@ -21,20 +40,33 @@ wowApp.controller('homeController', ['$scope', '$location', 'characterService', 
     
     $scope.submit = function() {
         $location.path("/characterResult");
-        console.log($scope.selectedRealm);
-        console.log($scope.name);
     }
     
-}]);
+})
 
 
 
-wowApp.controller('realmController', ['$scope', '$resource', 'realmService', function ($scope, $resource, realmService) {
+.controller('realmCtrl', function ($scope, sharedProperties, realmService) {
     
-    $scope.region = "en_US";
-    $scope.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
-    $scope.realmsResult = realmService.GetRealms($scope.region, $scope.privateKey);
+    $scope.keyValue = sharedProperties.getPrivateKey();
+    $scope.region = sharedProperties.getRegion();
+//    $scope.realmsResult = realmService.GetRealms($scope.region, $scope.keyValue);
+    realmService.getRealms(function(response){
+        console.log(response.data);
+        $scope.realmsResult = response.data;
+    }, function(err) {
+        console.log(err.status);
+
+    });
     
+    $scope.sortType = 'name';
+    $scope.sortReverse = false;
+    $scope.searchRealms = '';
+    
+    $scope.sliceCountryFromTimezone = function(timezone) {
+        var idx = timezone.indexOf("/");
+        return timezone.slice(idx + 1).replace(/_/g," ");
+    }
 //    console.log(window.sessionStorage);
 //    
 //    if (typeof(window.Storage))  {
@@ -55,32 +87,42 @@ wowApp.controller('realmController', ['$scope', '$resource', 'realmService', fun
 //        $scope.realmsResult = realmService.GetRealms($scope.region, $scope.privateKey);
 //    }
     
+
+})
+
+.controller('characterCtrl', function ($scope, $resource, $location, $http, sharedProperties, characterService, realmService) {
+
+    characterService.getCharacter(function(response){
+        console.log(response.data);
+        $scope.characterResult = response.data;
+    }, function(err) {
+        console.log(err.status);
+
+    });
     
 
-    
-    $scope.sortType = 'name';
-    $scope.sortReverse = false;
-    $scope.searchRealms = '';
-    
-    $scope.sliceCountryFromTimezone = function(timezone) {
-        var idx = timezone.indexOf("/");
-        return timezone.slice(idx + 1).replace(/_/g," ");
-    }
-    
-
-}]);
-
-wowApp.controller('characterController', ['$scope', '$resource', '$location', 'characterService', 'realmService', function ($scope, $resource, $location, characterService, realmService) {
-    
-    $scope.region = "en_US";
-    $scope.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
     $scope.name = characterService.name;
     $scope.selectedRealm = characterService.selectedRealm;
-    $scope.characterResult = characterService.GetCharacter($scope.region, $scope.privateKey, $scope.name, $scope.selectedRealm);
     
-    console.log($scope.characterResult);
+    $scope.$watch('selectedRealm', function () {
+        characterService.selectedRealm = $scope.selectedRealm;
+    })
     
-    console.log($scope.privateKey);
+    
+    $scope.classMap = function(idx) {
+        return sharedProperties.getClass(idx);
+    }
+    
+    $scope.raceMap = function(idx) {
+        return sharedProperties.getRace(idx);
+    }
+    $scope.factionMap = function(idx) {
+        return sharedProperties.getFaction(idx);
+    }
+    $scope.genderMap = function(idx) {
+        return sharedProperties.getGender(idx);
+    }
+
     $scope.$watch('name', function () {
         characterService.name = $scope.name;
     })
@@ -89,26 +131,14 @@ wowApp.controller('characterController', ['$scope', '$resource', '$location', 'c
         characterService.selectedRealm = $scope.selectedRealm;
     })
     
-    $scope.classMap = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"];
-    $scope.genderMap = ["Male", "Female"];
-    $scope.raceMap = {  1 : "Human",
-                        2: "Orc",
-                        3: "Dwarf",
-                        4: "Night Elf",
-                        5: "Undead",
-                        6: "Tauren",
-                        7: "Gnome",
-                        8: "Troll",
-                        9: "Goblin",
-                        10: "Bloodelf", 
-                        11: "Draenei",
-                        22: "Worgen",
-                        24: "Pandaren - Neutral",
-                        25: "Pandaren - Alliance",
-                        26: "Pandaren - Horde" };   
-    $scope.factionMap = ["Alliance", "Horde"];
+    $scope.submit = function() {
+        $location.path("/characterResult");
+        console.log($scope.selectedRealm);
+        console.log($scope.name);
+    }
+
     
     $scope.convertToStandard = function(lastModified) {
       return new Date(lastModified).toUTCString();
     };
-}]);
+});

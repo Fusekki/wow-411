@@ -1,39 +1,94 @@
 //SERVICES
 
-wowApp.service('characterService', ['$resource', function($resource) {
+angular.module('wowApp')
+
+.service('sharedProperties', function () {
+    var region = "en_US";
+    var privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
     
-    this.name = null;
-    this.selectedRealm = null;
+    var classMap = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"];
+    var genderMap = ["Male", "Female"];
+    var raceMap = {     1 : "Human",
+                        2: "Orc",
+                        3: "Dwarf",
+                        4: "Night Elf",
+                        5: "Undead",
+                        6: "Tauren",
+                        7: "Gnome",
+                        8: "Troll",
+                        9: "Goblin",
+                        10: "Bloodelf", 
+                        11: "Draenei",
+                        22: "Worgen",
+                        24: "Pandaren - Neutral",
+                        25: "Pandaren - Alliance",
+                        26: "Pandaren - Horde" };   
+    var factionMap = ["Alliance", "Horde"];
 
-    this.GetCharacter = function(region, key, name, server) {
-        var realmsAPI = $resource("https://us.api.battle.net/wow/character/:realm/:characterName", { realm: server, characterName: name }, { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }});
-     
-        
-    return realmsAPI.get ( { locale: region, apikey: key } );
-    };
+        return {
+            getRegion: function () {
+                return region;
+            },
+            getPrivateKey: function() {
+                return privateKey;
+            },
+            getClass: function(idx) {
+                return classMap[idx];
+            },
+            getGender: function(idx) {
+                return genderMap[idx];
+            },
+            getRace: function(idx) {
+                return raceMap[idx];
+            },
+            getFaction: function(idx) {
+                return factionMap[idx];
+            }
+            
+        };
+    })
+
+.service('characterService', function($http, sharedProperties) {
+    
+    this.selectedRealm = "";
+    this.name = "";
+    this.characterResult = "";
+    
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+    
+    
+    this.getCharacter = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + "?jsonp=JSON_CALLBACK",  { params: {  locale: this.region, apikey: this.keyValue} } )
+//        .then(callback)
+         .then(callback,err) 
+    };  
+  
                 
-}]);
+})
 
-wowApp.service('realmService', ['$resource', function($resource) {
+.service('realmService', function($http, sharedProperties) {
+    
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
 
-    this.GetRealms = function(region, key) {
-        var realmsAPI = $resource("https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK", { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }});
-     
-        
-    return realmsAPI.get ( { locale: region, apikey: key } );
-    };
+    this.getRealms = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+//        .then(callback)
+         .then(callback,err) 
+    };  
                 
-}]);
+});
 
 
-// https://us.api.battle.net/wow/character/emerald%20dream/Rhedyn?locale=en_US&jsonp=JSON_CALLBACK&apikey=jnfn9kb9a7pwgu327xq4exbedxjnzyxr
 
-// https://us.api.battle.net/wow/character/?apikey=jnfn9kb9a7pwgu327xq4exbedxjnzyxr&callback=angular.callbacks._2&locale=en_US
-// https://us.api.battle.net/wow/character/?apikey=jnfn9kb9a7pwgu327xq4exbedxjnzyxr&callback=angular.callbacks._2&characterName=rhedyn&locale=en_US&realm=Emerald+Dream
-// https://us.api.battle.net/wow/character?apikey=jnfn9kb9a7pwgu327xq4exbedxjnzyxr&callback=angular.callbacks._2&characterName=rhedyn&locale=en_US&realm=Emerald+Dream
-// realms:
-// type:
 
-// population:
-// queue: 
-// name:
+//.service('realmService', function($resource) {
+//
+//    this.GetRealms = function(region, key) {
+//        var realmsAPI = $resource("https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK", { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }});
+//             
+//        return realmsAPI.get ( { locale: region, apikey: key } );
+//    };
+//                
+//});
