@@ -8,7 +8,8 @@ wowApp.config(function ($routeProvider) {
         templateUrl: 'pages/home.htm',
         controller: 'homeCtrl'
     })
-    
+        
+
    .when('/characterSearch', {
         templateUrl: 'pages/characterSearch.htm',
         controller: 'characterSearchCtrl'

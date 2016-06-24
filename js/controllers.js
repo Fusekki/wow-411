@@ -16,7 +16,7 @@ angular.module('wowApp')
     $scope.selectedRealm = characterService.selectedRealm;
     
     // Populate the Realms drop down
-        realmService.getRealms(function(response){
+    realmService.getRealms(function(response){
         console.log(response.data);
         $scope.realmsResult = response.data;
     }, function(err) {
@@ -91,14 +91,72 @@ angular.module('wowApp')
 })
 
 .controller('characterCtrl', function ($scope, $resource, $location, $http, sharedProperties, characterService, realmService) {
+    
+    var self = this;
+    
 
-    characterService.getCharacter(function(response){
+
+    // characterService.getCharacter(function(response){
+    //     console.log(response.data);
+    //     $scope.characterResult = response.data;
+    // }, function(err) {
+    //     console.log(err.status);
+    //
+    // });
+
+    characterService.getCharacterFeed(function(response){
         console.log(response.data);
         $scope.characterResult = response.data;
     }, function(err) {
         console.log(err.status);
 
     });
+
+
+    // characterService.getItem(itemId, function (response) {
+    //     console.log(response.data);
+    // }, function (err) {
+    //     console.log(err.status);
+    // });
+
+
+    // var retrieveItem = characterService.getItem(itemId, function (response) {
+    //     console.log(response.data);
+    // }, function (err) {
+    //     console.log(err.status);
+    // });
+    // characterService.getAchievements(function(response){
+    //     console.log(response.data);
+    //     var achievements = response.data.achievements.achievementsCompleted;
+    //
+    //     achievements.forEach(function(entry) {
+    //         self.ach.unshift(entry);
+    //     })
+    //     console.log(self.ach);
+    //     self.ach = self.ach.slice(self.ach.length - 10);
+    //     // Call the Achievements API
+    //     for (var x = 0; x <= self.ach.length - 1; x++) {
+    //         console.log(self.ach.length);
+    //
+    //         characterService.getAchievementDetails(self.ach[x], function(response){
+    //             console.log(response.data);
+    //             $scope.achDetails.unshift(response.data.title);
+    //
+    //             $scope.achDetails.forEach(function(entry) {
+    //                 console.log(entry);
+    //             })
+    //         }, function(err) {
+    //             console.log(err.status);
+    //
+    //         });
+    //
+    //     }
+    // }, function(err) {
+    //     console.log(err.status);
+    //
+    // });
+
+
     
 
     $scope.name = characterService.name;
@@ -131,11 +189,11 @@ angular.module('wowApp')
         characterService.selectedRealm = $scope.selectedRealm;
     })
     
-    $scope.submit = function() {
-        $location.path("/characterResult");
-        console.log($scope.selectedRealm);
-        console.log($scope.name);
-    }
+    // $scope.submit = function() {
+    //     $location.path("/characterResult");
+    //     console.log($scope.selectedRealm);
+    //     console.log($scope.name);
+    // }
 
     
     $scope.convertToStandard = function(lastModified) {

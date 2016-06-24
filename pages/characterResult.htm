@@ -11,17 +11,33 @@ Results for {{ name }} on {{ selectedRealm }}
   </div>
   <div class="media-body">
     <h2 class="media-heading">{{ characterResult.name }}</h2>
-      <div class="panel panel-default">
+      <div class="panel panel-primary">
           <div class="panel-heading">
             <h3 class="panel-title">{{ characterResult.level }} {{ raceMap(characterResult.race) }} {{ classMap(characterResult.class) }}, {{ characterResult.realm }}</h3>
           </div>
           <div class="panel-body"> 
-              <b>Faction</b>: {{ factionMap(characterResult.faction) }} <br>  
-              <b>Gender</b>: {{ genderMap(characterResult.gender) }} <br>        
-              <b>Battlegroup</b> : {{ characterResult.battlegroup }} <br> 
-              <b>AchievementPoints</b>: {{ characterResult.achievementPoints }} <br> 
-              <b>Total Honorable Kills</b>: {{ characterResult.totalHonorableKills }} <br>         
-              <b>Last Modified</b>: {{ convertToStandard(characterResult.lastModified) }} 
+              <b>Faction</b>: {{ factionMap(characterResult.faction) }} <br>
+              <b>Gender</b>: {{ genderMap(characterResult.gender) }} <br>
+              <b>Battlegroup</b> : {{ characterResult.battlegroup }} <br>
+              <b>AchievementPoints</b>: {{ characterResult.achievementPoints }} <br>
+              <b>Total Honorable Kills</b>: {{ characterResult.totalHonorableKills }} <br>
+              <b>Last Modified</b>: {{ convertToStandard(characterResult.lastModified) }}
+          </div>
+      </div>
+      <div class="panel panel-success">
+          <div class="panel-heading">
+              <h3 class="panel-title">Feed</h3>
+          </div>
+          <div class="panel-body">
+              <div ng-repeat="feedItem in characterResult.feed">
+
+                 <span ng-switch="feedItem.type">
+                  <div  ng-switch-when="LOOT" "> Loot obtained = {{ feedItem.itemId }}</div>
+                  <div  ng-switch-when="BOSSKILL"> Boss Kill = {{ feedItem.name }} </div>
+                 </span>
+              </div>
+
+
           </div>
       </div>
     </div>

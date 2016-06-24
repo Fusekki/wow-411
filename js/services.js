@@ -54,15 +54,44 @@ angular.module('wowApp')
     this.name = "";
     this.characterResult = "";
     
+       
     this.keyValue = sharedProperties.getPrivateKey();
     this.region = sharedProperties.getRegion();
     
     
     this.getCharacter = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + "?jsonp=JSON_CALLBACK",  { params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
 //        .then(callback)
          .then(callback,err) 
-    };  
+    };
+
+    this.getCharacterFeed = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "feed"} } )
+        //        .then(callback)
+            .then(callback,err)
+    };
+
+    this.getItem = function(itemId, callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  { params: {  apikey: this.keyValue} } )
+        //        .then(callback)
+            .then(callback,err)
+    };
+    
+    
+
+
+    
+    this.getAchievements = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
+//        .then(callback)
+         .then(callback,err)
+    };
+
+    this.getAchievementDetails = function(achievementID, callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/achievement/' + achievementID + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue } } )
+        //        .then(callback)
+            .then(callback,err)
+    };
   
                 
 })

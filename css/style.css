@@ -64,6 +64,10 @@
     color: red;
 }
 
+.section {
+    margin-top: 150px;
+}
+
 .top-margin {
     margin-top: 51px;
 }
