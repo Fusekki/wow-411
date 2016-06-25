@@ -42,8 +42,7 @@
 }
 
 .button:active {
-    background: #a33830;
-}
+    background: #999999}
 
 .btn-curved {
     transition-property: border-radius;
@@ -52,6 +51,19 @@
 
 .btn-curved:hover{
     border-radius: 4em;
+}
+
+#btn-feed {
+    color: hsl(121, 32%, 34%);
+    background: hsl(121, 32%, 74%);
+    border-color: #d6e9c6;
+}
+
+#btn-feed:hover {
+    color: #dff0d8;
+    background: #3c763d;
+    border-color: #d6e9c6;
+
 }
 
 .image-hover:hover {
@@ -69,5 +81,7 @@
 }
 
 .form__input:focus {
-    border-color: #52bab3;
+
 }
+
+

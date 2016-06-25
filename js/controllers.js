@@ -100,6 +100,11 @@ angular.module('wowApp')
     var count = 0;
     var idx = 0;
 
+    $scope.searchFeed = '';
+    $scope.sortType = 'name';
+    $scope.sortReverse = false;
+    $scope.showFeed = true;
+
 
     // characterService.getCharacter(function(response){
     //     console.log(response.data);

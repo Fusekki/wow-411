@@ -24,19 +24,96 @@ Results for {{ name }} on {{ selectedRealm }}
               <b>Last Modified</b>: {{ convertToStandard(characterResult.lastModified) }}
           </div>
       </div>
-      <div class="panel panel-success">
-          <div class="panel-heading">
+      <div class="panel panel-success" >
+          <div class="panel-heading" id="panel-heading">
               <h3 class="panel-title">Feed</h3>
-          </div>
-          <div class="panel-body">
-              <div ng-repeat="feedItem in list">
+              <input type="button" class="button" id="btn-feed" value="Show" ng-click="showFeed =! showFeed"/>
 
-                 <span ng-switch="feedItem.type">
-                  <div ng-switch-when="LOOT"> Loot obtained = {{ feedItem.name }}</div>
-                  <div ng-show="feedItem.name" ng-switch-when="BOSSKILL"> Boss Kill = {{ feedItem.name }} </div>
-                  <div ng-switch-when="ACHIEVEMENT"> Achievement = {{ feedItem.title }} </div>
-                 </span>
-              </div>
+
+          </div>
+
+          </div>
+          <div class="panel-body" ng-show="showFeed">
+              <form>
+                  <div class="form-group">
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-search"></i></div>
+
+                          <input type="text" class="form-control" placeholder="Search feed" ng-model="searchFeed" ng-click="showFeed = !showFeed">
+
+                      </div>
+                  </div>
+              </form>
+              <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                      <td>
+                          <a href="" ng-click="sortType = 'type'; sortReverse = !sortReverse">
+                              Type
+                              <span ng-show="sortType == 'type' && !sortReverse" class="fa fa-caret-down"></span>
+                              <span ng-show="sortType == 'type' && sortReverse" class="fa fa-caret-up"></span>
+                          </a>
+                      </td>
+                      <td>
+                          <a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                             Name
+                          <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                          <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                      </a>
+                      </td>
+                      <!--<td>-->
+                          <!--<a href="" ng-click="sortType = 'population'; sortReverse = !sortReverse">-->
+                              <!--Population-->
+                              <!--<span ng-show="sortType == 'population' && !sortReverse" class="fa fa-caret-down"></span>-->
+                              <!--<span ng-show="sortType == 'population' && sortReverse" class="fa fa-caret-up"></span>-->
+                          <!--</a>-->
+                      <!--</td>-->
+                      <!--<td>-->
+                          <!--<a href="" ng-click="sortType = 'timezone'; sortReverse = !sortReverse">-->
+                              <!--Timezone-->
+                              <!--<span ng-show="sortType == 'timezone' && !sortReverse" class="fa fa-caret-down"></span>-->
+                              <!--<span ng-show="sortType == 'timezone' && sortReverse" class="fa fa-caret-up"></span>-->
+                          <!--</a>-->
+                      <!--</td>-->
+                      <!--<td>-->
+                          <!--<a href="" ng-click="sortType = 'queue'; sortReverse = !sortReverse">-->
+                              <!--Queue-->
+                              <!--<span ng-show="sortType == 'queue' && !sortReverse" class="fa fa-caret-down"></span>-->
+                              <!--<span ng-show="sortType == 'queue' && sortReverse" class="fa fa-caret-up"></span>-->
+                          <!--</a>-->
+                      <!--</td>-->
+                  </tr>
+                  </thead>
+
+                  <tbody>
+
+                  <tr ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
+                      <td>{{ feedItem.type }}</td>
+                      <td>{{ feedItem.name  || feedItem.title }}</td>
+                  </tr>
+
+
+                  <!--<tr ng-repeat="r in realmsResult.realms | orderBy:sortType:sortReverse | filter:searchRealms" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">-->
+                      <!--<td>{{ r.name }}</td>-->
+                      <!--<td>{{ r.type }}</td>-->
+                      <!--<td>{{ r.population }}</td>-->
+                      <!--<td>{{ sliceCountryFromTimezone( r.timezone  ) }}</td>-->
+                      <!--<td>{{ r.queue }}</td>-->
+                  <!--</tr>-->
+                  </tbody>
+
+              </table>
+
+
+
+
+              <!--<div ng-repeat="feedItem in list">-->
+                 <!--<span ng-switch="feedItem.type">-->
+                  <!--<div ng-switch-when="LOOT"> Loot obtained = {{ feedItem.name }}</div>-->
+                  <!--<div ng-show="feedItem.name" ng-switch-when="BOSSKILL"> Boss Kill = {{ feedItem.name }} </div>-->
+                  <!--<div ng-switch-when="ACHIEVEMENT"> Achievement = {{ feedItem.title }} </div>-->
+                 <!--</span>-->
+              <!--</div>-->
 
 
           </div>

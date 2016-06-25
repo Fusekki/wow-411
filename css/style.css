@@ -71,3 +71,17 @@
 .top-margin {
     margin-top: 51px;
 }
+
+#panel-heading h3,
+#panel-heading input {
+    display: inline-block;
+}
+
+#panel-heading input {
+    float: right;
+}
+
+#panel-heading input:focus {
+    float: right;
+    border: hidden;
+}
