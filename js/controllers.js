@@ -96,7 +96,9 @@ angular.module('wowApp')
 
     self.feed = [];
     self.filteredFeed = [];
-    var idx;
+    var items = [];
+    var count = 0;
+    var idx = 0;
 
 
     // characterService.getCharacter(function(response){
@@ -121,7 +123,7 @@ angular.module('wowApp')
         console.log(feedElement);
         // self.feed.unshift(feedElement);
         // console.log(idx);
-        // self.feed.splice(idx, 0, feedElement);
+        self.feed.splice(idx, 0, feedElement);
 
     }
 
@@ -139,29 +141,51 @@ angular.module('wowApp')
             // console.log(response.data.feed[x]);
             // feedElement['type'] = response.data.feed[x].type;
             // console.log(feedElement);
+
             if (response.data.feed[x].type === 'LOOT') {
-                var type = response.data.feed[x].type;
+                var itemElement = {};
+                // var type = response.data.feed[x].type;
+
                 console.log('in loot');
 
                 console.log(response.data.feed[x]);
                 // do something
-                idx = x;
-                characterService.getItem(response.data.feed[x].itemId, test
-                // characterService.getItem(response.data.feed[x].itemId, function (response) {
-                //     var feedElement = {};
-                //     feedElement['type'] = type;
-                //     console.log(response.data);
-                //     feedElement['name'] = response.data.name;
-                //     feedElement['icon'] = response.data.icon;
-                //     console.log(feedElement);
-                //     // self.feed.unshift(feedElement);
-                //     console.log(idx);
-                //     self.feed.splice(idx, 0, feedElement);
-                , function (err) {
+                // idx = x;
+                // characterService.getItem(response.data.feed[x].itemId, test, function (err) {
+                //     console.log(err.status);
+                // });
+
+                itemElement['index'] = x;
+                itemElement['type'] = response.data.feed[x].type;
+                itemElement['timestamp'] = response.data.feed[x].timestamp;
+                items.push(itemElement);
+                count++;
+
+                console.log(items);
+                characterService.getItem(response.data.feed[x].itemId, function (response) {
+                    feedElement = {};
+                    feedElement['type'] = items[idx].type;
+                    feedElement['timestamp'] = items[idx].timestamp;
+
+                    // var feedElement = {};
+                    // feedElement['type'] = type;
+                    console.log(response.data);
+                    feedElement['name'] = response.data.name;
+                    feedElement['icon'] = response.data.icon;
+
+                    // feedElement['timestamp'] = response.data.
+                    console.log(feedElement);
+                    // self.feed.unshift(feedElement);
+                    console.log(items[idx].index);
+                    self.feed.splice(items[idx].index, 0, feedElement);
+                    idx++;
+                }, function (err) {
                     console.log(err.status);
                 });
+
             } else if (response.data.feed[x].type === 'BOSSKILL') {
                 // console.log('in boss');
+                feedElement['timestamp'] = response.data.feed[x].timestamp;
                 feedElement['type'] = response.data.feed[x].type;
                 // do something else
                 feedElement['name'] = response.data.feed[x].name;
@@ -171,6 +195,7 @@ angular.module('wowApp')
             } else if (response.data.feed[x].type === 'ACHIEVEMENT') {
                 // console.log('in achievement');
                 // console.log(feedElement);
+                feedElement['timestamp'] = response.data.feed[x].timestamp;
                 feedElement['type'] = response.data.feed[x].type;
                 // console.log(response.data.feed[x].type);
                 // console.log(feedElement);
