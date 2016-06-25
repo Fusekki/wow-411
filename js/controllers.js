@@ -93,7 +93,10 @@ angular.module('wowApp')
 .controller('characterCtrl', function ($scope, $resource, $location, $http, sharedProperties, characterService, realmService) {
     
     var self = this;
-    
+
+    self.feed = [];
+    self.filteredFeed = [];
+    var idx;
 
 
     // characterService.getCharacter(function(response){
@@ -104,9 +107,91 @@ angular.module('wowApp')
     //
     // });
 
-    characterService.getCharacterFeed(function(response){
+    function test (response) {
+        console.log(idx);
+
+
+        console.log(response);
+        // console.log(idx);
+        var feedElement = {};
+        feedElement['type'] = 'LOOT';
         console.log(response.data);
+        feedElement['name'] = response.data.name;
+        feedElement['icon'] = response.data.icon;
+        console.log(feedElement);
+        // self.feed.unshift(feedElement);
+        // console.log(idx);
+        // self.feed.splice(idx, 0, feedElement);
+
+    }
+
+    characterService.getCharacterFeed(function(response){
+        // console.log(response.data);
         $scope.characterResult = response.data;
+        // self.feed = angular.toJson(response.data.feed);
+        // self.feed = response.data.feed;
+         console.log(response.data.feed);
+
+
+
+        for (var x = 0; x <= response.data.feed.length - 1; x++) {
+            var feedElement = {};
+            // console.log(response.data.feed[x]);
+            // feedElement['type'] = response.data.feed[x].type;
+            // console.log(feedElement);
+            if (response.data.feed[x].type === 'LOOT') {
+                var type = response.data.feed[x].type;
+                console.log('in loot');
+
+                console.log(response.data.feed[x]);
+                // do something
+                idx = x;
+                characterService.getItem(response.data.feed[x].itemId, test
+                // characterService.getItem(response.data.feed[x].itemId, function (response) {
+                //     var feedElement = {};
+                //     feedElement['type'] = type;
+                //     console.log(response.data);
+                //     feedElement['name'] = response.data.name;
+                //     feedElement['icon'] = response.data.icon;
+                //     console.log(feedElement);
+                //     // self.feed.unshift(feedElement);
+                //     console.log(idx);
+                //     self.feed.splice(idx, 0, feedElement);
+                , function (err) {
+                    console.log(err.status);
+                });
+            } else if (response.data.feed[x].type === 'BOSSKILL') {
+                // console.log('in boss');
+                feedElement['type'] = response.data.feed[x].type;
+                // do something else
+                feedElement['name'] = response.data.feed[x].name;
+                self.feed.push(feedElement);
+
+                // console.log(feedElement);
+            } else if (response.data.feed[x].type === 'ACHIEVEMENT') {
+                // console.log('in achievement');
+                // console.log(feedElement);
+                feedElement['type'] = response.data.feed[x].type;
+                // console.log(response.data.feed[x].type);
+                // console.log(feedElement);
+                feedElement['title'] = response.data.feed[x].achievement.title;
+
+                // console.log(feedElement);
+                feedElement['description'] = response.data.feed[x].achievement.description;
+
+                // console.log(feedElement);
+                feedElement['icon'] = response.data.feed[x].achievement.icon;
+                // console.log(feedElement);
+                self.feed.push(feedElement);
+            }
+            // Outside if/else so add to array.
+            console.log(feedElement);
+            // self.feed.push(feedElement);
+
+        }
+        // console.log(self.feed);
+        $scope.list = self.feed;
+        console.log($scope.list);
     }, function(err) {
         console.log(err.status);
 

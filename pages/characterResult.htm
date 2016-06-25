@@ -29,11 +29,12 @@ Results for {{ name }} on {{ selectedRealm }}
               <h3 class="panel-title">Feed</h3>
           </div>
           <div class="panel-body">
-              <div ng-repeat="feedItem in characterResult.feed">
+              <div ng-repeat="feedItem in list">
 
                  <span ng-switch="feedItem.type">
-                  <div  ng-switch-when="LOOT" "> Loot obtained = {{ feedItem.itemId }}</div>
-                  <div  ng-switch-when="BOSSKILL"> Boss Kill = {{ feedItem.name }} </div>
+                  <div ng-switch-when="LOOT"> Loot obtained = {{ feedItem.name }}</div>
+                  <div ng-show="feedItem.name" ng-switch-when="BOSSKILL"> Boss Kill = {{ feedItem.name }} </div>
+                  <div ng-switch-when="ACHIEVEMENT"> Achievement = {{ feedItem.title }} </div>
                  </span>
               </div>
 
