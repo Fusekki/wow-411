@@ -105,6 +105,41 @@ angular.module('wowApp')
     $scope.sortReverse = false;
     $scope.showFeed = true;
 
+    $scope.showInfobox = false;
+
+    $scope.tooltip = "Acquired : {{  convertToStandard(feedItem.timestamp) }} <br> <img src='http://media.blizzard.com/wow/icons/18/ + {{ feedItem.icon }}>"
+
+    $(document).ready(function () {
+        //can also be wrapped with:
+        //1. $(function () {...});
+        //2. $(window).load(function () {...});
+        //3. Or your own custom named function block.
+        //It's better to wrap it.
+
+        //Tooltip, activated by hover event
+        $("#table-feed").tooltip({
+            selector: "[data-toggle='tooltip']",
+            container: "#table-feed",
+            html: true
+        });
+
+
+    });
+
+    $scope.showinfo = function(feedItem, bool) {
+        if(bool === true) {
+            $scope.showInfobox = true;
+            // $scope.personColour = {color: '#'+person.colour};
+            console.log(feedItem);
+            console.log('mouse enter for');
+        } else if (bool === false) {
+            $scope.showInfobox = false;
+            // $scope.personColour = {color: 'white'}; //or, whatever the original color is
+            console.log(feedItem);
+            console.log('mouse ;eave for');
+        }
+    };
+
     $scope.$watch('showFeed', function() {
         $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
     })
@@ -118,23 +153,6 @@ angular.module('wowApp')
     //
     // });
 
-    function test (response) {
-        console.log(idx);
-
-
-        console.log(response);
-        // console.log(idx);
-        var feedElement = {};
-        feedElement['type'] = 'LOOT';
-        console.log(response.data);
-        feedElement['name'] = response.data.name;
-        feedElement['icon'] = response.data.icon;
-        console.log(feedElement);
-        // self.feed.unshift(feedElement);
-        // console.log(idx);
-        self.feed.splice(idx, 0, feedElement);
-
-    }
 
     characterService.getCharacterFeed(function(response){
         // console.log(response.data);

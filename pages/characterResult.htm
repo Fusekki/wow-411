@@ -28,11 +28,7 @@ Results for {{ name }} on {{ selectedRealm }}
           <div class="panel-heading" id="panel-heading">
               <h3 class="panel-title">Feed</h3>
               <button ng-class="{ 'btn-blue': showFeed, 'btn-blue-selected': !showFeed }" ng-click="showFeed =! showFeed"> {{ buttonText }} </button>
-              <!--<input type="button" class="button" ng-class="{ 'btn-blue': showFeed, 'btn-blue-selected': !showFeed }" ng-click="showFeed =! showFeed"> {{ buttonText }} </input>-->
-
-
           </div>
-
           <div class="panel-body" ng-show="showFeed">
               <form>
                   <div class="form-group">
@@ -44,7 +40,7 @@ Results for {{ name }} on {{ selectedRealm }}
                       </div>
                   </div>
               </form>
-              <table class="table table-bordered">
+              <table class="table table-bordered" id="table-feed">
                   <thead>
                   <tr>
                       <td>
@@ -61,65 +57,26 @@ Results for {{ name }} on {{ selectedRealm }}
                           <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                       </a>
                       </td>
-                      <!--<td>-->
-                          <!--<a href="" ng-click="sortType = 'population'; sortReverse = !sortReverse">-->
-                              <!--Population-->
-                              <!--<span ng-show="sortType == 'population' && !sortReverse" class="fa fa-caret-down"></span>-->
-                              <!--<span ng-show="sortType == 'population' && sortReverse" class="fa fa-caret-up"></span>-->
-                          <!--</a>-->
-                      <!--</td>-->
-                      <!--<td>-->
-                          <!--<a href="" ng-click="sortType = 'timezone'; sortReverse = !sortReverse">-->
-                              <!--Timezone-->
-                              <!--<span ng-show="sortType == 'timezone' && !sortReverse" class="fa fa-caret-down"></span>-->
-                              <!--<span ng-show="sortType == 'timezone' && sortReverse" class="fa fa-caret-up"></span>-->
-                          <!--</a>-->
-                      <!--</td>-->
-                      <!--<td>-->
-                          <!--<a href="" ng-click="sortType = 'queue'; sortReverse = !sortReverse">-->
-                              <!--Queue-->
-                              <!--<span ng-show="sortType == 'queue' && !sortReverse" class="fa fa-caret-down"></span>-->
-                              <!--<span ng-show="sortType == 'queue' && sortReverse" class="fa fa-caret-up"></span>-->
-                          <!--</a>-->
-                      <!--</td>-->
                   </tr>
                   </thead>
-
                   <tbody>
-
                   <tr ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
                       <td>{{ feedItem.type }}</td>
-                      <td>{{ feedItem.name  || feedItem.title }}</td>
+                      <td data-toggle="tooltip" data-placement="top"
+                      title=" Aquired: {{ convertToStandard(feedItem.timestamp) }} {{  feedItem.icon ? ' <img src=\'http://media.blizzard.com/wow/icons/18/{{feedItem.icon}}.jpg\'>' : 'no' }}">
+
+                      <!--title=" {{  feedItem.icon ? 'Acquired : {{ convertToStandard(feedItem.timestamp) }} <br> <img src='http://media.blizzard.com/wow/icons/18/{{ feedItem.icon }}.jpg'>' : 'Acquired : {{  convertToStandard(feedItem.timestamp) }}  }}">-->
+                          {{ feedItem.name  || feedItem.title }}
+                      </td>
                   </tr>
-
-
-                  <!--<tr ng-repeat="r in realmsResult.realms | orderBy:sortType:sortReverse | filter:searchRealms" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">-->
-                      <!--<td>{{ r.name }}</td>-->
-                      <!--<td>{{ r.type }}</td>-->
-                      <!--<td>{{ r.population }}</td>-->
-                      <!--<td>{{ sliceCountryFromTimezone( r.timezone  ) }}</td>-->
-                      <!--<td>{{ r.queue }}</td>-->
-                  <!--</tr>-->
                   </tbody>
-
               </table>
-
-
-
-
-              <!--<div ng-repeat="feedItem in list">-->
-                 <!--<span ng-switch="feedItem.type">-->
-                  <!--<div ng-switch-when="LOOT"> Loot obtained = {{ feedItem.name }}</div>-->
-                  <!--<div ng-show="feedItem.name" ng-switch-when="BOSSKILL"> Boss Kill = {{ feedItem.name }} </div>-->
-                  <!--<div ng-switch-when="ACHIEVEMENT"> Achievement = {{ feedItem.title }} </div>-->
-                 <!--</span>-->
-              <!--</div>-->
-
-
           </div>
       </div>
     </div>
 </div>
+
+
 <div ng-hide="characterResult">
     No characters found with that name.
 </div>

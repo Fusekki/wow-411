@@ -88,3 +88,28 @@
 #panel-heading button:active {
     border: hidden;
 }
+
+#info-window {
+    position: relative;
+    background: yellow;
+    width: 200px;
+    height: 200px;
+}
+
+/*customizing tooltip color*/
+/*right tooltip*/
+
+
+/*top tooltip*/
+.tooltip.top > .tooltip-arrow {
+    border-top-color: orange;
+}
+
+
+/*tooltip inner*/
+.tooltip > .tooltip-inner {
+    background-color: black;
+    color: yellow;
+    text-shadow: 0 1px 1px #000;
+    font-weight: normal;
+}
