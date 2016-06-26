@@ -53,18 +53,33 @@
     border-radius: 4em;
 }
 
-#btn-feed {
+.btn-green,
+.btn-green:hover {
     color: hsl(121, 32%, 34%);
     background: hsl(121, 32%, 74%);
     border-color: #d6e9c6;
 }
 
-#btn-feed:hover {
-    color: #dff0d8;
-    background: #3c763d;
-    border-color: #d6e9c6;
 
+.btn-blue,
+.btn-blue:hover {
+    font-weight: bold;
+    color: #4a99ca;
+    background: #fff;
+    border: 2px solid;
+    border-radius: 0;
 }
+
+.btn-blue-selected,
+.btn-blue-selected:hover {
+    color: #fff;
+    background: #4a89ca;
+    border-radius: 0;
+}
+
+
+
+
 
 .image-hover:hover {
 /*

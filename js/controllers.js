@@ -105,6 +105,10 @@ angular.module('wowApp')
     $scope.sortReverse = false;
     $scope.showFeed = true;
 
+    $scope.$watch('showFeed', function() {
+        $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
+    })
+
 
     // characterService.getCharacter(function(response){
     //     console.log(response.data);

@@ -27,12 +27,12 @@ Results for {{ name }} on {{ selectedRealm }}
       <div class="panel panel-success" >
           <div class="panel-heading" id="panel-heading">
               <h3 class="panel-title">Feed</h3>
-              <input type="button" class="button" id="btn-feed" value="Show" ng-click="showFeed =! showFeed"/>
+              <button ng-class="{ 'btn-blue': showFeed, 'btn-blue-selected': !showFeed }" ng-click="showFeed =! showFeed"> {{ buttonText }} </button>
+              <!--<input type="button" class="button" ng-class="{ 'btn-blue': showFeed, 'btn-blue-selected': !showFeed }" ng-click="showFeed =! showFeed"> {{ buttonText }} </input>-->
 
 
           </div>
 
-          </div>
           <div class="panel-body" ng-show="showFeed">
               <form>
                   <div class="form-group">

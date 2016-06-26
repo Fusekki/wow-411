@@ -1,3 +1,7 @@
+/** {*/
+    /*border: 2px solid red;*/
+/*}*/
+
 .navbar-custom {
     margin-bottom: 0;
     border-bottom: 1px solid rgba(255,255,255,.3);
@@ -73,15 +77,14 @@
 }
 
 #panel-heading h3,
-#panel-heading input {
+#panel-heading button {
     display: inline-block;
 }
 
-#panel-heading input {
+#panel-heading button {
     float: right;
 }
 
-#panel-heading input:focus {
-    float: right;
+#panel-heading button:active {
     border: hidden;
 }
