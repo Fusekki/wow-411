@@ -199,7 +199,18 @@ angular.module('wowApp')
                     console.log(response.data);
                     feedElement['name'] = response.data.name;
                     feedElement['icon'] = response.data.icon;
-
+                    feedElement['armor'] = response.data.armor;
+                    feedElement['bonusStats'] = response.data.bonusStats;
+                    feedElement['buyPrice'] = response.data.buyPrice;
+                    feedElement['requiredLevel'] = response.data.requiredLevel;
+                    feedElement['socketInfo'] = response.data.socketInfo;
+                    feedElement['upgradable'] = response.data.upgradable;
+                    feedElement['itemLevel'] = response.data.itemLevel;
+                    feedElement['itemBind'] = response.data.itemBind;
+                    feedElement['itemClass'] = response.data.itemClass;
+                    feedElement['maxDurability'] = response.data.maxDurability;
+                    feedElement['sellPrice'] = response.data.sellPrice;
+                    feedElement['quality'] = response.data.quality;
                     // feedElement['timestamp'] = response.data.
                     console.log(feedElement);
                     // self.feed.unshift(feedElement);
@@ -248,13 +259,6 @@ angular.module('wowApp')
         console.log(err.status);
 
     });
-
-
-    // characterService.getItem(itemId, function (response) {
-    //     console.log(response.data);
-    // }, function (err) {
-    //     console.log(err.status);
-    // });
 
 
     // var retrieveItem = characterService.getItem(itemId, function (response) {
@@ -316,6 +320,18 @@ angular.module('wowApp')
     }
     $scope.genderMap = function(idx) {
         return sharedProperties.getGender(idx);
+    }
+
+    $scope.itemqualityMap = function(idx) {
+        return sharedProperties.getItemQuality(idx);
+    }
+
+    $scope.itemupgradableMap = function(idx) {
+        return sharedProperties.getItemUpgradable(idx);
+    }
+
+    $scope.itembindMap = function(idx) {
+        return sharedProperties.getItemBind(idx);
     }
 
     $scope.$watch('name', function () {

@@ -63,7 +63,59 @@ Results for {{ name }} on {{ selectedRealm }}
                   <tr ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
                       <td>{{ feedItem.type }}</td>
                       <td data-toggle="tooltip" data-placement="top"
-                      title="{{  feedItem.icon ? '<img src=\'http://media.blizzard.com/wow/icons/36/' + feedItem.icon + '.jpg\'>' : '' }} {{ feedItem.name }}  <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br> ">{{ feedItem.name  || feedItem.title }}</td>
+                      title="{{  feedItem.icon ? '<img src=\'http://media.blizzard.com/wow/icons/36/' + feedItem.icon + '.jpg\'>
+
+                      <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <table class=&#34;lootTable&#34;>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <b class=&#34;' + itemqualityMap(feedItem.quality) + '&#34;>' +  feedItem.name + '</b>
+                                            <span> <br>Item Level ' + feedItem.itemLevel + ' </span> <br>
+                                            <span>' + itemupgradableMap(feedItem.upgradable) + ' </span> <br>'
+                                            + itembindMap(feedItem.itemBind) + '<br>
+
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <th>
+                                                        <span>' + feedElement.itemClass + '</span>
+                                                    </th>
+                                                </tr>
+                                                </tbody>
+                                                <span>' + feedItem.armor + ' Armor</span> <br>
+
+                                                Durability ' +feedItem.maxDurability + '<br>
+                                                Requires level ' + feedItem.requiredLevel + '<br>
+                                                Sell price: ' + feedItem.sellPrice + '
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   ' : '' + feedItem.name + '' }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br> ">{{ feedItem.name  || feedItem.title }}</td>
                   </tr>
                   </tbody>
               </table>
@@ -77,4 +129,113 @@ Results for {{ name }} on {{ selectedRealm }}
     No characters found with that name.
 </div>
 
-title=" Aquired: {{ convertToStandard(feedItem.timestamp) }} {{  feedItem.icon ? '<img src=\'http://media.blizzard.com/wow/icons/18/ {{ feedItem.icon} }.jpg\'>' : 'no' }}">
+
+
+// feedElement['name'] = response.data.name;
+// feedElement['icon'] = response.data.icon;
+// feedElement['armor'] = response.data.armor;
+// feedElement['bonusStats'] = response.data.bonusStats;
+// feedElement['buyPrice'] = response.data.buyPrice;
+// feedElement['requiredLevel'] = response.data.requiredLevel;
+// feedElement['socketInfo'] = response.data.socketInfo;
+// feedElement['upgradeable'] = response.data.upgradeable;
+// feedElement['itemLevel'] = response.data.itemLevel;
+// feedElement['itemBind'] = response.data.itemBind;
+// feedElement['itemClass'] = response.data.itemClass;
+// feedElement['maxDurability'] = response.data.maxDurability;
+// feedElement['sellPrice'] = response.data.sellPrice;
+
+// characterService.getItem(itemId, function (response) {
+//     console.log(response.data);
+// }, function (err) {
+//     console.log(err.status);
+// });
+
+<!--<table>-->
+    <!--<tbody>-->
+    <!--<tr>-->
+        <!--<td>-->
+            <!--<table>-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--<b> {{ feedItem.name  }} </b>-->
+                        <!--<span> <br>Item Level  {{ feedItem.itemLevel }}</span> <br>-->
+                        <!--<span>Upgrade able {{ feedItem.upgradeable }}</span> <br>-->
+                        <!--{{ feedItem.itemBind}}-->
+                        <!--<table>-->
+                            <!--<tbody>-->
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--<span> {{ feedElement.itemClass}}</span>-->
+                                <!--</th>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                            <!--<span > {{ feedItem.armor}} Armor</span> <br>-->
+                            <!--<span ng-repeat="bonusStat in feedItem.bonusStats">-->
+                                  <!--{{ bonusStats.bonusStat }}-->
+                            <!--</span> <br>-->
+                            <!--<br>-->
+
+                            <!--<span ng-repeat="socket in socketlist">-->
+                                  <!--{{ socket.socketlist }}-->
+                            <!--</span> <br>-->
+                            <!--<span ng-repeat="socketBonus in feedItem.socketBonus">-->
+                                  <!--{{ feedItem.socketBonus.socketBonus }}-->
+                            <!--</span> <br>-->
+                            <!--Durability {{feedItem.maxDurability}} <br>-->
+                            <!--Requires level {{ feedItem.requiredLevel }}-->
+                            <!--Sell price: {{ feedItem.sellPrice  }}-->
+                        <!--</table>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+<!--</table>-->
+
+<!--<table>-->
+    <!--<tbody>-->
+    <!--<tr>-->
+        <!--<td>-->
+            <!--<table>-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>-->
+                        <!--<b> {{ feedItem.name  }} </b>-->
+                        <!--<span> <br>Item Level  {{ feedItem.itemLevel }}</span> <br>-->
+                        <!--<span>Upgrade able {{ feedItem.upgradeable }}</span> <br>-->
+                        <!--{{ feedItem.itemBind}}-->
+                        <!--<table>-->
+                            <!--<tbody>-->
+                            <!--<tr>-->
+                                <!--<th>-->
+                                    <!--<span> {{ feedElement.itemClass}}</span>-->
+                                <!--</th>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                            <!--<span > {{ feedItem.armor}} Armor</span> <br>-->
+                            <!--<span ng-repeat=/'bonusStat in feedItem.bonusStats/'>-->
+                            <!--{{ bonusStats.bonusStat }}-->
+                            <!--</span> <br>-->
+                            <!--<br>-->
+                            <!--<span ng-repeat=/'socket in socketlist/'>-->
+                            <!--{{ socket.socketlist }}-->
+                            <!--</span> <br>-->
+                            <!--<span ng-repeat=/'socketBonus in feedItem.socketBonus/'>-->
+                            <!--{{ feedItem.socketBonus.socketBonus }}-->
+                            <!--</span> <br>-->
+                            <!--Durability {{feedItem.maxDurability}} <br>-->
+                            <!--Requires level {{ feedItem.requiredLevel }}-->
+                            <!--Sell price: {{ feedItem.sellPrice  }}-->
+                        <!--</table>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+<!--</table>-->

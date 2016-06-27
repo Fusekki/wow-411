@@ -24,6 +24,9 @@ angular.module('wowApp')
                         25: "Pandaren - Alliance",
                         26: "Pandaren - Horde" };   
     var factionMap = ["Alliance", "Horde"];
+    var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
+    var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
+    var itemBindMap =["Tradeable", "Binds when picked up"];
 
         return {
             getRegion: function () {
@@ -43,7 +46,22 @@ angular.module('wowApp')
             },
             getFaction: function(idx) {
                 return factionMap[idx];
+            },
+            getItemQuality: function(idx) {
+                return itemQualityMap[idx];
+            },
+            getItemUpgradable: function(isUpgradable) {
+                if (isUpgradable) {
+                    var idx = 1;
+                } else {
+                    var idx = 0;
+                }
+                return itemUpgradableMap[idx];
+            },
+            getItemBind: function(idx) {
+                return itemBindMap[idx];
             }
+
             
         };
     })
