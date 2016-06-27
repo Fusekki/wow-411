@@ -106,8 +106,8 @@ angular.module('wowApp')
     $scope.showFeed = true;
 
     $scope.showInfobox = false;
-
-    $scope.tooltip = "Acquired : {{  convertToStandard(feedItem.timestamp) }} <br> <img src='http://media.blizzard.com/wow/icons/18/ + {{ feedItem.icon }}>"
+    //
+    // $scope.tooltip = "Acquired : {{  convertToStandard(feedItem.timestamp) }} <br> <img src='http://media.blizzard.com/wow/icons/18/ + {{ feedItem.icon }}>"
 
     $(document).ready(function () {
         //can also be wrapped with:

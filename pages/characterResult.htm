@@ -63,11 +63,7 @@ Results for {{ name }} on {{ selectedRealm }}
                   <tr ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
                       <td>{{ feedItem.type }}</td>
                       <td data-toggle="tooltip" data-placement="top"
-                      title=" Aquired: {{ convertToStandard(feedItem.timestamp) }} {{  feedItem.icon ? ' <img src=\'http://media.blizzard.com/wow/icons/18/{{feedItem.icon}}.jpg\'>' : 'no' }}">
-
-                      <!--title=" {{  feedItem.icon ? 'Acquired : {{ convertToStandard(feedItem.timestamp) }} <br> <img src='http://media.blizzard.com/wow/icons/18/{{ feedItem.icon }}.jpg'>' : 'Acquired : {{  convertToStandard(feedItem.timestamp) }}  }}">-->
-                          {{ feedItem.name  || feedItem.title }}
-                      </td>
+                      title="{{  feedItem.icon ? '<img src=\'http://media.blizzard.com/wow/icons/36/' + feedItem.icon + '.jpg\'>' : '' }} {{ feedItem.name }}  <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br> ">{{ feedItem.name  || feedItem.title }}</td>
                   </tr>
                   </tbody>
               </table>
@@ -80,3 +76,5 @@ Results for {{ name }} on {{ selectedRealm }}
 <div ng-hide="characterResult">
     No characters found with that name.
 </div>
+
+title=" Aquired: {{ convertToStandard(feedItem.timestamp) }} {{  feedItem.icon ? '<img src=\'http://media.blizzard.com/wow/icons/18/ {{ feedItem.icon} }.jpg\'>' : 'no' }}">
