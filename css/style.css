@@ -108,10 +108,11 @@
 
 /*tooltip inner*/
 .tooltip > .tooltip-inner {
-    background-color: black;
-    color: yellow;
+    background-color: #080d21;
+    color: #fff;
     text-shadow: 0 1px 1px #000;
     font-weight: normal;
+    text-align: left;
 }
 
 .poor {
@@ -142,4 +143,16 @@
 
 .heirloom {
     color: #e6cc80;
+}
+.item-yellow-text {
+     color: #ffd100;
+ }
+
+.item-white-text {
+    color: #fff;
+}
+
+.item-text-green {
+    color: #1eff00;
+
 }

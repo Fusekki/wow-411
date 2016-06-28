@@ -213,6 +213,7 @@ angular.module('wowApp')
                     feedElement['quality'] = response.data.quality;
                     // feedElement['timestamp'] = response.data.
                     console.log(feedElement);
+                    console.log(feedElement.bonusStats[0].amount);
                     // self.feed.unshift(feedElement);
                     console.log(items[idx].index);
                     self.feed.splice(items[idx].index, 0, feedElement);
@@ -332,6 +333,14 @@ angular.module('wowApp')
 
     $scope.itembindMap = function(idx) {
         return sharedProperties.getItemBind(idx);
+    }
+
+    $scope.bonusstatsParse = function(item) {
+        // var totalString = "";
+        return sharedProperties.getBonusstatsparse(item);
+        // console.log(totalString);
+        // return totalString;
+        // return sharedProperties.getBonusstatsparse(idx);
     }
 
     $scope.$watch('name', function () {

@@ -60,62 +60,31 @@ Results for {{ name }} on {{ selectedRealm }}
                   </tr>
                   </thead>
                   <tbody>
-                  <tr ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
+                  <tr ng-switch on="feedItem.type" ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
                       <td>{{ feedItem.type }}</td>
-                      <td data-toggle="tooltip" data-placement="top"
-                      title="{{  feedItem.icon ? '<img src=\'http://media.blizzard.com/wow/icons/36/' + feedItem.icon + '.jpg\'>
-
-                      <table>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <table class=&#34;lootTable&#34;>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <b class=&#34;' + itemqualityMap(feedItem.quality) + '&#34;>' +  feedItem.name + '</b>
-                                            <span> <br>Item Level ' + feedItem.itemLevel + ' </span> <br>
-                                            <span>' + itemupgradableMap(feedItem.upgradable) + ' </span> <br>'
-                                            + itembindMap(feedItem.itemBind) + '<br>
-
-                                            <table>
-                                                <tbody>
-                                                <tr>
-                                                    <th>
-                                                        <span>' + feedElement.itemClass + '</span>
-                                                    </th>
-                                                </tr>
-                                                </tbody>
-                                                <span>' + feedItem.armor + ' Armor</span> <br>
-
-                                                Durability ' +feedItem.maxDurability + '<br>
-                                                Requires level ' + feedItem.requiredLevel + '<br>
-                                                Sell price: ' + feedItem.sellPrice + '
-                                            </table>
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                   ' : '' + feedItem.name + '' }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br> ">{{ feedItem.name  || feedItem.title }}</td>
+                      <!--<span ng-switch on="feedItem.icon">-->
+                          <td ng-switch-when="LOOT" data-toggle="tooltip" data-placement="top"
+                              title="<img src='http://media.blizzard.com/wow/icons/36/{{ feedItem.icon }}.jpg'>
+                                          <table class={{ lootTable }}>
+                                              <tbody>
+                                                  <tr>
+                                                      <td>
+                                                          <b class={{ itemqualityMap(feedItem.quality) }}> {{  feedItem.name }} </b> <br>
+                                                          <span class='item-yellow-text'>Item Level {{ feedItem.itemLevel }} <br>
+                                                              {{ itemupgradableMap(feedItem.upgradable) }} </span> <br>
+                                                          <span>{{ itembindMap(feedItem.itemBind) }}</span> <br>
+                                                          <span>{{ feedItem.armor }} Armor</span> <br>
+                                                          <span> {{ bonusstatsParse(feedItem.bonusStats) }} </span>
+                                                          <br>
+                                                          Durability {{ feedItem.maxDurability }} <br>
+                                                          Requires level {{ feedItem.requiredLevel }} <br>
+                                                          Sell price: {{ feedItem.sellPrice  }}
+                                                      </td>
+                                                  </tr>
+                                              </tbody>
+                                          </table>">
+                              {{ feedItem.name  || feedItem.title }}</td>
+                        <td ng-switch-default data-toggle="tooltip" data-placement="top" title="{{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br>">{{ feedItem.name  || feedItem.title }}</td>
                   </tr>
                   </tbody>
               </table>

@@ -27,6 +27,52 @@ angular.module('wowApp')
     var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
     var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
     var itemBindMap =["Tradeable", "Binds when picked up"];
+    var itemStatMap = {
+        '1' : '+%s Health',
+        '2' : '+%s Mana',
+        '3' : '+%s Agility',
+        '4' : '+%s Strength',
+        '5' : '+%s Intellect',
+        '6' : '+%s Spirit',
+        '7' : '+%s Stamina',
+        '46' : 'Equip: Restores %s health per 5 sec.',
+        '44' : 'Equip: Increases your armor penetration rating by %s.',
+        '38' : 'Equip: Increases attack power by %s.',
+        '15' : 'Equip: Increases your shield block rating by %s.',
+        '48' : 'Equip: Increases the block value of your shield by %s.',
+        '19' : 'Equip: Improves melee critical strike rating by %s.',
+        '20' : 'Equip: Improves ranged critical strike rating by %s.',
+        '32' : 'Equip: Increases your critical strike rating by %s.',
+        '21' : 'Equip: Improves spell critical strike rating by %s.',
+        '25' : 'Equip: Improves melee critical avoidance rating by %s.',
+        '26' : 'Equip: Improves ranged critical avoidance rating by %s.',
+        '34' : 'Equip: Improves critical avoidance rating by %s.',
+        '27' : 'Equip: Improves spell critical avoidance rating by %s.',
+        '12' : 'Equip: Increases defense rating by %s.',
+        '13' : 'Equip: Increases your dodge rating by %s.',
+        '37' : 'Equip: Increases your expertise rating by %s.',
+        '40' : 'Equip: Increases attack power by %s in Cat, Bear, Dire Bear, and Moonkin forms only.',
+        '28' : 'Equip: Improves melee haste rating by %s.',
+        '29' : 'Equip: Improves ranged haste rating by %s.',
+        '36' : 'Equip: Increases your haste rating by %s.',
+        '30' : 'Equip: Improves spell haste rating by %s.',
+        '16' : 'Equip: Improves melee hit rating by %s.',
+        '17' : 'Equip: Improves ranged hit rating by %s.',
+        '31' : 'Equip: Increases your hit rating by %s.',
+        '18' : 'Equip: Improves spell hit rating by %s.',
+        '22' : 'Equip: Improves melee hit avoidance rating by %s.',
+        '23' : 'Equip: Improves ranged hit avoidance rating by %s.',
+        '33' : 'Equip: Improves hit avoidance rating by %s.',
+        '24' : 'Equip: Improves spell hit avoidance rating by %s.',
+        '43' : 'Equip: Restores %s mana per 5 sec.',
+        '49' : 'Equip: Increases your mastery rating by %s.',
+        '14' : 'Equip: Increases your parry rating by %s.',
+        '39' : 'Equip: Increases ranged attack power by %s.',
+        '35' : 'Equip: Increases your resilience rating by %s.',
+        '41' : 'Equip: Increases damage done by magical spells and effects by up to %s.',
+        '42' : 'Equip: Increases healing done by magical spells and effects by up to %s.',
+        '47' : 'Equip: Increases spell penetration by %s.',
+        '45' : 'Equip: Increases spell power by %s.'};
 
         return {
             getRegion: function () {
@@ -60,6 +106,23 @@ angular.module('wowApp')
             },
             getItemBind: function(idx) {
                 return itemBindMap[idx];
+            },
+            getBonusstatsparse: function(item){
+                var line = "";
+                var shit = "";
+                for (var x = 0; x <= item.length -1; x++) {
+                    line = itemStatMap[item[x].stat];
+                    line = line.replace("%s", item[x].amount);
+
+                    if (item[x].stat > 7) {
+                        line = "<span class='item-text-green'>" + line + "</span>";
+                    }
+
+                    shit += line + '<br>';
+                }
+                console.log(shit);
+                return shit;
+
             }
 
             
