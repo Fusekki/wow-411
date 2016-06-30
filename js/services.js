@@ -3,26 +3,33 @@
 angular.module('wowApp')
 
 .service('sharedProperties', function () {
+    var self = this;
+
+    var racesDefined, classesDefined, bossesDefined = false;
+    var raceMap, classMap, bossMap = [];
+
+
     var region = "en_US";
     var privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
     
-    var classMap = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"];
+    // var classMap = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"];
     var genderMap = ["Male", "Female"];
-    var raceMap = {     1 : "Human",
-                        2: "Orc",
-                        3: "Dwarf",
-                        4: "Night Elf",
-                        5: "Undead",
-                        6: "Tauren",
-                        7: "Gnome",
-                        8: "Troll",
-                        9: "Goblin",
-                        10: "Bloodelf", 
-                        11: "Draenei",
-                        22: "Worgen",
-                        24: "Pandaren - Neutral",
-                        25: "Pandaren - Alliance",
-                        26: "Pandaren - Horde" };   
+    // var raceMap = null;
+    // var raceMap = {     1 : "Human",
+    //                     2: "Orc",
+    //                     3: "Dwarf",
+    //                     4: "Night Elf",
+    //                     5: "Undead",
+    //                     6: "Tauren",
+    //                     7: "Gnome",
+    //                     8: "Troll",
+    //                     9: "Goblin",
+    //                     10: "Bloodelf",
+    //                     11: "Draenei",
+    //                     22: "Worgen",
+    //                     24: "Pandaren - Neutral",
+    //                     25: "Pandaren - Alliance",
+    //                     26: "Pandaren - Horde" };
     var factionMap = ["Alliance", "Horde"];
     var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
     var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
@@ -75,20 +82,51 @@ angular.module('wowApp')
         '45' : 'Equip: Increases spell power by %s.'};
 
         return {
+
+            getBossStatus: function() {
+                return bossesDefined;
+            },
+            getClassStatus: function() {
+                return classesDefined;
+            },
+            getRaceStatus: function() {
+              return racesDefined;
+            },
             getRegion: function () {
                 return region;
             },
             getPrivateKey: function() {
                 return privateKey;
             },
+            getBoss: function(idx) {
+                console.log(idx);
+                for(var key in bossMap) {
+                     // console.log(bossMap[key]);
+                    if(bossMap[key].name === idx) {
+                        console.log(bossMap[key]);
+                        return bossMap[key];
+                    }
+                }
+                console.log('not found in bosses');
+            },
             getClass: function(idx) {
-                return classMap[idx];
+                for(var key in classMap) {
+                    // console.log(raceMap.races[key].id);
+                    if(classMap[key].id === idx) {
+                        return classMap[key].name;
+                    }
+                }
             },
             getGender: function(idx) {
                 return genderMap[idx];
             },
             getRace: function(idx) {
-                return raceMap[idx];
+                for(var key in raceMap) {
+                    // console.log(raceMap.races[key].id);
+                    if(raceMap[key].id === idx) {
+                        return raceMap[key].name;
+                    }
+                }
             },
             getFaction: function(idx) {
                 return factionMap[idx];
@@ -109,7 +147,7 @@ angular.module('wowApp')
             },
             getBonusstatsparse: function(item){
                 var line = "";
-                var shit = "";
+                var combinedStats = "";
                 for (var x = 0; x <= item.length -1; x++) {
                     line = itemStatMap[item[x].stat];
                     line = line.replace("%s", item[x].amount);
@@ -118,11 +156,24 @@ angular.module('wowApp')
                         line = "<span class='item-text-green'>" + line + "</span>";
                     }
 
-                    shit += line + '<br>';
+                    combinedStats += line + '<br>';
                 }
-                console.log(shit);
-                return shit;
+                // console.log(combinedStats);
+                return combinedStats;
+            },
 
+            setRaces: function(items) {
+                raceMap = items;
+                racesDefined = true;
+            },
+            setClasses: function(items) {
+                classMap = items;
+                classesDefined = true;
+            },
+            setBosses: function(items) {
+                bossMap = items;
+                console.log(bossMap);
+                bossesDefined = true;
             }
 
             
@@ -131,9 +182,9 @@ angular.module('wowApp')
 
 .service('characterService', function($http, sharedProperties) {
     
-    this.selectedRealm = "";
-    this.name = "";
-    this.characterResult = "";
+    // this.selectedRealm = "";
+    // this.name = "";
+    // this.characterResult = "";
     
        
     this.keyValue = sharedProperties.getPrivateKey();
@@ -188,6 +239,45 @@ angular.module('wowApp')
          .then(callback,err) 
     };  
                 
+})
+
+.service('raceService', function($http, sharedProperties) {
+
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+
+    this.getRaces = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/data/character/races?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        //        .then(callback)
+            .then(callback,err)
+    };
+
+})
+
+.service('classService', function($http, sharedProperties) {
+
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+
+    this.getClasses = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/data/character/classes?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        //        .then(callback)
+            .then(callback,err)
+    };
+
+})
+
+.service('bossService', function($http, sharedProperties) {
+
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+
+    this.getBosses = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/boss/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        //        .then(callback)
+            .then(callback,err)
+    };
+
 });
 
 

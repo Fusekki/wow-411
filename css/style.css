@@ -89,12 +89,8 @@
     border: hidden;
 }
 
-#info-window {
-    position: relative;
-    background: yellow;
-    width: 200px;
-    height: 200px;
-}
+
+
 
 /*customizing tooltip color*/
 /*right tooltip*/
@@ -144,6 +140,10 @@
 .heirloom {
     color: #e6cc80;
 }
+
+.boss-yellow-text {
+    color: #ffd100;
+}
 .item-yellow-text {
      color: #ffd100;
  }
@@ -155,4 +155,8 @@
 .item-text-green {
     color: #1eff00;
 
+}
+
+.boss-name {
+    font-size: 14px;
 }

@@ -7,28 +7,74 @@ angular.module('wowApp')
 })
 
 
-.controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, realmService) {
+.controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, realmService, raceService, classService, bossService) {
     
 
     this.keyValue = sharedProperties.getPrivateKey();
     this.region = sharedProperties.getRegion();
-    
+
+    // Build our sharedProperties information before the search.
+
+    // Check for raceMap
+    if (sharedProperties.getRaceStatus()) {
+        console.log('they are defined');
+    } else {
+        console.log('they are not defined');
+        raceService.getRaces(function(response){
+            // console.log(response.data)
+            sharedProperties.setRaces(response.data.races);
+            console.log(sharedProperties.getRaceStatus());
+        }, function(err) {
+            console.log(err.status)
+        })
+    }
+
+    // Check for classMap
+    if (sharedProperties.getClassStatus()) {
+        console.log('they are defined');
+    } else {
+        console.log('they are not defined');
+        classService.getClasses(function(response){
+            console.log(response.data)
+            sharedProperties.setClasses(response.data.classes);
+            console.log(sharedProperties.getClassStatus());
+        }, function(err) {
+            console.log(err.status)
+        })
+    }
+
+    if (sharedProperties.getBossStatus()) {
+        console.log('they are defined');
+    } else {
+        console.log('they are not defined');
+        bossService.getBosses(function(response){
+            console.log(response.data)
+            sharedProperties.setBosses(response.data.bosses);
+            console.log(sharedProperties.getBossStatus());
+        }, function(err) {
+            console.log(err.status)
+        })
+    }
+
+
+
+
+
+
+
     $scope.selectedRealm = characterService.selectedRealm;
     
     // Populate the Realms drop down
     realmService.getRealms(function(response){
-        console.log(response.data);
+        // console.log(response.data);
         $scope.realmsResult = response.data;
     }, function(err) {
         console.log(err.status);
 
     });
 //    $scope.realmsResult = realmService.GetRealms(this.region, this.keyValue);
-    
-    
-    
-    console.log(characterService.name);
-    
+
+
     $scope.$watch('name', function () {
         characterService.name = $scope.name;
     })
@@ -90,7 +136,7 @@ angular.module('wowApp')
 
 })
 
-.controller('characterCtrl', function ($scope, $resource, $location, $http, sharedProperties, characterService, realmService) {
+.controller('characterCtrl', function ($scope, $resource, $location, $http, sharedProperties, characterService, realmService, raceService) {
     
     var self = this;
 
@@ -106,8 +152,9 @@ angular.module('wowApp')
     $scope.showFeed = true;
 
     $scope.showInfobox = false;
-    //
-    // $scope.tooltip = "Acquired : {{  convertToStandard(feedItem.timestamp) }} <br> <img src='http://media.blizzard.com/wow/icons/18/ + {{ feedItem.icon }}>"
+
+    console.log(sharedProperties.getRaceStatus());
+    console.log(sharedProperties.getClassStatus());
 
     $(document).ready(function () {
         //can also be wrapped with:
@@ -145,6 +192,8 @@ angular.module('wowApp')
     })
 
 
+
+
     // characterService.getCharacter(function(response){
     //     console.log(response.data);
     //     $scope.characterResult = response.data;
@@ -157,6 +206,7 @@ angular.module('wowApp')
     characterService.getCharacterFeed(function(response){
         // console.log(response.data);
         $scope.characterResult = response.data;
+        console.log(response.data);
         // self.feed = angular.toJson(response.data.feed);
         // self.feed = response.data.feed;
          console.log(response.data.feed);
@@ -228,6 +278,12 @@ angular.module('wowApp')
                 feedElement['type'] = response.data.feed[x].type;
                 // do something else
                 feedElement['name'] = response.data.feed[x].name;
+                feedElement['icon'] = response.data.feed[x].achievement.icon;
+                feedElement['title'] = response.data.feed[x].achievement.title;
+                feedElement['quantity'] = response.data.feed[x].quantity;
+                feedElement['id'] = response.data.feed[x].criteria.id;
+
+
                 self.feed.push(feedElement);
 
                 // console.log(feedElement);
@@ -312,9 +368,17 @@ angular.module('wowApp')
     $scope.classMap = function(idx) {
         return sharedProperties.getClass(idx);
     }
+    $scope.bossMap = function(idx) {
+        // console.log(sharedProperties.getRace(idx));
+        $scope.boss = sharedProperties.getBoss(idx);
+        console.log($scope.boss);
+    }
     
     $scope.raceMap = function(idx) {
+        // console.log(sharedProperties.getRace(idx));
         return sharedProperties.getRace(idx);
+
+
     }
     $scope.factionMap = function(idx) {
         return sharedProperties.getFaction(idx);
@@ -361,4 +425,8 @@ angular.module('wowApp')
     $scope.convertToStandard = function(lastModified) {
       return new Date(lastModified).toUTCString();
     };
+
+    $scope.nameFromtitle = function(title) {
+        return title.substr(0, title.indexOf(' '));
+    }
 });
