@@ -67,7 +67,7 @@ Results for {{ name }} on {{ selectedRealm }}
                   </tr>
                   </thead>
                   <tbody>
-                  <tr ng-switch on="feedItem.type" ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
+                  <tr ng-switch on="feedItem.tooltip" ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
                       <td>{{ feedItem.type }}</td>
                       <!--<span ng-switch on="feedItem.icon">-->
                         <td ng-switch-when="LOOT" data-toggle="tooltip" data-placement="top"
@@ -91,15 +91,12 @@ Results for {{ name }} on {{ selectedRealm }}
                                               </tbody>
                                           </table>">
                               {{ feedItem.name  || feedItem.title }}</td>
-                        <td ng-switch-when="BOSSKILL" data-toggle="tooltip" data-placement="top" title="
+                        <td ng-switch-when="BOSS-YES" data-toggle="tooltip" data-placement="top" data-html="true" title="
                                           <table>
                                               <tbody>
                                                   <tr>
                                                       <td>
-                                                          <span ng-switch='feedItem.name'>
-                                                              <span ng-switch-when=&#34;&#34;> {{ bossMap(nameFromtitle(feedItem.title)) }} </span>
-                                                              <span ng-switch-default> {{ bossMap(feedItem.name) }} </span>
-                                                          </span>
+                                                          <span> {{ bossMap(feedItem) }} </span>
                                                           <span class='boss-name'> {{ boss.name }} </span> <br> <br>
                                                           <span class='boss-yellow-text'>Level: </span> {{ boss.level }} <br>
                                                           <span class='boss-yellow-text'>Health: </span> {{ boss.health }} <br>
@@ -110,6 +107,8 @@ Results for {{ name }} on {{ selectedRealm }}
                                               </tbody>
                                           </table>">
                             {{feedItem.quantity }} {{ feedItem.title }}</td>
+                      <td ng-switch-when="BOSS-NO">
+                          {{feedItem.quantity }} {{ feedItem.title }}</td>
                         <td ng-switch-default data-toggle="tooltip" data-placement="top" title="{{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br>">{{ feedItem.name  || feedItem.title }}</td>
                         <td> {{ convertToStandard(feedItem.timestamp) }}</td>
                   </tr>
@@ -126,26 +125,26 @@ Results for {{ name }} on {{ selectedRealm }}
 </div>
 
 
+<!--<td ng-switch-when="BOSSKILL" data-toggle="tooltip" data-placement="top" title="-->
+                                          <!--<table>-->
+                                              <!--<tbody>-->
+                                                  <!--<tr>-->
+                                                      <!--<td>-->
+                                                          <!--<span ng-switch='feedItem.name'>-->
+                                                              <!--<span ng-switch-when=&#34;&#34;> {{ nameFromtitle(feedItem.title) }} </span>-->
+                                                              <!--<span ng-switch-default> {{ bossMap(feedItem.name) }} </span>-->
+                                                          <!--</span>-->
+                                                          <!--<span class='boss-name'> {{ boss.name }} </span> <br> <br>-->
+                                                          <!--<span class='boss-yellow-text'>Level: </span> {{ boss.level }} <br>-->
+                                                          <!--<span class='boss-yellow-text'>Health: </span> {{ boss.health }} <br>-->
+                                                          <!--<span class='boss-yellow-text'>Location: </span> {{ boss.zoneId }} <br>-->
+                                                          <!--{{ boss.description }}-->
+                                                      <!--</td>-->
+                                                  <!--</tr>-->
+                                              <!--</tbody>-->
+                                          <!--</table>">-->
 
-// feedElement['name'] = response.data.name;
-// feedElement['icon'] = response.data.icon;
-// feedElement['armor'] = response.data.armor;
-// feedElement['bonusStats'] = response.data.bonusStats;
-// feedElement['buyPrice'] = response.data.buyPrice;
-// feedElement['requiredLevel'] = response.data.requiredLevel;
-// feedElement['socketInfo'] = response.data.socketInfo;
-// feedElement['upgradeable'] = response.data.upgradeable;
-// feedElement['itemLevel'] = response.data.itemLevel;
-// feedElement['itemBind'] = response.data.itemBind;
-// feedElement['itemClass'] = response.data.itemClass;
-// feedElement['maxDurability'] = response.data.maxDurability;
-// feedElement['sellPrice'] = response.data.sellPrice;
 
-// characterService.getItem(itemId, function (response) {
-//     console.log(response.data);
-// }, function (err) {
-//     console.log(err.status);
-// });
 
 <!--<table>-->
     <!--<tbody>-->

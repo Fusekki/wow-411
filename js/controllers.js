@@ -146,6 +146,8 @@ angular.module('wowApp')
     var count = 0;
     var idx = 0;
 
+    $scope.show = false;
+
     $scope.searchFeed = '';
     $scope.sortType = 'name';
     $scope.sortReverse = false;
@@ -235,6 +237,7 @@ angular.module('wowApp')
                 itemElement['index'] = x;
                 itemElement['type'] = response.data.feed[x].type;
                 itemElement['timestamp'] = response.data.feed[x].timestamp;
+
                 items.push(itemElement);
                 count++;
 
@@ -261,6 +264,8 @@ angular.module('wowApp')
                     feedElement['maxDurability'] = response.data.maxDurability;
                     feedElement['sellPrice'] = response.data.sellPrice;
                     feedElement['quality'] = response.data.quality;
+                    feedElement['tooltip'] = "LOOT";
+
                     // feedElement['timestamp'] = response.data.
                     console.log(feedElement);
                     console.log(feedElement.bonusStats[0].amount);
@@ -282,7 +287,11 @@ angular.module('wowApp')
                 feedElement['title'] = response.data.feed[x].achievement.title;
                 feedElement['quantity'] = response.data.feed[x].quantity;
                 feedElement['id'] = response.data.feed[x].criteria.id;
-
+                if (response.data.feed[x].name) {
+                    feedElement['tooltip'] = "BOSS-YES";
+                } else {
+                    feedElement['tooltip'] = "BOSS-NO";
+                }
 
                 self.feed.push(feedElement);
 
@@ -301,6 +310,7 @@ angular.module('wowApp')
 
                 // console.log(feedElement);
                 feedElement['icon'] = response.data.feed[x].achievement.icon;
+                feedElement['tooltip'] = "ACHIEVEMENT";
                 // console.log(feedElement);
                 self.feed.push(feedElement);
             }
@@ -370,7 +380,13 @@ angular.module('wowApp')
     }
     $scope.bossMap = function(idx) {
         // console.log(sharedProperties.getRace(idx));
-        $scope.boss = sharedProperties.getBoss(idx);
+        var test = sharedProperties.getBoss(idx.name);
+        if (test.name) {
+            $scope.boss = sharedProperties.getBoss(idx.name);
+        } else {
+            idx.tooltip = "BOSS-NO";
+        }
+
         console.log($scope.boss);
     }
     
@@ -427,6 +443,13 @@ angular.module('wowApp')
     };
 
     $scope.nameFromtitle = function(title) {
-        return title.substr(0, title.indexOf(' '));
+        console.log(title);
+        console.log($scope.bossMap(title.substr(0, title.indexOf(' '))));
+        var bossName = title.substr(0, title.indexOf(' ')).toLowerCase();
+        console.log(bossName);
+        console.log($scope.bossMap(bossName));
+        return $scope.bossMap(bossName);
     }
+
+
 });
