@@ -5,31 +5,15 @@ angular.module('wowApp')
 .service('sharedProperties', function () {
     var self = this;
 
-    var racesDefined, classesDefined, bossesDefined = false;
-    var raceMap, classMap, bossMap = [];
+    var racesDefined, classesDefined, bossesDefined, zonesDefined = false;
+    var raceMap, classMap, bossMap, zoneMap = [];
 
 
     var region = "en_US";
     var privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
-    
-    // var classMap = ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Monk", "Druid"];
+
     var genderMap = ["Male", "Female"];
-    // var raceMap = null;
-    // var raceMap = {     1 : "Human",
-    //                     2: "Orc",
-    //                     3: "Dwarf",
-    //                     4: "Night Elf",
-    //                     5: "Undead",
-    //                     6: "Tauren",
-    //                     7: "Gnome",
-    //                     8: "Troll",
-    //                     9: "Goblin",
-    //                     10: "Bloodelf",
-    //                     11: "Draenei",
-    //                     22: "Worgen",
-    //                     24: "Pandaren - Neutral",
-    //                     25: "Pandaren - Alliance",
-    //                     26: "Pandaren - Horde" };
+
     var factionMap = ["Alliance", "Horde"];
     var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
     var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
@@ -105,6 +89,9 @@ angular.module('wowApp')
             getPrivateKey: function() {
                 return privateKey;
             },
+            getZoneStatus: function() {
+                return zonesDefined;
+            },
             getBoss: function(idx) {
                 console.log(idx);
                 for(var key in bossMap) {
@@ -169,6 +156,20 @@ angular.module('wowApp')
                 return combinedStats;
             },
 
+            getZone: function(idx) {
+                console.log(idx);
+                for(var key in zoneMap) {
+                    // console.log(bossMap[key]);
+                    if(zoneMap[key].id === idx) {
+                        console.log(zoneMap[key].description);
+                        return zoneMap[key].description;
+                    }
+                }
+
+                console.log('not found in zones');
+                return "";
+            },
+
             setRaces: function(items) {
                 raceMap = items;
                 racesDefined = true;
@@ -181,6 +182,11 @@ angular.module('wowApp')
                 bossMap = items;
                 console.log(bossMap);
                 bossesDefined = true;
+            },
+            setZones: function(items) {
+                zoneMap = items;
+                console.log(zoneMap);
+                zonesDefined = true;
             }
 
             
@@ -281,6 +287,19 @@ angular.module('wowApp')
 
     this.getBosses = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/boss/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        //        .then(callback)
+            .then(callback,err)
+    };
+
+})
+
+.service('zoneService', function($http, sharedProperties) {
+
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+
+    this.getZones = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/zone/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
         //        .then(callback)
             .then(callback,err)
     };

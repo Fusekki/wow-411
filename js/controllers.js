@@ -7,7 +7,7 @@ angular.module('wowApp')
 })
 
 
-.controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, realmService, raceService, classService, bossService) {
+.controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, realmService, raceService, classService, bossService, zoneService) {
     
 
     this.keyValue = sharedProperties.getPrivateKey();
@@ -51,6 +51,19 @@ angular.module('wowApp')
             console.log(response.data)
             sharedProperties.setBosses(response.data.bosses);
             console.log(sharedProperties.getBossStatus());
+        }, function(err) {
+            console.log(err.status)
+        })
+    }
+
+    if (sharedProperties.getZoneStatus()) {
+        console.log('zones are defined');
+    } else {
+        console.log('zones are not defined');
+        zoneService.getZones(function(response){
+            console.log(response.data)
+            sharedProperties.setZones(response.data.zones);
+            console.log(sharedProperties.getZoneStatus());
         }, function(err) {
             console.log(err.status)
         })
@@ -246,9 +259,6 @@ angular.module('wowApp')
                     feedElement = {};
                     feedElement['type'] = items[idx].type;
                     feedElement['timestamp'] = items[idx].timestamp;
-
-                    // var feedElement = {};
-                    // feedElement['type'] = type;
                     console.log(response.data);
                     feedElement['name'] = response.data.name;
                     feedElement['icon'] = response.data.icon;
@@ -264,7 +274,13 @@ angular.module('wowApp')
                     feedElement['maxDurability'] = response.data.maxDurability;
                     feedElement['sellPrice'] = response.data.sellPrice;
                     feedElement['quality'] = response.data.quality;
-                    feedElement['tooltip'] = "LOOT";
+                    if (response.data.armor) {
+                        feedElement['tooltip'] = "LOOT-YES";
+                    } else {
+                        feedElement['tooltip'] = "LOOT-NO";
+                    }
+
+                    // feedElement['tooltip'] = "LOOT";
 
                     // feedElement['timestamp'] = response.data.
                     console.log(feedElement);
@@ -277,7 +293,37 @@ angular.module('wowApp')
                     console.log(err.status);
                 });
 
+            // } else if (response.data.feed[x].type === 'BOSSKILL') {
+            //
+            //
+            //
+            //     // console.log('in boss');
+            //     bossElement['timestamp'] = response.data.feed[x].timestamp;
+            //     bossElement['type'] = response.data.feed[x].type;
+            //     // do something else
+            //     bossElement['name'] = response.data.feed[x].name;
+            //     bossElement['icon'] = response.data.feed[x].achievement.icon;
+            //     bossElement['title'] = response.data.feed[x].achievement.title;
+            //     bossElement['quantity'] = response.data.feed[x].quantity;
+            //     bossElement['id'] = response.data.feed[x].criteria.id;
+            //     if (response.data.feed[x].name) {
+            //         bossElement['tooltip'] = "BOSS-YES";
+            //     } else {
+            //         bossElement['tooltip'] = "BOSS-NO";
+            //     }
+            //
+            //     self.items.push(bossElement);
+            //
+            //     console.log(bossElement);
+            //
+            //     characterService.getItem(response.data.feed[x].itemId, function (response) {
+            //         var bossElement = {};
+            //
+            //     }, function (err) {
+            //         console.log(err.status);
+            //     });
             } else if (response.data.feed[x].type === 'BOSSKILL') {
+
                 // console.log('in boss');
                 feedElement['timestamp'] = response.data.feed[x].timestamp;
                 feedElement['type'] = response.data.feed[x].type;
@@ -388,6 +434,13 @@ angular.module('wowApp')
         }
 
         console.log($scope.boss);
+    }
+
+    $scope.zoneMap = function(zoneId) {
+        // console.log(sharedProperties.getRace(idx));
+        console.log(zoneId);
+        var zone = sharedProperties.getZone(zoneId);
+        return zone;
     }
     
     $scope.raceMap = function(idx) {
