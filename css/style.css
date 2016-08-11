@@ -160,3 +160,15 @@
 .boss-name {
     font-size: 14px;
 }
+
+.currency-copper {
+    color: #b48d66;
+}
+
+.currency-silver {
+    color: #a5a6a1;
+}
+
+.currency-gold {
+    color: #c3ae1f;
+}

@@ -116,6 +116,34 @@ angular.module('wowApp')
             getGender: function(idx) {
                 return genderMap[idx];
             },
+            getGold: function(sellValue) {
+                var n = sellValue;
+                var s = "";
+                if (sellValue < 0) {
+                    s = "-";
+                    n = Math.abs(n);
+                }
+                var gold = Math.floor(((n / 10000)));
+                var silver = Math.floor(((n / 100) % 100));
+                var copper = Math.floor((n % 100));
+                if (!copper) {
+                    copper = "";
+                } else
+                {
+                    copper += ' <i class="fa fa-circle currency-copper"  aria-hidden="true"></i>';
+                }
+                if (!gold) {
+                    gold = "";
+                } else {
+                    gold += ' <i class="fa fa-circle currency-gold"  aria-hidden="true"></i> ';
+                }
+                if (!silver) {
+                    silver = "";
+                } else {
+                    silver += ' <i class="fa fa-circle currency-silver"  aria-hidden="true"></i> ';
+                }
+                return s + gold + silver + copper;
+            },
             getRace: function(idx) {
                 for(var key in raceMap) {
                     // console.log(raceMap.races[key].id);

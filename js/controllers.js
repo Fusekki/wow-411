@@ -476,6 +476,12 @@ angular.module('wowApp')
         // return sharedProperties.getBonusstatsparse(idx);
     }
 
+    $scope.convertGold = function(sellValue) {
+        return sharedProperties.getGold(sellValue);
+    }
+
+
+
     $scope.$watch('name', function () {
         characterService.name = $scope.name;
     })

@@ -85,7 +85,7 @@ Results for {{ name }} on {{ selectedRealm }}
                                                           <br>
                                                           Durability {{ feedItem.maxDurability }} <br>
                                                           Requires level {{ feedItem.requiredLevel }} <br>
-                                                          Sell price: {{ feedItem.sellPrice  }}
+                                                          Sell price: {{ convertGold(feedItem.sellPrice) }}
                                                       </td>
                                                   </tr>
                                               </tbody>
@@ -104,7 +104,7 @@ Results for {{ name }} on {{ selectedRealm }}
                                                           <span> {{ bonusstatsParse(feedItem.bonusStats) }} </span>
                                                           <br>
                                                           Requires level {{ feedItem.requiredLevel }} <br>
-                                                          Sell price: {{ feedItem.sellPrice  }}
+                                                          Sell price: {{ convertGold(feedItem.sellPrice) }}
                                                       </td>
                                                   </tr>
                                               </tbody>
