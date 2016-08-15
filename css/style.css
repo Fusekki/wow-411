@@ -1,6 +1,6 @@
-/** {*/
-    /*border: 2px solid red;*/
-/*}*/
+* {
+    border: 2px solid red;
+}
 
 .navbar-custom {
     margin-bottom: 0;
@@ -171,4 +171,120 @@
 
 .currency-gold {
     color: #c3ae1f;
+}
+
+.wrapper {
+    width: 1006px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    margin-bottom: 10%;
+}
+
+.content {
+    display: block;
+    height: 100vh;
+}
+
+.content-top {
+    height: 100%;
+    /*background: url("http://us.battle.net/wow/static/images/character/summary/backgrounds/race/1.jpg");*/
+}
+.profile-wrapper {
+    height: 100%;
+
+}
+
+.profile-sidebar-anchor {
+    float: left;
+     height: 0;
+     width: 0;
+    position: relative;
+
+ }
+
+.profile-sidebar-outer {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.profile-sidebar-inner {
+    background-image: url('http://us.battle.net/wow/static/images/character/summary/sidebar-bg.png');
+}
+
+.profile-info-anchor {
+    width: 768px;
+    position: relative;
+    /*height: 218px;*/
+    /*background: no-repeat;*/
+    /*z-index: 1;*/
+}
+
+.profile-info {
+    position: absolute;
+    left: 25px;
+    top: 45px;
+    line-height: normal;
+    letter-spacing: -0.05em;
+}
+
+.profile-info .name {
+    float: left;
+    font-size: 56px;
+    font-weight: bold;
+    color: white;
+    line-height: 1.1em;
+    position: relative;
+    left: -3px;
+    letter-spacing: -0.05em;
+}
+
+.profile-info .under-name {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 14px;
+    letter-spacing: normal;
+    color: white;
+}
+
+.character-class {
+    color: white;
+}
+.realm {
+    color: #0078ff;
+}
+
+.clear {
+    clear: both;
+    display: block;
+    margin: 0;
+    padding: 0;
+
+}
+
+.profile-contents {
+    margin-left: 0;
+}
+
+
+.summary-top {
+    margin-left: 230px;
+    height: 700px;
+    width: 762px;
+
+}
+.summary-top-right {
+    width: 762px;
+    height: 148px;
+    position: relative;
+ }
+
+.summary-top-inventory {
+    width: 762px;
+    height: 540px;
+    position: relative;
+    z-index: 1;
 }

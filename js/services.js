@@ -93,11 +93,11 @@ angular.module('wowApp')
                 return zonesDefined;
             },
             getBoss: function(idx) {
-                console.log(idx);
+                // console.log(idx);
                 for(var key in bossMap) {
                      // console.log(bossMap[key]);
                     if(bossMap[key].name === idx) {
-                        console.log(bossMap[key]);
+                        // console.log(bossMap[key]);
                         return bossMap[key];
                     }
                 }
@@ -185,11 +185,11 @@ angular.module('wowApp')
             },
 
             getZone: function(idx) {
-                console.log(idx);
+                // console.log(idx);
                 for(var key in zoneMap) {
                     // console.log(bossMap[key]);
                     if(zoneMap[key].id === idx) {
-                        console.log(zoneMap[key].description);
+                        // console.log(zoneMap[key].description);
                         return zoneMap[key].description;
                     }
                 }
@@ -208,12 +208,12 @@ angular.module('wowApp')
             },
             setBosses: function(items) {
                 bossMap = items;
-                console.log(bossMap);
+                // console.log(bossMap);
                 bossesDefined = true;
             },
             setZones: function(items) {
                 zoneMap = items;
-                console.log(zoneMap);
+                // console.log(zoneMap);
                 zonesDefined = true;
             }
 
@@ -249,11 +249,8 @@ angular.module('wowApp')
         //        .then(callback)
             .then(callback,err)
     };
-    
-    
 
 
-    
     this.getAchievements = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
 //        .then(callback)
@@ -328,6 +325,20 @@ angular.module('wowApp')
 
     this.getZones = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/zone/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        //        .then(callback)
+            .then(callback,err)
+    };
+
+})
+
+.service('characterItemService', function($http, sharedProperties) {
+
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+
+    this.getItems = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "items" } } )
+
         //        .then(callback)
             .then(callback,err)
     };
