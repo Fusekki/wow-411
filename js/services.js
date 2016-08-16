@@ -18,6 +18,7 @@ angular.module('wowApp')
     var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
     var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
     var itemBindMap =["Tradeable", "Binds when picked up"];
+    var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'shirt', 'shoulder', 'waist', 'wrist'];
     var itemStatMap = {
         '1' : '+%s Health',
         '2' : '+%s Mana',
@@ -79,6 +80,9 @@ angular.module('wowApp')
             },
             getClassStatus: function() {
                 return classesDefined;
+            },
+            getInventorySlots: function() {
+                return inventorySlots;
             },
             getRaceStatus: function() {
               return racesDefined;

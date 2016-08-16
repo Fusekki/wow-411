@@ -157,6 +157,7 @@ angular.module('wowApp')
 
     self.feed = [];
     self.filteredFeed = [];
+    self.inventorySlots = [];
     var items = [];
     var count = 0;
     var idx = 0;
@@ -393,7 +394,21 @@ angular.module('wowApp')
 
     characterItemService.getItems(function(response){
         console.log(response.data.items);
-        $scope.itemsResult = response.data.items;
+        // $scope.itemsResult = response.data.items;
+
+        var slots = sharedProperties.getInventorySlots();
+
+        for (var x=0; x < slots.length; x++) {
+            console.log(slots[x]);
+            console.log(response.data.items[slots[x]]);
+
+            self.inventorySlots.push({
+                name: slots[x],
+                value: response.data.items[slots[x]]
+            });
+
+        }
+        console.log(self.inventorySlots);
     }, function(err) {
         console.log(err.status);
 
