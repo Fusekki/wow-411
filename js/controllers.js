@@ -197,13 +197,13 @@ angular.module('wowApp')
         if(bool === true) {
             $scope.showInfobox = true;
             // $scope.personColour = {color: '#'+person.colour};
-            console.log(feedItem);
+            // console.log(feedItem);
             console.log('mouse enter for');
         } else if (bool === false) {
             $scope.showInfobox = false;
             // $scope.personColour = {color: 'white'}; //or, whatever the original color is
             console.log(feedItem);
-            console.log('mouse ;eave for');
+            console.log('mouse leave for');
         }
     };
 
@@ -302,11 +302,12 @@ angular.module('wowApp')
                     // feedElement['tooltip'] = "LOOT";
 
                     // feedElement['timestamp'] = response.data.
-                    // console.log(feedElement);
+                    console.log(feedElement);
                     // console.log(feedElement.bonusStats[0].amount);
                     // self.feed.unshift(feedElement);
                     // console.log(items[idx].index);
                     self.feed.splice(items[idx].index, 0, feedElement);
+
                     idx++;
                 }, function (err) {
                     console.log(err.status);
@@ -392,23 +393,32 @@ angular.module('wowApp')
 
     });
 
+
+    // This is the API call for the Items.
     characterItemService.getItems(function(response){
         console.log(response.data.items);
         // $scope.itemsResult = response.data.items;
 
         var slots = sharedProperties.getInventorySlots();
+        var item;
 
         for (var x=0; x < slots.length; x++) {
             console.log(slots[x]);
             console.log(response.data.items[slots[x]]);
 
+            // Map the items here before you push them.
             self.inventorySlots.push({
                 name: slots[x],
-                value: response.data.items[slots[x]]
+                value: response.data.items[slots[x]],
+                slot: sharedProperties.getInventorySlot(slots[x])
             });
 
         }
         console.log(self.inventorySlots);
+
+        // Need to map this with an internal values associating
+        $scope.inventory = self.inventorySlots;
+        console.log($scope.inventory);
     }, function(err) {
         console.log(err.status);
 

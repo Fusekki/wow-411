@@ -6,7 +6,7 @@ angular.module('wowApp')
     var self = this;
 
     var racesDefined, classesDefined, bossesDefined, zonesDefined = false;
-    var raceMap, classMap, bossMap, zoneMap = [];
+    var raceMap, classMap, bossMap, zoneMap = [], inventoryMap;
 
 
     var region = "en_US";
@@ -18,7 +18,7 @@ angular.module('wowApp')
     var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
     var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
     var itemBindMap =["Tradeable", "Binds when picked up"];
-    var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'shirt', 'shoulder', 'waist', 'wrist'];
+    var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'trinket1', 'trinket2', 'waist', 'wrist'];
     var itemStatMap = {
         '1' : '+%s Health',
         '2' : '+%s Mana',
@@ -71,7 +71,38 @@ angular.module('wowApp')
         '54' : "Equip: Increases your shadow resistance by %s.",
         '55' : "Equip: Increases your nature resistance by %s.",
         '56' : "Equip: Increases your arcane resistance by %s.",
-        '57' : "Equip: Increases your pvp power by %s."
+        '57' : "Equip: Increases your pvp power by %s.",
+        '60' : "Equip: Increase your readiness by %s.",
+        '61' : "Equip: Increase your speed by %s.",
+        "62" : "Equip: Increase your leech by %s.",
+        "63" : "Equip: Increase your avoidence by %s.",
+        "64" : "Equip: Increase your indestructible by %s",
+        "65" : "Equip: Increase your WOD_5 by %s.",
+        '59' : "Equip: Increase your multistrike by %s.",
+        "71" : "Equip: Increase your strength, agility or intellect by %s.",
+        "72" : "Equip: Increase your strength or agility by %s.",
+        '73' : "Equip: Increase your agility or intellect by %s.",
+        "74" : "Equip: Increase your strength or intellect by %s."
+    };
+    var inventorySlotMap = {
+        'head' : 0,
+        'neck' : 1,
+        'shoulder' : 2,
+        'back' : 3,
+        'chest': 4,
+        'shirt' : 5,
+        'tabard' : 6,
+        'wrist' : 7,
+        'hands' : 8,
+        'waist' : 9,
+        'legs' : 10,
+        'feet' : 11,
+        'finger1' : 12,
+        'finger2' : 13,
+        'trinket1' : 14,
+        'trinket2' : 15,
+        'mainHand' : 16,
+        'offHand' : 17
     }
         return {
 
@@ -173,13 +204,21 @@ angular.module('wowApp')
             getItemBind: function(idx) {
                 return itemBindMap[idx];
             },
-            getBonusstatsparse: function(item){
+            getBonusstatsparse: function(statsArray){
+                // console.log(statsArray);
                 var line = "";
                 var combinedStats = "";
-                for (var x = 0; x <= item.length -1; x++) {
-                    line = itemStatMap[item[x].stat];
-                    line = line.replace("%s", item[x].amount);
-                    if (item[x].stat > 7) {
+                for (var x = 0; x <= statsArray.length -1; x++) {
+                    // console.log(x);
+                    // console.log(statsArray[x].stat);
+                    // var temp = statsArray[x].stat;
+                    // console.log(temp);
+                    line = itemStatMap[statsArray[x].stat];
+                    // console.log(line);
+                    // console.log(statsArray[x].stat);
+                    // console.log(statsArray[x].amount);
+                    line = line.replace("%s", statsArray[x].amount);
+                    if (statsArray[x].stat > 7) {
                         line = "<span class='item-text-green'>" + line + "</span>";
                     }
                     combinedStats += line + '<br>';
@@ -200,6 +239,11 @@ angular.module('wowApp')
 
                 console.log('not found in zones');
                 return "";
+            },
+
+            getInventorySlot: function(item) {
+                // This maps the item name to a slot value as defined by our array.
+                return inventorySlotMap[item];
             },
 
             setRaces: function(items) {
