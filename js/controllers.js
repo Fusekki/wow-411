@@ -161,6 +161,7 @@ angular.module('wowApp')
     var items = [];
     var count = 0;
     var idx = 0;
+    var item_idx = 0;
     var race;
     var thumbnail;
 
@@ -187,6 +188,12 @@ angular.module('wowApp')
         $("#table-feed").tooltip({
             selector: "[data-toggle='tooltip']",
             container: "#table-feed",
+            html: true
+        });
+
+        $("#summary-inventory").tooltip({
+            selector: "[data-toggle='tooltip']",
+            container: "#summary-inventory",
             html: true
         });
 
@@ -273,7 +280,8 @@ angular.module('wowApp')
                 items.push(itemElement);
                 count++;
 
-                // console.log(items);
+                 // console.log(items);
+                // getItemDetails();
                 characterService.getItem(response.data.feed[x].itemId, function (response) {
                     feedElement = {};
                     feedElement['type'] = items[idx].type;
@@ -396,11 +404,11 @@ angular.module('wowApp')
 
     // This is the API call for the Items.
     characterItemService.getItems(function(response){
-        // console.log(response.data.items);
+        var itemElement = {};
+        console.log(response.data.items);
         // $scope.itemsResult = response.data.items;
 
         var slots = sharedProperties.getInventorySlots();
-        var item;
 
         for (var x=0; x < slots.length; x++) {
             // console.log(slots[x]);
@@ -412,6 +420,51 @@ angular.module('wowApp')
                 value: response.data.items[slots[x]],
                 slot: sharedProperties.getInventorySlot(slots[x])
             });
+            console.log(x);
+            console.log(response.data.items[slots[x]].name);
+
+            console.log(response.data.items[slots[x]].id);
+            // Make another call to the item details api
+
+            characterService.getItem(response.data.items[slots[x]].id, function (response) {
+                // item_idx = sharedProperties.getInventorySlots(slots[x]);
+                itemElement = {};
+                itemElement['type'] = items[item_idx].type;
+                itemElement['timestamp'] = items[item_idx].timestamp;
+                // console.log(response.data);
+                itemElement['name'] = response.data.name;
+                itemElement['icon'] = response.data.icon;
+                itemElement['armor'] = response.data.armor;
+                itemElement['bonusStats'] = response.data.bonusStats;
+                itemElement['buyPrice'] = response.data.buyPrice;
+                itemElement['requiredLevel'] = response.data.requiredLevel;
+                itemElement['socketInfo'] = response.data.socketInfo;
+                itemElement['upgradable'] = response.data.upgradable;
+                itemElement['itemLevel'] = response.data.itemLevel;
+                itemElement['itemBind'] = response.data.itemBind;
+                itemElement['itemClass'] = response.data.itemClass;
+                itemElement['maxDurability'] = response.data.maxDurability;
+                itemElement['sellPrice'] = response.data.sellPrice;
+                itemElement['quality'] = response.data.quality;
+                if (response.data.armor) {
+                    itemElement['tooltip'] = "LOOT-YES";
+                } else {
+                    itemElement['tooltip'] = "LOOT-NO";
+                }
+
+                // feedElement['tooltip'] = "LOOT";
+
+                // feedElement['timestamp'] = response.data.
+                // console.log(feedElement);
+                // console.log(feedElement.bonusStats[0].amount);
+                // self.feed.unshift(feedElement);
+                // console.log(items[idx].index);
+                self.feed.splice(items[item_idx].index, 0, itemElement);
+
+                idx++;
+            }, function (err) {
+                console.log(err.status);
+            });
 
         }
 
@@ -421,12 +474,16 @@ angular.module('wowApp')
             return a.slot - b.slot;
         });
         console.log($scope.inventory);
+
+
         // $scope.inventory = self.inventorySlots;
         // console.log($scope.inventory);
     }, function(err) {
         console.log(err.status);
 
     });
+
+
 
     // var retrieveItem = characterService.getItem(itemId, function (response) {
     //     console.log(response.data);

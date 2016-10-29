@@ -49,14 +49,37 @@ Results for {{ name }} on {{ selectedRealm }}
                                         <div ng-repeat="i in inventory" class="slot">
                                             <div class="slot-inner">
                                                 <div class="slot-contents">
-                                                    <div class="item">
-                                                        <img class="media-object image-hover" src="http://media.blizzard.com/wow/icons/56/{{ i.value.icon }}.jpg" alt="...">
+                                                    <div class="item" data-toggle="tooltip" data-placement="top" title="<img src='http://media.blizzard.com/wow/icons/56/{{ i.value.icon }}.jpg'>
+                                              <table>
+                                                  <tbody>
+                                                      <tr>
+                                                          <td>
+                                                              <b class={{ itemqualityMap(i.value.quality) }}> {{  i.value.name }} </b> <br>
+                                                              <span class='item-yellow-text'>Item Level {{ i.value.itemLevel }} <br>
+                                                              <span> {{ i.value.armor }} Armor</span> <br>
+                                                          </td>
+                                                      </tr>
+                                                  </tbody>
+                                              </table>">>
+
+                                                        <img class="media-object image-hover" src="http://media.blizzard.com/wow/icons/56/{{ i.value.icon }}.jpg" alt="{{ i.value.name }}">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="slot">
+                                            <div class="slot-inner">
+                                                <div class="slot-contents">
+                                                    <div class="item item-tabard">
+                                                        <img class="media-object image-hover" src="" alt="...">
                                                     </div>
 
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
