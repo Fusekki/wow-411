@@ -46,16 +46,13 @@ Results for {{ name }} on {{ selectedRealm }}
                             <div class="summary-top-right">
                                 <div class="summary-top-inventory">
                                     <div id="summary-inventory" class="summary-inventory">
-
-
-
-
-
-
-                                        <div class="slot">
+                                        <div ng-repeat="i in inventory" class="slot">
                                             <div class="slot-inner">
                                                 <div class="slot-contents">
-                                                    <img>
+                                                    <div class="item">
+                                                        <img class="media-object image-hover" src="http://media.blizzard.com/wow/icons/56/{{ i.value.icon }}.jpg" alt="...">
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

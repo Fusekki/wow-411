@@ -302,7 +302,7 @@ angular.module('wowApp')
                     // feedElement['tooltip'] = "LOOT";
 
                     // feedElement['timestamp'] = response.data.
-                    console.log(feedElement);
+                    // console.log(feedElement);
                     // console.log(feedElement.bonusStats[0].amount);
                     // self.feed.unshift(feedElement);
                     // console.log(items[idx].index);
@@ -396,15 +396,15 @@ angular.module('wowApp')
 
     // This is the API call for the Items.
     characterItemService.getItems(function(response){
-        console.log(response.data.items);
+        // console.log(response.data.items);
         // $scope.itemsResult = response.data.items;
 
         var slots = sharedProperties.getInventorySlots();
         var item;
 
         for (var x=0; x < slots.length; x++) {
-            console.log(slots[x]);
-            console.log(response.data.items[slots[x]]);
+            // console.log(slots[x]);
+            // console.log(response.data.items[slots[x]]);
 
             // Map the items here before you push them.
             self.inventorySlots.push({
@@ -414,11 +414,15 @@ angular.module('wowApp')
             });
 
         }
-        console.log(self.inventorySlots);
 
         // Need to map this with an internal values associating
-        $scope.inventory = self.inventorySlots;
+        console.log(self.inventorySlots);
+        $scope.inventory = self.inventorySlots.sort(function(a,b) {
+            return a.slot - b.slot;
+        });
         console.log($scope.inventory);
+        // $scope.inventory = self.inventorySlots;
+        // console.log($scope.inventory);
     }, function(err) {
         console.log(err.status);
 
