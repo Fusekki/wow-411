@@ -256,7 +256,7 @@ angular.module('wowApp')
 
         for (var x = 0; x <= response.data.feed.length - 1; x++) {
             var feedElement = {};
-            // console.log(response.data.feed[x]);
+            // console.log(response.data.feed);
             // feedElement['type'] = response.data.feed[x].type;
             // console.log(feedElement);
 
@@ -281,6 +281,7 @@ angular.module('wowApp')
                 count++;
 
                  // console.log(items);
+                console.log(response.data.feed[x]);
                 // getItemDetails();
                 characterService.getItem(response.data.feed[x].itemId, function (response) {
                     feedElement = {};
@@ -411,6 +412,7 @@ angular.module('wowApp')
         var slots = sharedProperties.getInventorySlots();
 
         for (var x=0; x < slots.length; x++) {
+            console.log('x is now '+ x.toString());
             // console.log(slots[x]);
             // console.log(response.data.items[slots[x]]);
 
@@ -420,52 +422,68 @@ angular.module('wowApp')
                 value: response.data.items[slots[x]],
                 slot: sharedProperties.getInventorySlot(slots[x])
             });
-            console.log(x);
-            console.log(response.data.items[slots[x]].name);
+            // console.log(x);
+            // console.log(slots[x]);
 
-            console.log(response.data.items[slots[x]].id);
+            // console.log(response.data.items[slots[x]].name);
+
+            // console.log(response.data.items[slots[x]].id);
             // Make another call to the item details api
+            // console.log('here');
+            // console.log(response.data.items[slots[x]]);
+            // if (slots[x] in response.data.items) {
+            //     console.log('key exists.');
+            //
+            // } else {
+            //     console.log('key does not exist');
+            // }
 
-            characterService.getItem(response.data.items[slots[x]].id, function (response) {
-                // item_idx = sharedProperties.getInventorySlots(slots[x]);
-                itemElement = {};
-                itemElement['type'] = items[item_idx].type;
-                itemElement['timestamp'] = items[item_idx].timestamp;
-                // console.log(response.data);
-                itemElement['name'] = response.data.name;
-                itemElement['icon'] = response.data.icon;
-                itemElement['armor'] = response.data.armor;
-                itemElement['bonusStats'] = response.data.bonusStats;
-                itemElement['buyPrice'] = response.data.buyPrice;
-                itemElement['requiredLevel'] = response.data.requiredLevel;
-                itemElement['socketInfo'] = response.data.socketInfo;
-                itemElement['upgradable'] = response.data.upgradable;
-                itemElement['itemLevel'] = response.data.itemLevel;
-                itemElement['itemBind'] = response.data.itemBind;
-                itemElement['itemClass'] = response.data.itemClass;
-                itemElement['maxDurability'] = response.data.maxDurability;
-                itemElement['sellPrice'] = response.data.sellPrice;
-                itemElement['quality'] = response.data.quality;
-                if (response.data.armor) {
-                    itemElement['tooltip'] = "LOOT-YES";
-                } else {
-                    itemElement['tooltip'] = "LOOT-NO";
-                }
+            if (slots[x] in response.data.items) {
+                console.log('key exists.');
+                characterService.getItem(response.data.items[slots[x]].id, function (response) {
+                    // item_idx = sharedProperties.getInventorySlots(slots[x]);
+                    itemElement = {};
+                    itemElement['type'] = items[item_idx].type;
+                    itemElement['timestamp'] = items[item_idx].timestamp;
+                    // console.log(response.data);
+                    itemElement['name'] = response.data.name;
+                    itemElement['icon'] = response.data.icon;
+                    itemElement['armor'] = response.data.armor;
+                    itemElement['bonusStats'] = response.data.bonusStats;
+                    itemElement['buyPrice'] = response.data.buyPrice;
+                    itemElement['requiredLevel'] = response.data.requiredLevel;
+                    itemElement['socketInfo'] = response.data.socketInfo;
+                    itemElement['upgradable'] = response.data.upgradable;
+                    itemElement['itemLevel'] = response.data.itemLevel;
+                    itemElement['itemBind'] = response.data.itemBind;
+                    itemElement['itemClass'] = response.data.itemClass;
+                    itemElement['maxDurability'] = response.data.maxDurability;
+                    itemElement['sellPrice'] = response.data.sellPrice;
+                    itemElement['quality'] = response.data.quality;
+                    if (response.data.armor) {
+                        itemElement['tooltip'] = "LOOT-YES";
+                    } else {
+                        itemElement['tooltip'] = "LOOT-NO";
+                    }
 
-                // feedElement['tooltip'] = "LOOT";
+                    // feedElement['tooltip'] = "LOOT";
 
-                // feedElement['timestamp'] = response.data.
-                // console.log(feedElement);
-                // console.log(feedElement.bonusStats[0].amount);
-                // self.feed.unshift(feedElement);
-                // console.log(items[idx].index);
-                self.feed.splice(items[item_idx].index, 0, itemElement);
+                    // feedElement['timestamp'] = response.data.
+                    // console.log(feedElement);
+                    // console.log(feedElement.bonusStats[0].amount);
+                    // self.feed.unshift(feedElement);
+                    // console.log(items[idx].index);
+                    self.feed.splice(items[item_idx].index, 0, itemElement);
 
-                idx++;
-            }, function (err) {
-                console.log(err.status);
-            });
+                    idx++;
+                }, function (err) {
+                    console.log(err.status);
+                });
+            } else {
 
+                console.log('key does not exist.');
+
+            }
         }
 
         // Need to map this with an internal values associating
