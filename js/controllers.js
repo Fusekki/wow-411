@@ -276,17 +276,28 @@ angular.module('wowApp')
                 itemElement['index'] = x;
                 itemElement['type'] = response.data.feed[x].type;
                 itemElement['timestamp'] = response.data.feed[x].timestamp;
-
+                // console.log(itemElement);
                 items.push(itemElement);
                 count++;
 
                  // console.log(items);
-                console.log(response.data.feed[x]);
+                // console.log(response.data.feed[x]);
                 // getItemDetails();
                 characterService.getItem(response.data.feed[x].itemId, function (response) {
+                    // console.log(response);
+                    // console.log(itemElement['type']);
                     feedElement = {};
-                    feedElement['type'] = items[idx].type;
-                    feedElement['timestamp'] = items[idx].timestamp;
+                    // if (type in response.data.feed[x].items[idx]) {
+                    //     feedElement['type'] = items[idx].type;
+                    //     console.log('type exists.');
+                    // } else {
+                    //     console.log('type does not exist. using cached value.');
+                    //     feedElement['type'] = itemElement['type'];
+                    // }
+                    // Grabbing these two values from before since this new call might not have these keys
+                    feedElement['type'] = itemElement['type'];
+                    feedElement['timestamp'] = itemElement['timestamp'];
+                    // feedElement['timestamp'] = items[idx].timestamp;
                     // console.log(response.data);
                     feedElement['name'] = response.data.name;
                     feedElement['icon'] = response.data.icon;
@@ -314,7 +325,9 @@ angular.module('wowApp')
                     // console.log(feedElement);
                     // console.log(feedElement.bonusStats[0].amount);
                     // self.feed.unshift(feedElement);
-                    // console.log(items[idx].index);
+                    // console.log(items);
+                    // console.log(idx);
+                    // console.log(items[idx]);
                     self.feed.splice(items[idx].index, 0, feedElement);
 
                     idx++;
@@ -406,13 +419,13 @@ angular.module('wowApp')
     // This is the API call for the Items.
     characterItemService.getItems(function(response){
         var itemElement = {};
-        console.log(response.data.items);
+        // console.log(response.data.items);
         // $scope.itemsResult = response.data.items;
 
         var slots = sharedProperties.getInventorySlots();
 
         for (var x=0; x < slots.length; x++) {
-            console.log('x is now '+ x.toString());
+            // console.log('x is now '+ x.toString());
             // console.log(slots[x]);
             // console.log(response.data.items[slots[x]]);
 
@@ -439,12 +452,12 @@ angular.module('wowApp')
             // }
 
             if (slots[x] in response.data.items) {
-                console.log('key exists.');
+                // console.log('key exists.');
                 characterService.getItem(response.data.items[slots[x]].id, function (response) {
                     // item_idx = sharedProperties.getInventorySlots(slots[x]);
                     itemElement = {};
-                    itemElement['type'] = items[item_idx].type;
-                    itemElement['timestamp'] = items[item_idx].timestamp;
+                    // itemElement['type'] = items[item_idx].type;
+                    // itemElement['timestamp'] = items[item_idx].timestamp;
                     // console.log(response.data);
                     itemElement['name'] = response.data.name;
                     itemElement['icon'] = response.data.icon;
@@ -460,11 +473,11 @@ angular.module('wowApp')
                     itemElement['maxDurability'] = response.data.maxDurability;
                     itemElement['sellPrice'] = response.data.sellPrice;
                     itemElement['quality'] = response.data.quality;
-                    if (response.data.armor) {
-                        itemElement['tooltip'] = "LOOT-YES";
-                    } else {
-                        itemElement['tooltip'] = "LOOT-NO";
-                    }
+                    // if (response.data.armor) {
+                    //     itemElement['tooltip'] = "LOOT-YES";
+                    // } else {
+                    //     itemElement['tooltip'] = "LOOT-NO";
+                    // }
 
                     // feedElement['tooltip'] = "LOOT";
 
@@ -473,25 +486,26 @@ angular.module('wowApp')
                     // console.log(feedElement.bonusStats[0].amount);
                     // self.feed.unshift(feedElement);
                     // console.log(items[idx].index);
-                    self.feed.splice(items[item_idx].index, 0, itemElement);
+                    console.log()
+                    // self.feed.splice(items[item_idx].index, 0, itemElement);
 
-                    idx++;
+                    item_idx++;
                 }, function (err) {
                     console.log(err.status);
                 });
             } else {
 
-                console.log('key does not exist.');
+                // console.log('key does not exist.');
 
             }
         }
 
         // Need to map this with an internal values associating
-        console.log(self.inventorySlots);
+        // console.log(self.inventorySlots);
         $scope.inventory = self.inventorySlots.sort(function(a,b) {
             return a.slot - b.slot;
         });
-        console.log($scope.inventory);
+        // console.log($scope.inventory);
 
 
         // $scope.inventory = self.inventorySlots;
