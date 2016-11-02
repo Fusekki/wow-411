@@ -271,10 +271,7 @@ angular.module('wowApp')
 
 .service('characterService', function($http, sharedProperties) {
     
-    // this.selectedRealm = "";
-    // this.name = "";
-    // this.characterResult = "";
-    
+
        
     this.keyValue = sharedProperties.getPrivateKey();
     this.region = sharedProperties.getRegion();
@@ -282,32 +279,27 @@ angular.module('wowApp')
     
     this.getCharacter = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
-//        .then(callback)
-         .then(callback,err) 
+         .then(callback,err)
     };
 
     this.getCharacterFeed = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "feed"} } )
-        //        .then(callback)
             .then(callback,err)
     };
 
     this.getItem = function(itemId, callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  { params: {  apikey: this.keyValue} } )
-        //        .then(callback)
             .then(callback,err)
     };
 
 
     this.getAchievements = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
-//        .then(callback)
          .then(callback,err)
     };
 
     this.getAchievementDetails = function(achievementID, callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/achievement/' + achievementID + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue } } )
-        //        .then(callback)
             .then(callback,err)
     };
   
@@ -321,8 +313,7 @@ angular.module('wowApp')
 
     this.getRealms = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
-//        .then(callback)
-         .then(callback,err) 
+         .then(callback,err)
     };  
                 
 })
@@ -334,7 +325,6 @@ angular.module('wowApp')
 
     this.getRaces = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/data/character/races?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
-        //        .then(callback)
             .then(callback,err)
     };
 
@@ -347,7 +337,6 @@ angular.module('wowApp')
 
     this.getClasses = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/data/character/classes?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
-        //        .then(callback)
             .then(callback,err)
     };
 
@@ -360,7 +349,6 @@ angular.module('wowApp')
 
     this.getBosses = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/boss/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
-        //        .then(callback)
             .then(callback,err)
     };
 
@@ -373,7 +361,6 @@ angular.module('wowApp')
 
     this.getZones = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/zone/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
-        //        .then(callback)
             .then(callback,err)
     };
 
@@ -386,22 +373,8 @@ angular.module('wowApp')
 
     this.getItems = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "items" } } )
-
-        //        .then(callback)
             .then(callback,err)
     };
 
 });
 
-
-
-
-//.service('realmService', function($resource) {
-//
-//    this.GetRealms = function(region, key) {
-//        var realmsAPI = $resource("https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK", { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }});
-//             
-//        return realmsAPI.get ( { locale: region, apikey: key } );
-//    };
-//                
-//});

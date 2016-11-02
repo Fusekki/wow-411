@@ -138,6 +138,7 @@ angular.module('wowApp')
     var count = 0;
     var idx = 0;
     var item_idx = 0;
+    self.inventoryArray = [];
     var race;
     var thumbnail;
 
@@ -328,7 +329,7 @@ angular.module('wowApp')
     });
 
 
-    // This is the API call for the Items.
+    // This is the API call for the inventory Items.
     characterItemService.getItems(function(response){
         var itemElement = {};
         // console.log(response.data.items);
@@ -339,34 +340,20 @@ angular.module('wowApp')
         for (var x=0; x < slots.length; x++) {
             // console.log('x is now '+ x.toString());
             // console.log(slots[x]);
-            // console.log(response.data.items[slots[x]]);
+            // console.log(response.data.items);
 
             // Map the items here before you push them.
             self.inventorySlots.push({
                 name: slots[x],
                 value: response.data.items[slots[x]],
-                slot: sharedProperties.getInventorySlot(slots[x])
+                slot: sharedProperties.getInventorySlot(slots[x]),
+                bonusStats: []
             });
-            // console.log(x);
-            // console.log(slots[x]);
-
-            // console.log(response.data.items[slots[x]].name);
-
-            // console.log(response.data.items[slots[x]].id);
-            // Make another call to the item details api
-            // console.log('here');
-            // console.log(response.data.items[slots[x]]);
-            // if (slots[x] in response.data.items) {
-            //     console.log('key exists.');
-            //
-            // } else {
-            //     console.log('key does not exist');
-            // }
 
             if (slots[x] in response.data.items) {
                 console.log('key exists.');
                 characterService.getItem(response.data.items[slots[x]].id, function (response) {
-                    // item_idx = sharedProperties.getInventorySlots(slots[x]);
+
                     itemElement = {};
                     // itemElement['type'] = items[item_idx].type;
                     // itemElement['timestamp'] = items[item_idx].timestamp;
@@ -386,11 +373,9 @@ angular.module('wowApp')
                     itemElement['sellPrice'] = response.data.sellPrice;
                     itemElement['quality'] = response.data.quality;
 
+                    self.inventoryArray.push(itemElement);
+                    // item_idx++;
 
-                    console.log()
-                    // self.feed.splice(items[item_idx].index, 0, itemElement);
-
-                    item_idx++;
                 }, function (err) {
                     console.log(err.status);
                 });
@@ -400,17 +385,47 @@ angular.module('wowApp')
 
             }
         }
+        // console.log('here');
+        console.log(self.inventoryArray);
+        console.log(self.inventorySlots);
+
+        // Locate the item in the inventorySlots array by searching  for the response.data.name in value.name
+
+        self.inventorySlots.forEach(function(element) {
+            var item = element;
+            console.log(element);
+            console.log(self.inventoryArray.length);
+            for (x = 0; x < self.inventoryArray.length; x++) {
+                console.log('here');
+                if (self.inventoryArray[x].name == item.name){
+                    console.log('item is found.');
+                    console.log(item);
+                    console.log(element);
+
+                } else {
+                    console.log('match not found. continuing');
+                }
+            }
+        });
+
+
+
+
+        // Add additional fields to array
+
 
         // Need to map this with an internal values associating
         // console.log(self.inventorySlots);
+
+        // This sorts the array by slot name (head, shoulders, finger, etc).
         $scope.inventory = self.inventorySlots.sort(function(a,b) {
             return a.slot - b.slot;
         });
         // console.log($scope.inventory);
 
 
-        // $scope.inventory = self.inventorySlots;
-        // console.log($scope.inventory);
+        $scope.inventory = self.inventorySlots;
+
     }, function(err) {
         console.log(err.status);
 
