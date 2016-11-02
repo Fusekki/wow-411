@@ -71,10 +71,6 @@ angular.module('wowApp')
 
 
 
-
-
-
-
     $scope.selectedRealm = characterService.selectedRealm;
     
     // Populate the Realms drop down
@@ -106,7 +102,7 @@ angular.module('wowApp')
 })
 
 
-
+// This is the controller for the realms page
 .controller('realmCtrl', function ($scope, sharedProperties, realmService) {
     
     $scope.keyValue = sharedProperties.getPrivateKey();
@@ -128,26 +124,6 @@ angular.module('wowApp')
         var idx = timezone.indexOf("/");
         return timezone.slice(idx + 1).replace(/_/g," ");
     };
-//    console.log(window.sessionStorage);
-//    
-//    if (typeof(window.Storage))  {
-//        console.log('storage available.');
-//        if (sessionStorage.realms) {
-//            console.log('realms is already created');
-//            $scope.realmsResult = sessionStorage.realms;
-//            console.log(sessionStorage.realms);
-//
-//        } else {
-//            console.log('realms is not created.');
-//            $scope.realmsResult = realmService.GetRealms($scope.region, $scope.privateKey);
-//            sessionStorage.setItem('realms', $scope.realmsResult);
-//            console.log(sessionStorage['realms']);
-//        }
-//    } else {
-//        console.log('Sorry, no storage is available.');
-//        $scope.realmsResult = realmService.GetRealms($scope.region, $scope.privateKey);
-//    }
-    
 
 })
 
@@ -174,15 +150,8 @@ angular.module('wowApp')
 
     $scope.showInfobox = false;
 
-    // console.log(sharedProperties.getRaceStatus());
-    // console.log(sharedProperties.getClassStatus());
-
+    // Set tooltips for feed and inventory areas.
     $(document).ready(function () {
-        //can also be wrapped with:
-        //1. $(function () {...});
-        //2. $(window).load(function () {...});
-        //3. Or your own custom named function block.
-        //It's better to wrap it.
 
         //Tooltip, activated by hover event
         $("#table-feed").tooltip({
@@ -218,18 +187,7 @@ angular.module('wowApp')
         $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
     });
 
-
-
-
-    // characterService.getCharacter(function(response){
-    //     console.log(response.data);
-    //     $scope.characterResult = response.data;
-    // }, function(err) {
-    //     console.log(err.status);
-    //
-    // });
-
-
+    // Character Feed call
     characterService.getCharacterFeed(function(response){
         // console.log(response.data);
 
@@ -262,16 +220,6 @@ angular.module('wowApp')
 
             if (response.data.feed[x].type === 'LOOT') {
                 var itemElement = {};
-                // var type = response.data.feed[x].type;
-
-                // console.log('in loot');
-
-                // console.log(response.data.feed[x]);
-                // do something
-                // idx = x;
-                // characterService.getItem(response.data.feed[x].itemId, test, function (err) {
-                //     console.log(err.status);
-                // });
 
                 itemElement['index'] = x;
                 itemElement['type'] = response.data.feed[x].type;
@@ -287,13 +235,6 @@ angular.module('wowApp')
                     // console.log(response);
                     // console.log(itemElement['type']);
                     feedElement = {};
-                    // if (type in response.data.feed[x].items[idx]) {
-                    //     feedElement['type'] = items[idx].type;
-                    //     console.log('type exists.');
-                    // } else {
-                    //     console.log('type does not exist. using cached value.');
-                    //     feedElement['type'] = itemElement['type'];
-                    // }
                     // Grabbing these two values from before since this new call might not have these keys
                     feedElement['type'] = itemElement['type'];
                     feedElement['timestamp'] = itemElement['timestamp'];
@@ -335,35 +276,6 @@ angular.module('wowApp')
                     console.log(err.status);
                 });
 
-            // } else if (response.data.feed[x].type === 'BOSSKILL') {
-            //
-            //
-            //
-            //     // console.log('in boss');
-            //     bossElement['timestamp'] = response.data.feed[x].timestamp;
-            //     bossElement['type'] = response.data.feed[x].type;
-            //     // do something else
-            //     bossElement['name'] = response.data.feed[x].name;
-            //     bossElement['icon'] = response.data.feed[x].achievement.icon;
-            //     bossElement['title'] = response.data.feed[x].achievement.title;
-            //     bossElement['quantity'] = response.data.feed[x].quantity;
-            //     bossElement['id'] = response.data.feed[x].criteria.id;
-            //     if (response.data.feed[x].name) {
-            //         bossElement['tooltip'] = "BOSS-YES";
-            //     } else {
-            //         bossElement['tooltip'] = "BOSS-NO";
-            //     }
-            //
-            //     self.items.push(bossElement);
-            //
-            //     console.log(bossElement);
-            //
-            //     characterService.getItem(response.data.feed[x].itemId, function (response) {
-            //         var bossElement = {};
-            //
-            //     }, function (err) {
-            //         console.log(err.status);
-            //     });
             } else if (response.data.feed[x].type === 'BOSSKILL') {
 
                 // console.log('in boss');
@@ -452,7 +364,7 @@ angular.module('wowApp')
             // }
 
             if (slots[x] in response.data.items) {
-                // console.log('key exists.');
+                console.log('key exists.');
                 characterService.getItem(response.data.items[slots[x]].id, function (response) {
                     // item_idx = sharedProperties.getInventorySlots(slots[x]);
                     itemElement = {};
@@ -473,19 +385,8 @@ angular.module('wowApp')
                     itemElement['maxDurability'] = response.data.maxDurability;
                     itemElement['sellPrice'] = response.data.sellPrice;
                     itemElement['quality'] = response.data.quality;
-                    // if (response.data.armor) {
-                    //     itemElement['tooltip'] = "LOOT-YES";
-                    // } else {
-                    //     itemElement['tooltip'] = "LOOT-NO";
-                    // }
 
-                    // feedElement['tooltip'] = "LOOT";
 
-                    // feedElement['timestamp'] = response.data.
-                    // console.log(feedElement);
-                    // console.log(feedElement.bonusStats[0].amount);
-                    // self.feed.unshift(feedElement);
-                    // console.log(items[idx].index);
                     console.log()
                     // self.feed.splice(items[item_idx].index, 0, itemElement);
 
@@ -495,7 +396,7 @@ angular.module('wowApp')
                 });
             } else {
 
-                // console.log('key does not exist.');
+                console.log('key does not exist. Moving on to next item.');
 
             }
         }
@@ -515,46 +416,6 @@ angular.module('wowApp')
 
     });
 
-
-
-    // var retrieveItem = characterService.getItem(itemId, function (response) {
-    //     console.log(response.data);
-    // }, function (err) {
-    //     console.log(err.status);
-    // });
-    // characterService.getAchievements(function(response){
-    //     console.log(response.data);
-    //     var achievements = response.data.achievements.achievementsCompleted;
-    //
-    //     achievements.forEach(function(entry) {
-    //         self.ach.unshift(entry);
-    //     })
-    //     console.log(self.ach);
-    //     self.ach = self.ach.slice(self.ach.length - 10);
-    //     // Call the Achievements API
-    //     for (var x = 0; x <= self.ach.length - 1; x++) {
-    //         console.log(self.ach.length);
-    //
-    //         characterService.getAchievementDetails(self.ach[x], function(response){
-    //             console.log(response.data);
-    //             $scope.achDetails.unshift(response.data.title);
-    //
-    //             $scope.achDetails.forEach(function(entry) {
-    //                 console.log(entry);
-    //             })
-    //         }, function(err) {
-    //             console.log(err.status);
-    //
-    //         });
-    //
-    //     }
-    // }, function(err) {
-    //     console.log(err.status);
-    //
-    // });
-
-
-    
 
     $scope.name = characterService.name;
     $scope.selectedRealm = characterService.selectedRealm;
@@ -644,13 +505,7 @@ angular.module('wowApp')
         characterService.selectedRealm = $scope.selectedRealm;
     });
     
-    // $scope.submit = function() {
-    //     $location.path("/characterResult");
-    //     console.log($scope.selectedRealm);
-    //     console.log($scope.name);
-    // }
 
-    
     $scope.convertToStandard = function(lastModified) {
       return new Date(lastModified).toUTCString();
     };
