@@ -276,28 +276,32 @@ angular.module('wowApp')
     this.keyValue = sharedProperties.getPrivateKey();
     this.region = sharedProperties.getRegion();
     
-    
+    // Character Profile API Call - Charcater Profile
     this.getCharacter = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
          .then(callback,err)
     };
 
+    // Character Profile API Call - Charcater Feed
     this.getCharacterFeed = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "feed"} } )
             .then(callback,err)
     };
 
-    this.getItem = function(itemId, callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  { params: {  apikey: this.keyValue} } )
+    // Character Profile API Call - Items
+    this.getItem = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "items" } } )
             .then(callback,err)
     };
 
 
-    this.getAchievements = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
-         .then(callback,err)
-    };
+    // // DATA Resources - Charcater Achievements
+    // this.getAchievements = function(callback, err) {
+    //     $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
+    //      .then(callback,err)
+    // };
 
+    // Achievement API Call - Achievement
     this.getAchievementDetails = function(achievementID, callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/achievement/' + achievementID + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue } } )
             .then(callback,err)
@@ -305,6 +309,23 @@ angular.module('wowApp')
   
                 
 })
+
+.service('dataService', function($http, sharedProperties) {
+
+
+
+    this.keyValue = sharedProperties.getPrivateKey();
+    this.region = sharedProperties.getRegion();
+
+
+    // DATA Resources - Charcater Achievements
+    this.getAchievements = function(callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
+            .then(callback,err)
+    };
+
+})
+
 
 .service('realmService', function($http, sharedProperties) {
     
@@ -366,13 +387,14 @@ angular.module('wowApp')
 
 })
 
-.service('characterItemService', function($http, sharedProperties) {
+.service('itemService', function($http, sharedProperties) {
 
     this.keyValue = sharedProperties.getPrivateKey();
     this.region = sharedProperties.getRegion();
 
-    this.getItems = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "items" } } )
+    // Item API Call - Item API
+    this.getItem = function(itemId, callback, err) {
+        $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  { params: {  apikey: this.keyValue} } )
             .then(callback,err)
     };
 

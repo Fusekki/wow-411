@@ -7,7 +7,7 @@ angular.module('wowApp')
 })
 
 
-.controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, characterItemService, realmService, raceService, classService, bossService, zoneService) {
+.controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, itemService, realmService, raceService, classService, bossService, zoneService) {
     
 
     this.keyValue = sharedProperties.getPrivateKey();
@@ -86,12 +86,12 @@ angular.module('wowApp')
 
     $scope.$watch('name', function () {
         characterService.name = $scope.name;
-        characterItemService.name = $scope.name;
+        itemService.name = $scope.name;
     });
     
     $scope.$watch('selectedRealm', function () {
         characterService.selectedRealm = $scope.selectedRealm;
-        characterItemService.selectedRealm = $scope.selectedRealm;
+        itemService.selectedRealm = $scope.selectedRealm;
     });
     
     
@@ -127,18 +127,18 @@ angular.module('wowApp')
 
 })
 
-.controller('characterCtrl', function ($scope, $resource, $location, $http, sharedProperties, characterService, characterItemService) {
+.controller('characterCtrl', function ($scope, $resource, $location, $http, sharedProperties, characterService, itemService) {
     
     var self = this;
 
     self.feed = [];
     self.filteredFeed = [];
     self.inventorySlots = [];
+    self.inventoryArray = [];
+
     var items = [];
     var count = 0;
     var idx = 0;
-    var item_idx = 0;
-    self.inventoryArray = [];
     var race;
     var thumbnail;
 
@@ -190,95 +190,46 @@ angular.module('wowApp')
 
     // Character Feed call
     characterService.getCharacterFeed(function(response){
-        // console.log(response.data);
 
         $scope.characterResult = response.data;
         if (!race) {
             race = response.data.race;
         }
         thumbnail = response.data.thumbnail;
-        // console.log(thumbnail);
-        // console.log(race);
-        // console.log(response.data);
-        // self.feed = angular.toJson(response.data.feed);
-        // self.feed = response.data.feed;
-        //  console.log(response.data.feed);
 
-        // console.log(thumbnail);
+        // Set the background images
         $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + $scope.characterImage(thumbnail)+ ") no-repeat 182px 115px");
 
         // Set background image for profile based on race
         $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
 
-
-
-
+        // Process through items in feed and determine the category each falls under.
         for (var x = 0; x <= response.data.feed.length - 1; x++) {
             var feedElement = {};
-            // console.log(response.data.feed);
-            // feedElement['type'] = response.data.feed[x].type;
-            // console.log(feedElement);
-
             if (response.data.feed[x].type === 'LOOT') {
                 var itemElement = {};
-
                 itemElement['index'] = x;
                 itemElement['type'] = response.data.feed[x].type;
                 itemElement['timestamp'] = response.data.feed[x].timestamp;
+                itemElement['id'] = response.data.feed[x].itemId;
                 // console.log(itemElement);
                 items.push(itemElement);
                 count++;
 
-                 // console.log(items);
-                // console.log(response.data.feed[x]);
-                // getItemDetails();
-                characterService.getItem(response.data.feed[x].itemId, function (response) {
-                    // console.log(response);
-                    // console.log(itemElement['type']);
-                    feedElement = {};
-                    // Grabbing these two values from before since this new call might not have these keys
-                    feedElement['type'] = itemElement['type'];
-                    feedElement['timestamp'] = itemElement['timestamp'];
-                    // feedElement['timestamp'] = items[idx].timestamp;
-                    // console.log(response.data);
-                    feedElement['name'] = response.data.name;
-                    feedElement['icon'] = response.data.icon;
-                    feedElement['armor'] = response.data.armor;
-                    feedElement['bonusStats'] = response.data.bonusStats;
-                    feedElement['buyPrice'] = response.data.buyPrice;
-                    feedElement['requiredLevel'] = response.data.requiredLevel;
-                    feedElement['socketInfo'] = response.data.socketInfo;
-                    feedElement['upgradable'] = response.data.upgradable;
-                    feedElement['itemLevel'] = response.data.itemLevel;
-                    feedElement['itemBind'] = response.data.itemBind;
-                    feedElement['itemClass'] = response.data.itemClass;
-                    feedElement['maxDurability'] = response.data.maxDurability;
-                    feedElement['sellPrice'] = response.data.sellPrice;
-                    feedElement['quality'] = response.data.quality;
-                    if (response.data.armor) {
-                        feedElement['tooltip'] = "LOOT-YES";
-                    } else {
-                        feedElement['tooltip'] = "LOOT-NO";
-                    }
+                // Perform a call to the item service for further details on the loot.
+                feedElement = callItemService(itemElement);
+                // console.log(feedElement);
+                feedElement['type'] = itemElement['type'];
+                feedElement['timestamp'] = itemElement['timestamp'];
+                // console.log(feedElement);
+                // console.log(self.feed);
+                self.feed.splice(items[idx].index, 0, feedElement);
+                // console.log(self.feed);
+                // var i = items[idx].index;
+                // console.log(i);
 
-                    // feedElement['tooltip'] = "LOOT";
-
-                    // feedElement['timestamp'] = response.data.
-                    // console.log(feedElement);
-                    // console.log(feedElement.bonusStats[0].amount);
-                    // self.feed.unshift(feedElement);
-                    // console.log(items);
-                    // console.log(idx);
-                    // console.log(items[idx]);
-                    self.feed.splice(items[idx].index, 0, feedElement);
-
-                    idx++;
-                }, function (err) {
-                    console.log(err.status);
-                });
-
+                idx++;
             } else if (response.data.feed[x].type === 'BOSSKILL') {
-
                 // console.log('in boss');
                 feedElement['timestamp'] = response.data.feed[x].timestamp;
                 feedElement['type'] = response.data.feed[x].type;
@@ -315,12 +266,7 @@ angular.module('wowApp')
                 // console.log(feedElement);
                 self.feed.push(feedElement);
             }
-            // Outside if/else so add to array.
-            // console.log(feedElement);
-            // self.feed.push(feedElement);
-
         }
-        // console.log(self.feed);
         $scope.list = self.feed;
         // console.log($scope.list);
     }, function(err) {
@@ -328,86 +274,80 @@ angular.module('wowApp')
 
     });
 
+    callItemService = function(itemElement) {
+        var item = {};
+        // console.log(itemElement);
+        // console.log(itemElement.id);
 
-    // This is the API call for the inventory Items.
-    characterItemService.getItems(function(response){
-        var itemElement = {};
-        // console.log(response.data.items);
-        // $scope.itemsResult = response.data.items;
+        itemService.getItem(itemElement.id, function (response) {
 
+            item['name'] = response.data.name;
+            item['icon'] = response.data.icon;
+            item['armor'] = response.data.armor;
+            item['bonusStats'] = response.data.bonusStats;
+            item['buyPrice'] = response.data.buyPrice;
+            item['requiredLevel'] = response.data.requiredLevel;
+            if (response.data.socketInfo) {
+                item['socketInfo'] = response.data.socketInfo;
+            }
+            item['upgradable'] = response.data.upgradable;
+            item['itemLevel'] = response.data.itemLevel;
+            item['itemBind'] = response.data.itemBind;
+            item['itemClass'] = response.data.itemClass;
+            item['maxDurability'] = response.data.maxDurability;
+            item['sellPrice'] = response.data.sellPrice;
+            item['quality'] = response.data.quality;
+            // console.log(item);
+
+            return item;
+        }, function (err) {
+            console.log(err.status);
+        });
+        // console.log(item);
+        return item;
+    };
+
+    // This is the API call for the character Items.  This call populates the inventory slots.
+    characterService.getItem(function(response){
+        // console.log(response);
         var slots = sharedProperties.getInventorySlots();
 
-        for (var x=0; x < slots.length; x++) {
-            // console.log('x is now '+ x.toString());
-            // console.log(slots[x]);
-            // console.log(response.data.items);
 
+        for (var x = 0; x < slots.length; x++) {
             // Map the items here before you push them.
-            self.inventorySlots.push({
-                name: slots[x],
-                value: response.data.items[slots[x]],
-                slot: sharedProperties.getInventorySlot(slots[x]),
-                bonusStats: []
-            });
+
+            var inventorySlot = {};
+
+            inventorySlot['name'] = slots[x];
+            inventorySlot['value'] = response.data.items[slots[x]];
+            inventorySlot['slot'] = sharedProperties.getInventorySlot(slots[x]);
+            inventorySlot['bonusStats'] =  [];
+            inventorySlot['id'] = response.data.items[slots[x]].id;
+
+            self.inventorySlots.push(inventorySlot);
 
             if (slots[x] in response.data.items) {
-                console.log('key exists.');
-                characterService.getItem(response.data.items[slots[x]].id, function (response) {
-
-                    itemElement = {};
-                    // itemElement['type'] = items[item_idx].type;
-                    // itemElement['timestamp'] = items[item_idx].timestamp;
-                    // console.log(response.data);
-                    itemElement['name'] = response.data.name;
-                    itemElement['icon'] = response.data.icon;
-                    itemElement['armor'] = response.data.armor;
-                    itemElement['bonusStats'] = response.data.bonusStats;
-                    itemElement['buyPrice'] = response.data.buyPrice;
-                    itemElement['requiredLevel'] = response.data.requiredLevel;
-                    itemElement['socketInfo'] = response.data.socketInfo;
-                    itemElement['upgradable'] = response.data.upgradable;
-                    itemElement['itemLevel'] = response.data.itemLevel;
-                    itemElement['itemBind'] = response.data.itemBind;
-                    itemElement['itemClass'] = response.data.itemClass;
-                    itemElement['maxDurability'] = response.data.maxDurability;
-                    itemElement['sellPrice'] = response.data.sellPrice;
-                    itemElement['quality'] = response.data.quality;
-
-                    self.inventoryArray.push(itemElement);
-                    // item_idx++;
-
-                }, function (err) {
-                    console.log(err.status);
-                });
+                var inventoryElement = {};
+                // console.log('key exists.');
+                inventoryElement = callItemService(inventorySlot);
+                inventoryElement['slot'] = slots[x];
+                // console.log(inventoryElement);
+                self.inventoryArray.push(inventoryElement);
             } else {
-
                 console.log('key does not exist. Moving on to next item.');
-
             }
         }
         // console.log('here');
-        console.log(self.inventoryArray);
-        console.log(self.inventorySlots);
 
-        // Locate the item in the inventorySlots array by searching  for the response.data.name in value.name
+        // Locate the item in the inventorySlots array by searching for the name in inventorySlots and matching it to the 'slot' field in inventoryArray.
 
-        self.inventorySlots.forEach(function(element) {
-            var item = element;
-            console.log(element);
-            console.log(self.inventoryArray.length);
-            for (x = 0; x < self.inventoryArray.length; x++) {
-                console.log('here');
-                if (self.inventoryArray[x].name == item.name){
-                    console.log('item is found.');
-                    console.log(item);
-                    console.log(element);
-
-                } else {
-                    console.log('match not found. continuing');
-                }
-            }
+        self.inventorySlots.forEach( function (arrayItem) {
+            console.log(arrayItem);
         });
 
+        self.inventoryArray.forEach( function (arrayItem) {
+            console.log(arrayItem);
+        });
 
 
 
@@ -421,10 +361,10 @@ angular.module('wowApp')
         $scope.inventory = self.inventorySlots.sort(function(a,b) {
             return a.slot - b.slot;
         });
-        // console.log($scope.inventory);
+         console.log($scope.inventory);
 
 
-        $scope.inventory = self.inventorySlots;
+        //$scope.inventory = self.inventorySlots;
 
     }, function(err) {
         console.log(err.status);
@@ -434,11 +374,11 @@ angular.module('wowApp')
 
     $scope.name = characterService.name;
     $scope.selectedRealm = characterService.selectedRealm;
-    
+
     $scope.$watch('selectedRealm', function () {
         characterService.selectedRealm = $scope.selectedRealm;
     });
-    
+
     
     $scope.classMap = function(idx) {
         return sharedProperties.getClass(idx);

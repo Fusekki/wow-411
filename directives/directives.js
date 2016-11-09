@@ -26,13 +26,6 @@ angular.module('wowApp')
     }
 })
 
-// .directive("bossTooltip", function() {
-//     return {
-//         template: 'directives/boss-tooltip.html',
-//         controller: 'characterCtrl',
-//         replace: true
-//     }
-// })
 
 .directive('bossTooltip', function() {
     return {
