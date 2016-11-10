@@ -312,7 +312,6 @@ angular.module('wowApp')
         // console.log(response);
         var slots = sharedProperties.getInventorySlots();
 
-
         for (var x = 0; x < slots.length; x++) {
             // Map the items here before you push them.
 
@@ -343,6 +342,18 @@ angular.module('wowApp')
 
         self.inventorySlots.forEach( function (arrayItem) {
             console.log(arrayItem);
+            self.inventoryArray.forEach( function (inventoryItem) {
+                if (inventoryItem.slot == arrayItem.name) {
+                    console.log('Match found');
+                    console.log( inventoryItem );
+                    console.log( arrayItem) ;
+
+                    
+                } else {
+                    console.log('not a match.  moving on to next in inventoryArray.');
+                }
+
+            })
         });
 
         self.inventoryArray.forEach( function (arrayItem) {
