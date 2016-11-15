@@ -1,0 +1,19 @@
+<img src='http://media.blizzard.com/wow/icons/56/{{ i.icon }}.jpg'>
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <b class= {{ itemqualityMap(i.quality) }}> {{  i.name }} </b> <br>
+            <span class='item-yellow-text'>Item Level {{ i.itemLevel }} <br>
+            {{ itemupgradableMap(i.upgradable) }} </span> <br>
+            <span> {{ itembindMap(i.itemBind) }}</span> <br>
+            <span> {{ i.armor }} Armor</span> <br>
+            <span> {{ bonusstatsParse(i.bonusStats) }} </span>
+            <br>
+            Durability {{ i.maxDurability }} <br>
+            Requires level {{ i.requiredLevel }} <br>
+            Sell price: {{ convertGold(i.sellPrice) }}
+        </td>
+    </tr>
+    </tbody>
+</table>
