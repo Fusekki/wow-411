@@ -47,11 +47,11 @@ angular.module('wowApp')
         '29' : 'Equip: Improves ranged haste rating by %s.',
         '30' : 'Equip: Improves spell haste rating by %s.',
         '31' : 'Equip: Increases your hit rating by %s.',
-        '32' : 'Equip: Increases your critical strike rating by %s.',
+        '32' : '+%s Critical Strike',
         '33' : 'Equip: Improves hit avoidance rating by %s.',
         '34' : 'Equip: Improves critical avoidance rating by %s.',
         '35' : 'Equip: Increases your resilience rating by %s.',
-        '36' : 'Equip: Increases your haste rating by %s.',
+        '36' : '+%s Haste',
         '37' : 'Equip: Increases your expertise rating by %s.',
         '38' : 'Equip: Increases attack power by %s.',
         '39' : 'Equip: Increases ranged attack power by %s.',
@@ -64,7 +64,7 @@ angular.module('wowApp')
         '46' : 'Equip: Restores %s health per 5 sec.',
         '47' : 'Equip: Increases spell penetration by %s.',
         '48' : 'Equip: Increases the block value of your shield by %s.',
-        '49' : 'Equip: Increases your mastery rating by %s.',
+        '49' : '+%s Mastery',
         '50' : "Equip: Increases your armor rating by %s.",
         '51' : "Equip: Increases your fire resistance by %s.",
         '52' : "Equip: Increases your frost resistance by %s.",
@@ -82,7 +82,7 @@ angular.module('wowApp')
         "71" : "Equip: Increase your strength, agility or intellect by %s.",
         "72" : "Equip: Increase your strength or agility by %s.",
         '73' : "Equip: Increase your agility or intellect by %s.",
-        "74" : "Equip: Increase your strength or intellect by %s."
+        "74" : "+ %s Strength or Intellect"
     };
     var inventorySlotMap = {
         'head' : 0,
@@ -206,25 +206,46 @@ angular.module('wowApp')
                 return itemBindMap[idx];
             },
             getBonusstatsparse: function(statsArray){
-                // console.log(statsArray);
+                 // console.log(statsArray);
                 var line = "";
                 var combinedStats = "";
-                for (var x = 0; x <= statsArray.length -1; x++) {
+                // Sort the order by stat number
+                var sortedStats = [];
+                sortedStats = statsArray.sort(function(a,b) {
+                    // console.log(a);
+                    // console.log(a.stat);
+                    // console.log(b.stat);
+                    //
+                    // console.log(statsArray[a]);
+                    return a.stat - b.stat;
+                });
+
+                // console.log(sortedStats);
+
+                for (var x = 0; x <= sortedStats.length -1; x++) {
                     // console.log(x);
-                    // console.log(statsArray[x].stat);
+                    // console.log(statsArray);
                     // var temp = statsArray[x].stat;
                     // console.log(temp);
-                    line = itemStatMap[statsArray[x].stat];
+                    line = itemStatMap[sortedStats[x].stat];
                     // console.log(line);
                     // console.log(statsArray[x].stat);
                     // console.log(statsArray[x].amount);
-                    line = line.replace("%s", statsArray[x].amount);
-                    if (statsArray[x].stat > 7) {
-                        line = "<span class='item-text-green'>" + line + "</span>";
+                    if (sortedStats[x].stat == 74 || sortedStats[x].stat == 36 || sortedStats[x].stat == 49 || sortedStats[x].stat == 7 ) {
+                        var statCalc = Math.round(sortedStats[x].amount * .046);
+                        line = line.replace("%s", statCalc);
+                    } else {
+                        line = line.replace("%s", sortedStats[x].amount);
+                    }
+
+                    if (sortedStats[x].stat > 7) {
+                        line = "<span class='item-green-text'>" + line + "</span>";
+                    } else {
+                        line = "<span class='item-white-text'>" + line + "</span>";
                     }
                     combinedStats += line + '<br>';
                 }
-                // console.log(combinedStats);
+
                 return combinedStats;
             },
 

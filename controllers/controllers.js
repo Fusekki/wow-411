@@ -151,10 +151,6 @@ angular.module('wowApp')
 
         $scope.showInfobox = false;
 
-        $scope.inventoryShit = {};
-
-        $scope.value = '<b>render me please<<b>>';
-
         // These are used for the tooltips.  They work with $sce to sanitize the html.
         $scope.calcGold =  function (idx) {
             return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
@@ -314,16 +310,9 @@ angular.module('wowApp')
                     // console.log(self.feed);
                 }
             }
-            // console.log('This is the final self.feed before being passed to the $scope.list');
-            // console.log(self.feed);
-            // console.log(self.inventoryArray);
-            // console.log(self.inventoryArray[0].armor);
+
             $scope.list = self.feed;
 
-            // console.log($scope.list[20]);
-            // console.log($scope.list[20].armor);
-            // console.log(self.feed[20]);
-            // console.log(self.feed[20].armor);
 
         }, function(err) {
             console.log(err.status);
@@ -332,16 +321,9 @@ angular.module('wowApp')
 
         callItemService = function(itemElement) {
 
-            // console.log('in callItemService wrapper for the following item...');
-            // console.log(itemElement);
-
             var item = {};
-            // console.log(itemElement);
-            // console.log(itemElement.id);
 
             itemService.getItem(itemElement.id, function (response) {
-                // console.log('in getItem response');
-
                 item['name'] = response.data.name;
                 item['icon'] = response.data.icon;
                 item['armor'] = response.data.armor;
@@ -358,26 +340,9 @@ angular.module('wowApp')
                 item['maxDurability'] = response.data.maxDurability;
                 item['sellPrice'] = response.data.sellPrice;
                 item['quality'] = response.data.quality;
-                // console.log('returning this item:');
-                // console.log(item);
-                // console.log(item.armor);
-                // return item;
-                // console.log(item);
-                // console.log(item.armor);
-                // return item;
-                // callingArray.push(item);
-                // console.log('pushed item to array');
-                // console.log(callingArray);
-
             }, function (err) {
                 console.log(err.status);
             });
-            // console.log('done with callItemService');
-            // console.log(callingArray);
-            // console.log(callingArray[17].armor);
-            // console.log('returning this item:');
-            // console.log(item);
-            //
             return item;
         };
 
@@ -411,38 +376,6 @@ angular.module('wowApp')
                     inventoryElement = callItemService(inventorySlot);
 
 
-                    // for (var key in tempElement) {
-                    //     console.log('in tempElement analyzing');
-                    //     if (tempElement.hasOwnProperty(key)) {
-                    //         console.log(key + " -> " + tempElement[key]);
-                    //     }
-                    // }
-                    // console.log(inventoryElement);
-                    // console.log(tempElement[Object.keys(tempElement)[0]]);
-                    // for (var key in tempElement) {
-                    //     console.log(tempElement[key]);
-                    // }
-
-
-                    // for (var key in tempElement) {
-                    //     console.log('HERE FUCKER');
-                    //     // skip loop if the property is from prototype
-                    //     if (!tempElement.hasOwnProperty(key)) continue;
-                    //
-                    //     var obj = tempElement[key];
-                    //     for (var prop in obj) {
-                    //         // skip loop if the property is from prototype
-                    //         if(!obj.hasOwnProperty(prop)) continue;
-                    //
-                    //         // your code
-                    //         alert(prop + " = " + obj[prop]);
-                    //     }
-                    // }
-
-
-                    // console.log(inventoryElement);
-                    // console.log(inventoryElement.armor);
-
                     inventoryElement['slot'] = slots[x];
                     // console.log(inventoryElement);
                     self.inventoryArray.push(inventoryElement);
@@ -450,38 +383,12 @@ angular.module('wowApp')
                     console.log('key does not exist. Moving on to next item.');
                 }
             }
-            // console.log('here');
 
-            // Locate the item in the inventorySlots array by searching for the name in inventorySlots and matching it to the 'slot' field in inventoryArray.
-
-
-
-            // Add additional fields to array
-
-
-            // Need to map this with an internal values associating
-            // console.log(self.inventorySlots);
-
-            // This sorts the array by slot name (head, shoulders, finger, etc).
-            // $scope.inventory = self.inventorySlots.sort(function(a,b) {
-            //     return a.slot - b.slot;
-            // });
 
             $scope.inventory = self.inventoryArray.sort(function(a,b) {
-                return a.slot - b.slot;
+                return sharedProperties.getInventorySlot(a.slot) - sharedProperties.getInventorySlot(b.slot);
             });
 
-
-            // console.log($scope.inventory);
-            // console.log(self.inventoryArray);
-            // console.log(self.inventoryArray);
-
-
-
-
-
-
-            //$scope.inventory = self.inventorySlots;
 
         }, function(err) {
             console.log(err.status);
@@ -550,11 +457,6 @@ angular.module('wowApp')
             if (item) {
                 return sharedProperties.getBonusstatsparse(item);
             }
-            // var totalString = "";
-
-            // console.log(totalString);
-            // return totalString;
-            // return sharedProperties.getBonusstatsparse(idx);
         };
 
         $scope.characterImage = function(path) {
@@ -596,41 +498,6 @@ angular.module('wowApp')
             console.log($scope.bossMap(bossName));
             return $scope.bossMap(bossName);
         };
-
-        $scope.showDurability = function(durabilityValue) {
-
-            if (durabilityValue) {
-                console.log('true');
-                return true;
-            }
-            console.log('false');
-            return false;
-
-            // console.log($scope.inventoryShit[index].maxDurability);
-            // console.log(index);
-            // console.log(inventoryShit[index].maxDurability);
-
-            // if ($scope.inventoryShit[index].maxDurability > 0) {
-            //     console.log(index);
-            //     console.log('going to show.');
-            //     console.log($scope.inventoryShit[index].maxDurability);
-            //     console.log($scope.inventoryShit[index]);
-            //     return true;
-            // }
-            // console.log(index);
-            // console.log('not going to show.');
-            // console.log($scope.inventoryShit[index].maxDurability);
-            // console.log($scope.inventoryShit[index]);
-            // return false;
-
-        };
-
-        $scope.getHtml = function(html) {
-            return sce$.trustAsHtml(html);
-        };
-
-
-
     })
 
     .filter('unsafe', function($sce) {

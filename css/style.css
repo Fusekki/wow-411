@@ -152,7 +152,7 @@
     color: #fff;
 }
 
-.item-text-green {
+.item-green-text {
     color: #1eff00;
 
 }
@@ -294,7 +294,7 @@
     height: 455px;
     position: absolute;
     left: 28px;
-    top: 149px;
+    top: 200px;
 }
 
 .summary-inventory .slot {
@@ -385,15 +385,21 @@
 }
 .summary-inventory .slot:nth-of-type(16) {
 
-     top: 273.5px;
-     bottom: 0;
+    left: 273.5px;
+    bottom: 0px;
  }
 
-/*Tabard Slot*/
 .summary-inventory .slot:nth-of-type(17) {
 
+    left: 348px;
+    bottom: 0;
+}
+
+/*Tabard Slot*/
+.summary-inventory .slot:nth-of-type(18) {
+
+    left: 0px;
     top: 348px;
-    left: 0;
 }
 
 
