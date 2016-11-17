@@ -2,7 +2,7 @@
 
 angular.module('wowApp')
 
-.service('sharedProperties', function () {
+.service('sharedProperties', function ($sce) {
     var self = this;
 
     var racesDefined, classesDefined, bossesDefined, zonesDefined = false;
@@ -178,6 +178,7 @@ angular.module('wowApp')
                     silver += ' <i class="fa fa-circle currency-silver"  aria-hidden="true"></i> ';
                 }
                 return s + gold + silver + copper;
+
             },
             getRace: function(idx) {
                 for(var key in raceMap) {
@@ -398,5 +399,4 @@ angular.module('wowApp')
             .then(callback,err)
     };
 
-});
-
+})

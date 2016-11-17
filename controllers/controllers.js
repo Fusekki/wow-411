@@ -153,6 +153,19 @@ angular.module('wowApp')
 
         $scope.inventoryShit = {};
 
+        $scope.value = '<b>render me please<<b>>';
+
+        // These are used for the tooltips.  They work with $sce to sanitize the html.
+        $scope.calcGold =  function (idx) {
+            return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
+        };
+
+        $scope.calcStats =  function (idx) {
+            return $scope.bonusstatsParse($scope.inventory[idx].bonusStats);
+        };
+
+
+
         // Set tooltips for feed and inventory areas.
         $(document).ready(function () {
 
@@ -556,6 +569,7 @@ angular.module('wowApp')
 
 
         $scope.convertGold = function(sellValue) {
+            // return sharedProperties.getGold(sellValue);
             return sharedProperties.getGold(sellValue);
         };
 
@@ -611,6 +625,14 @@ angular.module('wowApp')
 
         };
 
+        $scope.getHtml = function(html) {
+            return sce$.trustAsHtml(html);
+        };
 
 
+
+    })
+
+    .filter('unsafe', function($sce) {
+        return $sce.trustAsHtml;
     });
