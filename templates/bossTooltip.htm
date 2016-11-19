@@ -1,0 +1,14 @@
+<table>
+    <tbody>
+    <tr>
+        <td>
+            <span> {{ bossMap(feedItem) }} </span>
+            <span class='boss-name'> {{ boss.name }} </span> <br> <br>
+            <span class='boss-yellow-text'>Level: </span> {{ boss.level }} <br>
+            <span class='boss-yellow-text'>Health: </span> {{ boss.health }} <br>
+            <span class='boss-yellow-text'>Location: </span> {{ zoneMap(boss.zoneId) }} <br>
+            {{ boss.description }}
+        </td>
+    </tr>
+    </tbody>
+</table>

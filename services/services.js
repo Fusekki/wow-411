@@ -206,7 +206,7 @@ angular.module('wowApp')
                 return itemBindMap[idx];
             },
             getBonusstatsparse: function(statsArray){
-                 // console.log(statsArray);
+                // console.log(statsArray);
                 var line = "";
                 var combinedStats = "";
                 // Sort the order by stat number

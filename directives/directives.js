@@ -2,13 +2,15 @@
 
 angular.module('wowApp')
 
-// .directive("realmReport", function() {
-//     return {
-//         templateUrl: 'directives/realmReport.html',
-//         controller: 'realmController',
-//         replace: true
-//     }
-// })
+
+.directive("feedTable", function() {
+    return {
+        templateUrl: 'templates/feedTable.htm',
+        controller: 'characterCtrl',
+        replace: true
+    }
+})
+
 
 .directive("inventoryItem", function() {
     return {
@@ -18,52 +20,16 @@ angular.module('wowApp')
     }
 })
 
-// .directive("itemTooltip", function() {
+
+
+// .directive("feedTooltip", function() {
 //     return {
-//         templateUrl: 'directives/itemTooltip.html',
+//         template: ' {{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br> {{ feedItem.name  || feedItem.title }}',
 //         controller: 'characterCtrl',
 //         replace: true
 //     }
 // })
 
-.directive("feedTooltip", function() {
-    return {
-        template: ' {{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br> {{ feedItem.name  || feedItem.title }}',
-        controller: 'characterCtrl',
-        replace: true
-    }
-})
-
-
-// .directive('bossTooltip', function() {
-//     return {
-//         controller: function($scope, $element) {
-//             $scope.isShown = false;
-//             this.showHover = function() {
-//                 $scope.isShown = $scope.isShown == true ? false : true;
-//             }
-//         },
-//         transclude: true,
-//         link: function(scope, element, attr, ctrl) {
-//             element.bind('click', function() {
-//                 scope.$apply(function() {
-//                     ctrl.showHover();
-//                 });
-//             });
-//         },
-//         template: '<div ng-transclude></div>' +
-//         '<div id="divPopup" ng-show="isShown">' +
-//         '<div class="floatLeft">' +
-//         '<img src="images/tooltipArrow.png" />' +
-//         '</div>' +
-//         '<div class="floatLeft margin3">' +
-//         '<span>' +
-//         'I am the Hover Popup' +
-//         '</span>' +
-//         '</div>' +
-//         '</div>'
-//     }
-// })
 
 .filter('html', function(sce$) {
     return function(val) {

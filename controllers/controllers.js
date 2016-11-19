@@ -151,14 +151,29 @@ angular.module('wowApp')
 
         $scope.showInfobox = false;
 
-        // These are used for the tooltips.  They work with $sce to sanitize the html.
+        // These are used for the tooltips.  They work with $sce to sanitize the dynamic html so that it is rendered properly.
+        // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
         $scope.calcGold =  function (idx) {
-            return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
+            // console.log(typeof idx);
+            // console.log(idx);
+            if (typeof idx == 'number') {
+                "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
+            }
+                $scope.convertGold(idx.sellPrice);
+
+
         };
 
         $scope.calcStats =  function (idx) {
-            return $scope.bonusstatsParse($scope.inventory[idx].bonusStats);
+            // console.log(typeof idx);
+            // console.log(idx);
+            if (typeof idx == 'number') {
+                $scope.bonusstatsParse($scope.inventory[idx].bonusStats);
+            }
+                $scope.bonusstatsParse(idx);
+
         };
+
 
 
 
@@ -203,10 +218,13 @@ angular.module('wowApp')
         characterService.getCharacterFeed(function(response){
             // This is called once.  The entire response is then parsed $scope.characterResult
             $scope.characterResult = response.data;
+
             if (!race) {
                 race = response.data.race;
             }
             thumbnail = response.data.thumbnail;
+
+
 
             // Set the background images
             $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + $scope.characterImage(thumbnail)+ ") no-repeat 182px 115px");
@@ -215,6 +233,7 @@ angular.module('wowApp')
             $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
 
             // Process through items in reponse and determine the category each falls under.
+            // console.log(response);
             for (var x = 0; x <= response.data.feed.length - 1; x++) {
                 var feedElement = {};
                 // If item is loot, modify some of the properties and add it to the end of the items array.  The item array is a temporary array to store loot items while asynch calls
@@ -230,8 +249,6 @@ angular.module('wowApp')
                      // console.log(itemElement);
                     items.push(itemElement);
                     count++;
-
-
                     // Perform a call to the item service, passing on the itemElement that was pushed into the item array.
                     // console.log('calling callItemService wrapper from within getCharacterFeed');
                     // We assign the return object to be called feedElement.
