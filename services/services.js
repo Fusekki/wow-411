@@ -2,15 +2,15 @@
 
 angular.module('wowApp')
 
-.service('sharedProperties', function (raceService, classService, bossService, zoneService) {
+.service('sharedProperties', function (raceService, classService, bossService, zoneService, realmService) {
     var self = this;
 
     var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
     var raceMap, classMap, bossMap, zoneMap = [], inventoryMap, realmMap;
 
 
-    var region = "en_US";
-    var privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
+    self.region = "en_US";
+    self.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
 
     var genderMap = ["Male", "Female"];
 
@@ -136,6 +136,7 @@ angular.module('wowApp')
     var setRaces = function(items) {
         raceMap = items;
         racesDefined = true;
+        console.log(raceMap);
     };
 
     var setBosses = function(items) {
@@ -151,7 +152,7 @@ angular.module('wowApp')
 
     var setRealms = function(items) {
         realmMap = items;
-        // console.log(zoneMap);
+        console.log(realmMap);
         realmsDefined = true;
     };
 
@@ -161,10 +162,10 @@ angular.module('wowApp')
                 return inventorySlots;
             },
             getRegion: function () {
-                return region;
+                return self.region;
             },
             getPrivateKey: function() {
-                return privateKey;
+                return self.privateKey;
             },
             getRealms: function() {
                 return realmMap;
@@ -312,23 +313,24 @@ angular.module('wowApp')
 
             init: function() {
 
-                // if (getRealmStatus()) {
-                //     console.log('realms are defined');
-                // } else {
-                //     console.log('Realms are not defined');
-                //     realmService.getRealms(function(response){
-                //         console.log('Get Realms API Call.');
-                //         // console.log(response.data);
-                //         setRealms(response.data);
-                //         if (getRealmStatus()) {
-                //             console.log('realms are now defined.');
-                //         }
-                //         // $scope.realmsResult = response.data;
-                //     }, function(err) {
-                //         console.log(err.status);
-                //
-                //     });
-                // }
+                if (getRealmStatus()) {
+                    console.log('realms are defined');
+                } else {
+                    console.log('Realms are not defined');
+                    realmService.getRealms(function(response){
+                        console.log('Get Realms API Call.');
+                        // console.log(response.data);
+                        setRealms(response.data);
+                        if (getRealmStatus()) {
+                            console.log('realms are now defined.');
+                        }
+                        // $scope.realmsResult = response.data;
+                    }, function(err) {
+                        console.log(err.status);
+
+                    });
+                }
+
                 // Build the races map
                 if (getRaceStatus()) {
                     console.log('races are defined. skipping API call.');
@@ -340,6 +342,7 @@ angular.module('wowApp')
                         setRaces(response.data.races);
                         if (getRaceStatus()) {
                             console.log('races are now defined.');
+                            console.log(raceMap);
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -465,15 +468,15 @@ angular.module('wowApp')
 })
 
 
-.service('realmService', function($http, sharedProperties) {
+.service('realmService', function($http) {
     console.log('here');
 
     
-    this.keyValue = sharedProperties.getPrivateKey();
-    this.region = sharedProperties.getRegion();
+    // this.keyValue = sharedProperties.getPrivateKey();
+    // this.region = sharedProperties.getRegion();
 
     this.getRealms = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: self.region, apikey: self.privateKey} } )
          .then(callback,err)
     };  
                 
@@ -484,6 +487,8 @@ angular.module('wowApp')
     // this.keyValue = sharedProperties.getPrivateKey();
     // this.region = sharedProperties.getRegion();
 
+    console.log($scope.privateKey);
+    console.log(region);
     this.getRaces = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/data/character/races?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: self.region, apikey: self.privateKey} } )
             .then(callback,err)
@@ -492,7 +497,8 @@ angular.module('wowApp')
 })
 
 .service('classService', function($http) {
-
+    console.log(self.privateKey);
+    console.log(self.region);
     // this.keyValue = sharedProperties.getPrivateKey();
     // this.region = sharedProperties.getRegion();
 

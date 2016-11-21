@@ -8,22 +8,24 @@ angular.module('wowApp')
 
 
     .controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, itemService, realmService) {
-
+        // Start the sharedProperties service.  This is going to check/populate races, classes, bosses, and zones.
+        $scope.region = sharedProperties.region;
+        $scope.privateKey = sharedProperties.privateKey;
 
         sharedProperties.init();
+        // Populate the Realms drop down
+        // realmService.getRealms(function(response){
+        //     // console.log(response.data);
+        //     console.log('Realms API Call.');
+        //     $scope.realmsResult = response.data;
+        //     console.log()
+        // }, function(err) {
+        //     console.log(err.status);
+        //
+        // });
+
 
         $scope.selectedRealm = characterService.selectedRealm;
-
-        // Populate the Realms drop down
-        realmService.getRealms(function(response){
-            // console.log(response.data);
-            console.log('Realms API Call.');
-            $scope.realmsResult = response.data;
-            console.log()
-        }, function(err) {
-            console.log(err.status);
-
-        });
 
         $scope.$watch('name', function () {
             // call factory from here
@@ -36,6 +38,14 @@ angular.module('wowApp')
             characterService.selectedRealm = $scope.selectedRealm;
             itemService.selectedRealm = $scope.selectedRealm;
         });
+
+        $scope.$watch('sharedProperties', function () {
+
+
+
+
+        });
+
 
 
         $scope.submit = function() {
