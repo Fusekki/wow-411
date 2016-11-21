@@ -2,11 +2,11 @@
 
 angular.module('wowApp')
 
-.service('sharedProperties', function ($sce) {
+.service('sharedProperties', function (raceService, classService, bossService, zoneService) {
     var self = this;
 
-    var racesDefined, classesDefined, bossesDefined, zonesDefined = false;
-    var raceMap, classMap, bossMap, zoneMap = [], inventoryMap;
+    var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
+    var raceMap, classMap, bossMap, zoneMap = [], inventoryMap, realmMap;
 
 
     var region = "en_US";
@@ -103,20 +103,62 @@ angular.module('wowApp')
         'trinket2' : 15,
         'mainHand' : 16,
         'offHand' : 17
-    }
+    };
+
+    var getBossStatus = function() {
+        return bossesDefined;
+    };
+    var getClassStatus = function() {
+        return classesDefined;
+    };
+
+    var getRaceStatus = function() {
+        return racesDefined;
+    };
+
+    var getZoneStatus = function() {
+        return zonesDefined;
+    };
+
+    var getRealmStatus = function() {
+        return realmsDefined;
+    };
+
+    var getRealms = function() {
+        return realmMap;
+    };
+
+    var setClasses = function(items) {
+        classMap = items;
+        classesDefined = true;
+    };
+
+    var setRaces = function(items) {
+        raceMap = items;
+        racesDefined = true;
+    };
+
+    var setBosses = function(items) {
+        bossMap = items;
+        // console.log(bossMap);
+        bossesDefined = true;
+    };
+    var setZones = function(items) {
+        zoneMap = items;
+        // console.log(zoneMap);
+        zonesDefined = true;
+    };
+
+    var setRealms = function(items) {
+        realmMap = items;
+        // console.log(zoneMap);
+        realmsDefined = true;
+    };
+
         return {
 
-            getBossStatus: function() {
-                return bossesDefined;
-            },
-            getClassStatus: function() {
-                return classesDefined;
-            },
             getInventorySlots: function() {
                 return inventorySlots;
-            },
-            getRaceStatus: function() {
-              return racesDefined;
             },
             getRegion: function () {
                 return region;
@@ -124,8 +166,8 @@ angular.module('wowApp')
             getPrivateKey: function() {
                 return privateKey;
             },
-            getZoneStatus: function() {
-                return zonesDefined;
+            getRealms: function() {
+                return realmMap;
             },
             getBoss: function(idx) {
                 // console.log(idx);
@@ -268,26 +310,100 @@ angular.module('wowApp')
                 return inventorySlotMap[item];
             },
 
-            setRaces: function(items) {
-                raceMap = items;
-                racesDefined = true;
-            },
-            setClasses: function(items) {
-                classMap = items;
-                classesDefined = true;
-            },
-            setBosses: function(items) {
-                bossMap = items;
-                // console.log(bossMap);
-                bossesDefined = true;
-            },
-            setZones: function(items) {
-                zoneMap = items;
-                // console.log(zoneMap);
-                zonesDefined = true;
-            }
+            init: function() {
 
-            
+                // if (getRealmStatus()) {
+                //     console.log('realms are defined');
+                // } else {
+                //     console.log('Realms are not defined');
+                //     realmService.getRealms(function(response){
+                //         console.log('Get Realms API Call.');
+                //         // console.log(response.data);
+                //         setRealms(response.data);
+                //         if (getRealmStatus()) {
+                //             console.log('realms are now defined.');
+                //         }
+                //         // $scope.realmsResult = response.data;
+                //     }, function(err) {
+                //         console.log(err.status);
+                //
+                //     });
+                // }
+                // Build the races map
+                if (getRaceStatus()) {
+                    console.log('races are defined. skipping API call.');
+                } else {
+                    console.log('races are not defined');
+                   raceService.getRaces(function(response){
+                        console.log('Race API Call.');
+                        // console.log(response.data)
+                        setRaces(response.data.races);
+                        if (getRaceStatus()) {
+                            console.log('races are now defined.');
+                        }
+                    }, function(err) {
+                        console.log(err.status);
+                    });
+                }
+
+                // Build the classes map
+                if (getClassStatus()) {
+                    console.log('classes are defined. skipping API call.');
+                } else {
+                    // console.log('they are not defined');
+                    console.log('classes are not defined');
+                    classService.getClasses(function(response){
+                        console.log('Classes API Call.');
+                        // console.log(response.data);
+                        setClasses(response.data.classes);
+                        if (getClassStatus()) {
+                            console.log('classes are now defined.');
+                        }
+                        // console.log(sharedProperties.getClassStatus());
+                    }, function(err) {
+                        console.log(err.status);
+                    });
+                }
+
+                if (getBossStatus()) {
+                    console.log('they are defined');
+                } else {
+                    // console.log('they are not defined');
+                    console.log('Bosses are not defined');
+                    bossService.getBosses(function(response){
+                        console.log('Boss API Call.');
+                        // console.log(response.data);
+                        setBosses(response.data.bosses);
+                        if (getBossStatus()) {
+                            console.log('Bosses are now defined.');
+                        }
+                        // console.log(sharedProperties.getBossStatus());
+                    }, function(err) {
+                        console.log(err.status);
+                    });
+                }
+
+                if (getZoneStatus()) {
+                    console.log('zones are defined');
+                } else {
+                    // console.log('zones are not defined');
+                    console.log('Zones are not defined');
+                    zoneService.getZones(function(response){
+                        console.log('Get Zones API Call.');
+                        // console.log(response.data);
+                        setZones(response.data.zones);
+                        if (getZoneStatus()) {
+                            console.log('zones are now defined.');
+                        }
+                        // console.log(sharedProperties.getZoneStatus());
+                    }, function(err) {
+                        console.log(err.status);
+                    });
+                }
+
+
+
+            }
         };
     })
 
@@ -300,19 +416,19 @@ angular.module('wowApp')
     
     // Character Profile API Call - Charcater Profile
     this.getCharacter = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { cache: true,  params: {  locale: this.region, apikey: this.keyValue} } )
          .then(callback,err)
     };
 
     // Character Profile API Call - Charcater Feed
     this.getCharacterFeed = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "feed"} } )
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: this.region, apikey: this.keyValue, fields: "feed"} } )
             .then(callback,err)
     };
 
     // Character Profile API Call - Items
     this.getItem = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "items" } } )
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: this.region, apikey: this.keyValue, fields: "items" } } )
             .then(callback,err)
     };
 
@@ -325,7 +441,7 @@ angular.module('wowApp')
 
     // Achievement API Call - Achievement
     this.getAchievementDetails = function(achievementID, callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/achievement/' + achievementID + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue } } )
+        $http.jsonp('https://us.api.battle.net/wow/achievement/' + achievementID + '?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: this.region, apikey: this.keyValue } } )
             .then(callback,err)
     };
   
@@ -342,7 +458,7 @@ angular.module('wowApp')
 
     // DATA Resources - Charcater Achievements
     this.getAchievements = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
+        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
             .then(callback,err)
     };
 
@@ -350,60 +466,62 @@ angular.module('wowApp')
 
 
 .service('realmService', function($http, sharedProperties) {
+    console.log('here');
+
     
     this.keyValue = sharedProperties.getPrivateKey();
     this.region = sharedProperties.getRegion();
 
     this.getRealms = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: this.region, apikey: this.keyValue} } )
          .then(callback,err)
     };  
                 
 })
 
-.service('raceService', function($http, sharedProperties) {
+.service('raceService', function($http) {
 
-    this.keyValue = sharedProperties.getPrivateKey();
-    this.region = sharedProperties.getRegion();
+    // this.keyValue = sharedProperties.getPrivateKey();
+    // this.region = sharedProperties.getRegion();
 
     this.getRaces = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/data/character/races?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/data/character/races?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: self.region, apikey: self.privateKey} } )
             .then(callback,err)
     };
 
 })
 
-.service('classService', function($http, sharedProperties) {
+.service('classService', function($http) {
 
-    this.keyValue = sharedProperties.getPrivateKey();
-    this.region = sharedProperties.getRegion();
+    // this.keyValue = sharedProperties.getPrivateKey();
+    // this.region = sharedProperties.getRegion();
 
     this.getClasses = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/data/character/classes?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/data/character/classes?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: self.region, apikey: self.privateKey} } )
             .then(callback,err)
     };
 
 })
 
-.service('bossService', function($http, sharedProperties) {
+.service('bossService', function($http) {
 
-    this.keyValue = sharedProperties.getPrivateKey();
-    this.region = sharedProperties.getRegion();
+    // this.keyValue = sharedProperties.getPrivateKey();
+    // this.region = sharedProperties.getRegion();
 
     this.getBosses = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/boss/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/boss/?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: self.region, apikey: self.privateKey} } )
             .then(callback,err)
     };
 
 })
 
-.service('zoneService', function($http, sharedProperties) {
+.service('zoneService', function($http) {
 
-    this.keyValue = sharedProperties.getPrivateKey();
-    this.region = sharedProperties.getRegion();
+    // this.keyValue = sharedProperties.getPrivateKey();
+    // this.region = sharedProperties.getRegion();
 
     this.getZones = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/zone/?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/zone/?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: self.region, apikey: self.privateKey} } )
             .then(callback,err)
     };
 
@@ -416,7 +534,7 @@ angular.module('wowApp')
 
     // Item API Call - Item API
     this.getItem = function(itemId, callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  { params: {  apikey: this.keyValue} } )
+        $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  apikey: this.keyValue} } )
             .then(callback,err)
     };
 

@@ -7,84 +7,27 @@ angular.module('wowApp')
     })
 
 
-    .controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, itemService, realmService, raceService, classService, bossService, zoneService) {
+    .controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, itemService, realmService) {
 
 
-        this.keyValue = sharedProperties.getPrivateKey();
-        this.region = sharedProperties.getRegion();
-
-        // Build our sharedProperties information before the search.
-
-        // Check for raceMap
-        if (sharedProperties.getRaceStatus()) {
-            console.log('they are defined');
-        } else {
-            // console.log('they are not defined');
-            raceService.getRaces(function(response){
-                // console.log(response.data)
-                sharedProperties.setRaces(response.data.races);
-                // console.log(sharedProperties.getRaceStatus());
-            }, function(err) {
-                console.log(err.status);
-            });
-        }
-
-        // Check for classMap
-        if (sharedProperties.getClassStatus()) {
-            console.log('they are defined');
-        } else {
-            // console.log('they are not defined');
-            classService.getClasses(function(response){
-                // console.log(response.data);
-                sharedProperties.setClasses(response.data.classes);
-                // console.log(sharedProperties.getClassStatus());
-            }, function(err) {
-                console.log(err.status);
-            });
-        }
-
-        if (sharedProperties.getBossStatus()) {
-            console.log('they are defined');
-        } else {
-            // console.log('they are not defined');
-            bossService.getBosses(function(response){
-                // console.log(response.data);
-                sharedProperties.setBosses(response.data.bosses);
-                // console.log(sharedProperties.getBossStatus());
-            }, function(err) {
-                console.log(err.status);
-            });
-        }
-
-        if (sharedProperties.getZoneStatus()) {
-            console.log('zones are defined');
-        } else {
-            // console.log('zones are not defined');
-            zoneService.getZones(function(response){
-                // console.log(response.data);
-                sharedProperties.setZones(response.data.zones);
-                // console.log(sharedProperties.getZoneStatus());
-            }, function(err) {
-                console.log(err.status);
-            });
-        }
-
-
+        sharedProperties.init();
 
         $scope.selectedRealm = characterService.selectedRealm;
 
         // Populate the Realms drop down
         realmService.getRealms(function(response){
             // console.log(response.data);
+            console.log('Realms API Call.');
             $scope.realmsResult = response.data;
+            console.log()
         }, function(err) {
             console.log(err.status);
 
         });
-//    $scope.realmsResult = realmService.GetRealms(this.region, this.keyValue);
-
 
         $scope.$watch('name', function () {
+            // call factory from here
+
             characterService.name = $scope.name;
             itemService.name = $scope.name;
         });
@@ -108,8 +51,9 @@ angular.module('wowApp')
         $scope.keyValue = sharedProperties.getPrivateKey();
         $scope.region = sharedProperties.getRegion();
 //    $scope.realmsResult = realmService.GetRealms($scope.region, $scope.keyValue);
+        console.log('Realms API Call.');
         realmService.getRealms(function(response){
-            console.log(response.data);
+            // console.log(response.data);
             $scope.realmsResult = response.data;
         }, function(err) {
             console.log(err.status);
@@ -157,20 +101,23 @@ angular.module('wowApp')
             // console.log(typeof idx);
             // console.log(idx);
             if (typeof idx == 'number') {
-                "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
+                return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
             }
-                $scope.convertGold(idx.sellPrice);
-
-
+                return $scope.convertGold(idx.sellPrice);
         };
 
         $scope.calcStats =  function (idx) {
             // console.log(typeof idx);
             // console.log(idx);
             if (typeof idx == 'number') {
-                $scope.bonusstatsParse($scope.inventory[idx].bonusStats);
+                // console.log('here');
+                // console.log(idx);
+                // console.log($scope.inventory[idx].bonusStats);
+                return $scope.bonusstatsParse($scope.inventory[idx].bonusStats);
             }
-                $scope.bonusstatsParse(idx);
+                return $scope.bonusstatsParse(idx);
+
+
 
         };
 
@@ -217,6 +164,7 @@ angular.module('wowApp')
         // Character Feed call
         characterService.getCharacterFeed(function(response){
             // This is called once.  The entire response is then parsed $scope.characterResult
+            console.log('Character Feed API Call.');
             $scope.characterResult = response.data;
 
             if (!race) {
@@ -252,6 +200,10 @@ angular.module('wowApp')
                     // Perform a call to the item service, passing on the itemElement that was pushed into the item array.
                     // console.log('calling callItemService wrapper from within getCharacterFeed');
                     // We assign the return object to be called feedElement.
+                    console.log('Item Service API Call.');
+                    console.log('invoking call item service for the items in character Feed for item:');
+                    console.log(itemElement);
+
                     feedElement = callItemService(itemElement);
                     // console.log('returned to getCharacterFeed with the following object:');
                     // console.log(feedElement);
@@ -337,6 +289,7 @@ angular.module('wowApp')
         });
 
         callItemService = function(itemElement) {
+            console.log('Get Item API Wrapper call.');
 
             var item = {};
 
@@ -364,7 +317,9 @@ angular.module('wowApp')
         };
 
         // This is the API call for the character Items.  This call populates the inventory slots.
+
         characterService.getItem(function(response){
+            console.log('Get Item API Call.');
             // console.log('in getItem service');
             var slots = sharedProperties.getInventorySlots();
 
@@ -390,6 +345,9 @@ angular.module('wowApp')
                     var inventoryElement = {};
                     // console.log('calling callItemService from  within getItem');
                     // console.log(inventorySlot);
+                    console.log('invoking call item service for the items inventory slots on item:');
+                    console.log(inventorySlot);
+
                     inventoryElement = callItemService(inventorySlot);
 
 
@@ -403,6 +361,7 @@ angular.module('wowApp')
 
 
             $scope.inventory = self.inventoryArray.sort(function(a,b) {
+                console.log('sort inventory items');
                 return sharedProperties.getInventorySlot(a.slot) - sharedProperties.getInventorySlot(b.slot);
             });
 
