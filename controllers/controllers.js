@@ -9,27 +9,13 @@ angular.module('wowApp')
 
     .controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, itemService, realmService) {
         // Start the sharedProperties service.  This is going to check/populate races, classes, bosses, and zones.
-        $scope.region = sharedProperties.region;
-        $scope.privateKey = sharedProperties.privateKey;
+
 
         sharedProperties.init();
-        // Populate the Realms drop down
-        // realmService.getRealms(function(response){
-        //     // console.log(response.data);
-        //     console.log('Realms API Call.');
-        //     $scope.realmsResult = response.data;
-        //     console.log()
-        // }, function(err) {
-        //     console.log(err.status);
-        //
-        // });
-
 
         $scope.selectedRealm = characterService.selectedRealm;
 
         $scope.$watch('name', function () {
-            // call factory from here
-
             characterService.name = $scope.name;
             itemService.name = $scope.name;
         });
@@ -40,11 +26,9 @@ angular.module('wowApp')
         });
 
 
-        $scope.$on('update', function() {
+        $scope.$on('realms_update', function() {
             $scope.realmsResult = sharedProperties.getRealms();
         });
-
-        $scope.realmsResult = sharedProperties.realmMap;
 
         $scope.submit = function() {
             $location.path("/characterResult");
@@ -54,18 +38,16 @@ angular.module('wowApp')
 
 
     // This is the controller for the realms page
-    .controller('realmCtrl', function ($scope, sharedProperties, realmService) {
+    .controller('realmCtrl', function ($scope, sharedProperties) {
 
-        $scope.keyValue = sharedProperties.getPrivateKey();
-        $scope.region = sharedProperties.getRegion();
-//    $scope.realmsResult = realmService.GetRealms($scope.region, $scope.keyValue);
+
         console.log('Realms API Call.');
-        realmService.getRealms(function(response){
-            // console.log(response.data);
-            $scope.realmsResult = response.data;
-        }, function(err) {
-            console.log(err.status);
 
+        sharedProperties.initRealms();
+
+        $scope.$on('realms_update', function() {
+            console.log('here');
+            $scope.realmsResult = sharedProperties.getRealms();
         });
 
         $scope.sortType = 'name';
