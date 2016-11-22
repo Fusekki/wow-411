@@ -39,14 +39,12 @@ angular.module('wowApp')
             itemService.selectedRealm = $scope.selectedRealm;
         });
 
-        $scope.$watch('sharedProperties', function () {
 
-
-
-
+        $scope.$on('update', function() {
+            $scope.realmsResult = sharedProperties.getRealms();
         });
 
-
+        $scope.realmsResult = sharedProperties.realmMap;
 
         $scope.submit = function() {
             $location.path("/characterResult");
