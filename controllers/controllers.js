@@ -4,12 +4,26 @@ angular.module('wowApp')
 
     .controller('homeCtrl', function () {
 
+
+
     })
 
 
-    .controller('characterSearchCtrl', function ($scope, $location, sharedProperties, characterService, itemService, realmService) {
+    .controller('characterSearchCtrl', function ($scope, $location, $cacheFactory, sharedProperties, myCache, characterService, itemService, realmService) {
         // Start the sharedProperties service.  This is going to check/populate races, classes, bosses, and zones.
 
+
+
+        // myCache.put('key', 'value');
+        // console.log(myCache.get('key'));
+        // var cache = myCache;
+        //
+        // if (cache) { // If there’s something in the cache, use it!
+        //     $scope.variable = cache;
+        // } else { // Otherwise, let’s generate a new instance
+        //     cache.put(‘myData’, 'This is cached data!');
+        //     $scope.variable = myCache.get('myData');
+        // }
 
         sharedProperties.init();
 

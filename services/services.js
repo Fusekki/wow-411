@@ -2,6 +2,11 @@
 
 angular.module('wowApp')
 
+// Assigning the cachFactory to 'myCache'
+.factory('myCache', function($cacheFactory) {
+    return $cacheFactory('myCache');
+})
+
 .service('keys', function () {
     var self = this;
 
@@ -10,7 +15,11 @@ angular.module('wowApp')
 
 })
 
-.service('sharedProperties', function (keys, $rootScope, raceService, classService, bossService, zoneService, realmService) {
+.service('sharedProperties', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService) {
+    // Private Variables
+
+
+
     var self = this;
 
     var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
@@ -110,22 +119,26 @@ angular.module('wowApp')
     };
 
     var getBossStatus = function() {
-        return bossesDefined;
+        // return bossesDefined;
+        return myCache.get('bosses');
     };
     var getClassStatus = function() {
         return classesDefined;
     };
 
     var getRaceStatus = function() {
-        return racesDefined;
+        // return racesDefined;
+        return myCache.get('races');
     };
 
     var getZoneStatus = function() {
-        return zonesDefined;
+        return myCache.get('zones');
+        // return zonesDefined;
     };
 
     var getRealmStatus = function() {
-        return realmsDefined;
+        // return realmsDefined;
+        return myCache.get('realms');
     };
 
     var getRealms = function() {
@@ -134,33 +147,37 @@ angular.module('wowApp')
 
     var setClasses = function(items) {
         classMap = items;
-        classesDefined = true;
+        myCache.put("classes", items);
+        // classesDefined = true;
     };
 
     var setRaces = function(items) {
         raceMap = items;
-        racesDefined = true;
-        console.log(raceMap);
+        myCache.put("races", items);
+        // racesDefined = true;
     };
 
     var setBosses = function(items) {
         bossMap = items;
+        myCache.put("bosses", items);
         // console.log(bossMap);
-        bossesDefined = true;
+        // bossesDefined = true;
     };
     var setZones = function(items) {
         zoneMap = items;
+        myCache.put('zones', items);
         // console.log(zoneMap);
-        zonesDefined = true;
+        // zonesDefined = true;
     };
 
     var setRealms = function(items) {
         realmMap = items;
-        console.log(realmMap);
-        realmsDefined = true;
-        console.log(realmMap);
+        myCache.put("realms", items);
+        // console.log(realmMap);
+        // realmsDefined = true;
+        // console.log(realmMap);
         $rootScope.$broadcast('realms_update');
-        console.log('kust sent update');
+        console.log('just sent update');
     };
 
 
@@ -175,6 +192,11 @@ angular.module('wowApp')
                 setRealms(response.data);
                 if (getRealmStatus()) {
                     console.log('realms are now defined.');
+                    // console.log(myCache.info());
+                    console.log('realms are cached: ');
+                    console.log(myCache.get("realms"));
+
+                    // var cachedData = myCache.get('realms');
                 }
                 // $scope.realmsResult = response.data;
             }, function(err) {
@@ -184,6 +206,7 @@ angular.module('wowApp')
         }
 
     };
+    // Public variables
 
         return {
 
@@ -355,7 +378,8 @@ angular.module('wowApp')
                         setRaces(response.data.races);
                         if (getRaceStatus()) {
                             console.log('races are now defined.');
-                            console.log(raceMap);
+                            console.log('races are cached: ');
+                            console.log(myCache.get("races"));
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -392,6 +416,9 @@ angular.module('wowApp')
                         setBosses(response.data.bosses);
                         if (getBossStatus()) {
                             console.log('Bosses are now defined.');
+                            console.log('bosses are cached: ');
+                            console.log(myCache.get("bosses"));
+
                         }
                         // console.log(sharedProperties.getBossStatus());
                     }, function(err) {
@@ -416,8 +443,6 @@ angular.module('wowApp')
                         console.log(err.status);
                     });
                 }
-
-
 
             },
 
@@ -481,12 +506,12 @@ angular.module('wowApp')
 })
 
 
-.service('realmService', function($http, keys) {
+.service('realmService', function($http, keys, myCache) {
 
     this.getRealms = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: keys.region, apikey: keys.privateKey } } )
+        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { cache: myCache, params: {  locale: keys.region, apikey: keys.privateKey } } )
          .then(callback,err)
-    };  
+    };
                 
 })
 
