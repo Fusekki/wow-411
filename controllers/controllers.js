@@ -41,7 +41,7 @@ angular.module('wowApp')
 
 
         $scope.$on('realms_update', function() {
-            $scope.realmsResult = sharedProperties.getRealms();
+            $scope.realmsResult = sharedProperties.getCacheItems("realms");
         });
 
         $scope.submit = function() {
@@ -58,15 +58,17 @@ angular.module('wowApp')
         console.log('Realms API Call.');
 
         sharedProperties.initRealms();
+        $scope.realmsResult = sharedProperties.getCacheItems("realms");
 
         $scope.$on('realms_update', function() {
             console.log('here');
-            $scope.realmsResult = sharedProperties.getRealms();
+            $scope.realmsResult = sharedProperties.getCacheItems("realms");
         });
 
         $scope.sortType = 'name';
         $scope.sortReverse = false;
         $scope.searchRealms = '';
+        console.log($scope.searchRealms);
 
         $scope.sliceCountryFromTimezone = function(timezone) {
             var idx = timezone.indexOf("/");

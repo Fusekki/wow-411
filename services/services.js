@@ -118,80 +118,33 @@ angular.module('wowApp')
         'offHand' : 17
     };
 
-    var getBossStatus = function() {
-        // return bossesDefined;
-        return myCache.get('bosses');
-    };
-    var getClassStatus = function() {
-        return classesDefined;
+    var getCacheStatus = function (cache) {
+        return myCache.get(cache);
     };
 
-    var getRaceStatus = function() {
-        // return racesDefined;
-        return myCache.get('races');
-    };
-
-    var getZoneStatus = function() {
-        return myCache.get('zones');
-        // return zonesDefined;
-    };
-
-    var getRealmStatus = function() {
-        // return realmsDefined;
-        return myCache.get('realms');
-    };
-
-    var getRealms = function() {
-        return realmMap;
-    };
-
-    var setClasses = function(items) {
-        classMap = items;
-        myCache.put("classes", items);
-        // classesDefined = true;
-    };
-
-    var setRaces = function(items) {
-        raceMap = items;
-        myCache.put("races", items);
-        // racesDefined = true;
-    };
-
-    var setBosses = function(items) {
-        bossMap = items;
-        myCache.put("bosses", items);
-        // console.log(bossMap);
-        // bossesDefined = true;
-    };
-    var setZones = function(items) {
-        zoneMap = items;
-        myCache.put('zones', items);
-        // console.log(zoneMap);
-        // zonesDefined = true;
-    };
-
-    var setRealms = function(items) {
-        realmMap = items;
-        myCache.put("realms", items);
-        // console.log(realmMap);
-        // realmsDefined = true;
-        // console.log(realmMap);
-        $rootScope.$broadcast('realms_update');
-        console.log('just sent update');
+    var setCacheStatus = function (cache, items) {
+        myCache.put(cache, items);
     };
 
 
     var initRealms = function() {
-        if (getRealmStatus()) {
+        if (getCacheStatus("realms")) {
             console.log('realms are defined');
+            console.log(realmMap);
         } else {
             console.log('Realms are not defined');
             realmService.getRealms(function(response){
                 console.log('Get Realms API Call.');
                 // console.log(response.data);
-                setRealms(response.data);
-                if (getRealmStatus()) {
+                setCacheStatus("realms", response.data);
+                // Store in local array
+                realmMap = response.data;
+                // Send broadcast to controller
+                $rootScope.$broadcast('realms_update');
+                console.log('just sent update');
+                if (getCacheStatus("realms")) {
                     console.log('realms are now defined.');
+                    console.log(realmMap);
                     // console.log(myCache.info());
                     console.log('realms are cached: ');
                     console.log(myCache.get("realms"));
@@ -210,6 +163,10 @@ angular.module('wowApp')
 
         return {
 
+            getCacheItems: function(cacheName) {
+                return myCache.get(cacheName);
+            },
+
             getInventorySlots: function() {
                 return inventorySlots;
             },
@@ -218,9 +175,6 @@ angular.module('wowApp')
             },
             getPrivateKey: function() {
                 return self.privateKey;
-            },
-            getRealms: function() {
-                return realmMap;
             },
             getBoss: function(idx) {
                 // console.log(idx);
@@ -368,15 +322,18 @@ angular.module('wowApp')
                 initRealms();
 
                 // Build the races map
-                if (getRaceStatus()) {
+                if (getCacheStatus("races")) {
                     console.log('races are defined. skipping API call.');
                 } else {
                     console.log('races are not defined');
                    raceService.getRaces(function(response){
                         console.log('Race API Call.');
                         // console.log(response.data)
-                        setRaces(response.data.races);
-                        if (getRaceStatus()) {
+                        setCacheStatus("races", response.data.races);
+                        // Store data in local array.
+                        raceMap = response.data.races;
+                        setCacheStatus("races", response.data.races);
+                        if (getCacheStatus("races")) {
                             console.log('races are now defined.');
                             console.log('races are cached: ');
                             console.log(myCache.get("races"));
@@ -387,7 +344,7 @@ angular.module('wowApp')
                 }
 
                 // Build the classes map
-                if (getClassStatus()) {
+                if (getCacheStatus("classes")) {
                     console.log('classes are defined. skipping API call.');
                 } else {
                     // console.log('they are not defined');
@@ -395,17 +352,21 @@ angular.module('wowApp')
                     classService.getClasses(function(response){
                         console.log('Classes API Call.');
                         // console.log(response.data);
-                        setClasses(response.data.classes);
-                        if (getClassStatus()) {
+                        setCacheStatus("classes", response.data.classes);
+                        // setClasses(response.data.classes);
+                        // Store response in local array
+                        classNap = response.data.classes;
+                        if (getCacheStatus("classes")) {
                             console.log('classes are now defined.');
+                            console.log('classes are cached: ');
+                            console.log(myCache.get("classes"));
                         }
-                        // console.log(sharedProperties.getClassStatus());
                     }, function(err) {
                         console.log(err.status);
                     });
                 }
 
-                if (getBossStatus()) {
+                if (getCacheStatus("bosses")) {
                     console.log('they are defined');
                 } else {
                     // console.log('they are not defined');
@@ -413,8 +374,10 @@ angular.module('wowApp')
                     bossService.getBosses(function(response){
                         console.log('Boss API Call.');
                         // console.log(response.data);
-                        setBosses(response.data.bosses);
-                        if (getBossStatus()) {
+                        setCacheStatus("bosses", response.data.bosses);
+                        // Store in local array
+                        bossMap = response.data.bosses;
+                        if (getCacheStatus("bosses")) {
                             console.log('Bosses are now defined.');
                             console.log('bosses are cached: ');
                             console.log(myCache.get("bosses"));
@@ -426,7 +389,7 @@ angular.module('wowApp')
                     });
                 }
 
-                if (getZoneStatus()) {
+                if (getCacheStatus("zones")) {
                     console.log('zones are defined');
                 } else {
                     // console.log('zones are not defined');
@@ -434,9 +397,13 @@ angular.module('wowApp')
                     zoneService.getZones(function(response){
                         console.log('Get Zones API Call.');
                         // console.log(response.data);
-                        setZones(response.data.zones);
-                        if (getZoneStatus()) {
+                        setCacheStatus("zones", response.data.zones);
+                        // Store in local array
+                        zoneMap = response.data.zones;
+                        if (getCacheStatus("zones")) {
                             console.log('zones are now defined.');
+                            console.log('zones are cached: ');
+                            console.log(myCache.get("zones"));
                         }
                         // console.log(sharedProperties.getZoneStatus());
                     }, function(err) {
