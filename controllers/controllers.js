@@ -25,7 +25,13 @@ angular.module('wowApp')
         //     $scope.variable = myCache.get('myData');
         // }
 
+        // First check what API calls need to be performed and call them if cache items are not present.
         sharedProperties.init();
+
+        // Populate realmsResult with cached items (if there are any).
+        $scope.realmsResult = sharedProperties.getCacheItems("realms");
+
+
 
         $scope.selectedRealm = characterService.selectedRealm;
 
@@ -55,9 +61,10 @@ angular.module('wowApp')
     .controller('realmCtrl', function ($scope, sharedProperties) {
 
 
-        console.log('Realms API Call.');
-
+        // First check the Realms cache to see if the API needs to be called.
         sharedProperties.initRealms();
+
+        // Populate realmsResult with cached items (if there are any).
         $scope.realmsResult = sharedProperties.getCacheItems("realms");
 
         $scope.$on('realms_update', function() {
@@ -68,7 +75,8 @@ angular.module('wowApp')
         $scope.sortType = 'name';
         $scope.sortReverse = false;
         $scope.searchRealms = '';
-        console.log($scope.searchRealms);
+        // console.log($scope.searchRealms);
+
 
         $scope.sliceCountryFromTimezone = function(timezone) {
             var idx = timezone.indexOf("/");
@@ -100,6 +108,27 @@ angular.module('wowApp')
         $scope.showFeed = true;
 
         $scope.showInfobox = false;
+
+
+        // Populate realmsResult with cached items (if there are any).
+        $scope.realmsResult = sharedProperties.getCacheItems("realms");
+
+        // This sets the service to assign the variable .name to whatever the user enters into the htm entry.
+        $scope.$watch('name', function () {
+            characterService.name = $scope.name;
+        });
+
+        // This sets the service to assign the variable .selectedRealm to whatever the user enters into the htm entry.
+        $scope.$watch('selectedRealm', function () {
+            characterService.selectedRealm = $scope.selectedRealm;
+        });
+
+
+        $scope.$watch('showFeed', function() {
+            $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
+        });
+        console.log('test');
+        characterService.checkCharacterFeed();
 
         // These are used for the tooltips.  They work with $sce to sanitize the dynamic html so that it is rendered properly.
         // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
@@ -163,11 +192,16 @@ angular.module('wowApp')
             }
         };
 
-        $scope.$watch('showFeed', function() {
-            $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
-        });
+       // $scope.list = characterService.checkCharacterFeed();
 
-        // Character Feed call
+       // if (!characterService.checkCharacterFeed()) {
+       //     // Feed cache does not exist, need to call.
+       //     console.log('items are not cached. Calling API.');
+       // } else {
+       //     console.log('items are cached. Not calling API.');
+       // }
+
+        // Character Feed call.  This occurs when the controller is active.
         characterService.getCharacterFeed(function(response){
             // This is called once.  The entire response is then parsed $scope.characterResult
             console.log('Character Feed API Call.');
@@ -377,15 +411,8 @@ angular.module('wowApp')
 
         });
 
-
-
-
-        $scope.name = characterService.name;
-        $scope.selectedRealm = characterService.selectedRealm;
-
-        $scope.$watch('selectedRealm', function () {
-            characterService.selectedRealm = $scope.selectedRealm;
-        });
+        // $scope.name = characterService.name;
+        // $scope.selectedRealm = characterService.selectedRealm;
 
 
         $scope.classMap = function(idx) {
@@ -457,15 +484,6 @@ angular.module('wowApp')
             return sharedProperties.getGold(sellValue);
         };
 
-
-
-        $scope.$watch('name', function () {
-            characterService.name = $scope.name;
-        });
-
-        $scope.$watch('selectedRealm', function () {
-            characterService.selectedRealm = $scope.selectedRealm;
-        });
 
 
         $scope.convertToStandard = function(lastModified) {

@@ -422,12 +422,21 @@ angular.module('wowApp')
         };
     })
 
-.service('characterService', function($http, sharedProperties, keys) {
-    
+.service('characterService', function($http, myCache, sharedProperties, keys) {
 
-       
+    this.checkCharacterFeed = function() {
+            // return myCache.get(this.name + ':' + this.selectedRealm);
+        if (!myCache.get(this.name + ':' + this.selectedRealm)) {
+            console.log('cache empty.');
+        } else
+        {
+            console.log('cache not empty.');
 
-    
+        }
+    };
+
+
+
     // Character Profile API Call - Charcater Profile
     this.getCharacter = function(callback, err) {
         $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { cache: true,  params: {  locale: keys.region, apikey: keys.privateKey } } )
@@ -446,12 +455,6 @@ angular.module('wowApp')
             .then(callback,err)
     };
 
-
-    // // DATA Resources - Charcater Achievements
-    // this.getAchievements = function(callback, err) {
-    //     $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { params: {  locale: this.region, apikey: this.keyValue, fields: "achievements" } } )
-    //      .then(callback,err)
-    // };
 
     // Achievement API Call - Achievement
     this.getAchievementDetails = function(achievementID, callback, err) {
