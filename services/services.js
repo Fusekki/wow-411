@@ -15,7 +15,7 @@ angular.module('wowApp')
 
 })
 
-.service('sharedProperties', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService) {
+.service('characterFeed', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService) {
     // Private Variables
 
 
@@ -383,7 +383,7 @@ angular.module('wowApp')
                             console.log(myCache.get("bosses"));
 
                         }
-                        // console.log(sharedProperties.getBossStatus());
+                        // console.log(characterFeed.getBossStatus());
                     }, function(err) {
                         console.log(err.status);
                     });
@@ -405,7 +405,7 @@ angular.module('wowApp')
                             console.log('zones are cached: ');
                             console.log(myCache.get("zones"));
                         }
-                        // console.log(sharedProperties.getZoneStatus());
+                        // console.log(characterFeed.getZoneStatus());
                     }, function(err) {
                         console.log(err.status);
                     });
@@ -422,7 +422,7 @@ angular.module('wowApp')
         };
     })
 
-.service('characterService', function($http, myCache, sharedProperties, keys) {
+.service('characterService', function($http, myCache, characterFeed, keys) {
 
     this.checkCharacterFeed = function() {
             // return myCache.get(this.name + ':' + this.selectedRealm);
@@ -465,7 +465,7 @@ angular.module('wowApp')
                 
 })
 
-.service('dataService', function($http, keys, sharedProperties) {
+.service('dataService', function($http, keys, characterFeed) {
 
     // DATA Resources - Charcater Achievements
     this.getAchievements = function(callback, err) {
@@ -523,10 +523,10 @@ angular.module('wowApp')
 
 })
 
-.service('itemService', function($http, sharedProperties, keys) {
+.service('itemService', function($http, characterFeed, keys) {
 
-    this.keyValue = sharedProperties.getPrivateKey();
-    this.region = sharedProperties.getRegion();
+    this.keyValue = characterFeed.getPrivateKey();
+    this.region = characterFeed.getRegion();
 
     // Item API Call - Item API
     this.getItem = function(itemId, callback, err) {
