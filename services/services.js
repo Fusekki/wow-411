@@ -422,7 +422,7 @@ angular.module('wowApp')
         };
     })
 
-.service('characterService', function($http, myCache, characterFeed, keys) {
+.service('characterService', function($http, myCache, characterFeed, itemService, keys) {
 
     var self = this;
 
@@ -435,6 +435,7 @@ angular.module('wowApp')
     var count = 0;
     var idx = 0;
 
+
     self.list = {};
     self.feed = [];
     self.filteredFeed = [];
@@ -444,26 +445,30 @@ angular.module('wowApp')
     var backgroundImage;
     var raceBackgroundImage;
 
+    // console.log(self.name);
+
 
     self.checkCharacterFeed = function() {
             // return myCache.get(this.name + ':' + this.selectedRealm);
         if (!myCache.get(this.name + ':' + this.selectedRealm)) {
-            console.log('cache empty.');
-            self.getFeed();
-        } else
-        {
+            console.log('cache empty for character feed.');
+            return getFeed();
+        } else {
             console.log('cache not empty.');
+            return myCache.get(this.name + ':' + this.selectedRealm);
         }
     };
+
+
     // This is a decorator function for getCharacterFeed
-    self.getFeed = function() {
+    var getFeed = function() {
         self.getCharacterFeed(function(response){
             // This is called once.  The entire response is then parsed $scope.characterResult
             console.log('Character Feed API Call.');
             // $scope.characterResult = response.data;
             // store data to the cache first
-            myCache.put(this.name + ':' + this.selectedRealm, response.data);
-            console.log('Feed is now cached.');
+            // myCache.put(this.name + ':' + this.selectedRealm, response.data);
+            // console.log('Feed is now cached.');
             characterResult = response.data;
 
             if (!race) {
@@ -491,27 +496,23 @@ angular.module('wowApp')
                     itemElement['type'] = response.data.feed[x].type;
                     itemElement['timestamp'] = response.data.feed[x].timestamp;
                     itemElement['id'] = response.data.feed[x].itemId;
-                    // console.log(itemElement);
+                    console.log(itemElement);
                     items.push(itemElement);
                     count++;
                     // Perform a call to the item service, passing on the itemElement that was pushed into the item array.
                     // console.log('calling callItemService wrapper from within getCharacterFeed');
                     // We assign the return object to be called feedElement.
-                    console.log('Item Service API Call.');
 
-                    if (!myCache.get(itemElement)) {
-                        console.log('cache empty for item.');
-                        console.log(itemElement);
-                        self.getFeed();
-                    } else
-                    {
-                        console.log('cache not empty.');
-                    }
+                    // Let's check the cache on the item first.  We'll retrieve item from either cache or direct API call.
+                    feedElement = checkFeedCache(itemElement);
 
-                    console.log('invoking call item service for the items in character Feed for item:');
-                    console.log(itemElement);
+                    // console.log('Item Service API Call.');
+                    //
+                    // console.log('invoking call item service for the items in character Feed for item:');
+                    console.log('back from checking cache/API call for following item: ');
+                    console.log(feedElement);
 
-                    feedElement = callItemService(itemElement);
+                    // feedElement = callItemService(itemElement);
                     // console.log('returned to getCharacterFeed with the following object:');
                     // console.log(feedElement);
                     // The object has an undefined property for one of its keys at this time.
@@ -587,14 +588,154 @@ angular.module('wowApp')
                 }
             }
 
-            self.list = self.feed;
+            // self.list = self.feed;
+            myCache.put(this.name + ':' + this.selectedRealm, self.feed);
+            console.log('Feed is now cached.');
+
+            console.log(self.feed);
 
 
         }, function(err) {
             console.log(err.status);
 
         });
+        console.log('returning self.feed');
+        return self.feed;
     };
+
+
+
+    // This is the decorator call for the inventory slots.
+
+    var getItemWrapper = function() {
+
+        // This is the API call for the character Items.  This call populates the inventory slots.
+
+        self.getItem(function (response) {
+            console.log('Get Item API Call.');
+            // console.log('in getItem service');
+            var slots = characterFeed.getInventorySlots();
+
+            for (var x = 0; x < slots.length; x++) {
+                // Map the items here before you push them.
+
+                var inventorySlot = {};
+                // console.log('creating inventorySlot');
+
+                inventorySlot['name'] = slots[x];
+                inventorySlot['value'] = response.data.items[slots[x]];
+                // console.log(response.data.items[slots[x]]);
+                inventorySlot['slot'] = characterFeed.getInventorySlot(slots[x]);
+                inventorySlot['bonusStats'] = [];
+                inventorySlot['id'] = response.data.items[slots[x]].id;
+                // console.log('adding inventorySlot item to inventorySlots array.');
+                // console.log(inventorySlot);
+                // console.log(inventorySlot.value.armor);
+
+                self.inventorySlots.push(inventorySlot);
+
+                if (slots[x] in response.data.items) {
+                    var inventoryElement = {};
+                    // console.log('calling callItemService from  within getItem');
+                    // console.log(inventorySlot);
+                    console.log('invoking call item service for the items inventory slots on item:');
+                    console.log(inventorySlot);
+
+                    inventoryElement = callItemService(inventorySlot);
+
+
+                    inventoryElement['slot'] = slots[x];
+                    // console.log(inventoryElement);
+                    self.inventoryArray.push(inventoryElement);
+                } else {
+                    console.log('key does not exist. Moving on to next item.');
+                }
+            }
+
+
+            self.inventory = self.inventoryArray.sort(function (a, b) {
+                console.log('sort inventory items');
+                return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
+            });
+
+
+        }, function (err) {
+            console.log(err.status);
+
+        })
+    };
+
+
+
+    var callItemService = function (itemElement) {
+
+        // Function to check cache first.
+        console.log(itemElement);
+
+
+        console.log('Get Item API Wrapper call.');
+
+        var item = {};
+
+        itemService.getItem(itemElement.id, function (response) {
+            item['name'] = response.data.name;
+            item['icon'] = response.data.icon;
+            item['armor'] = response.data.armor;
+            item['bonusStats'] = response.data.bonusStats;
+            item['buyPrice'] = response.data.buyPrice;
+            item['requiredLevel'] = response.data.requiredLevel;
+            if (response.data.socketInfo) {
+                item['socketInfo'] = response.data.socketInfo;
+            }
+            item['upgradable'] = response.data.upgradable;
+            item['itemLevel'] = response.data.itemLevel;
+            item['itemBind'] = response.data.itemBind;
+            item['itemClass'] = response.data.itemClass;
+            item['maxDurability'] = response.data.maxDurability;
+            item['sellPrice'] = response.data.sellPrice;
+            item['quality'] = response.data.quality;
+        }, function (err) {
+            console.log(err.status);
+        });
+        return item;
+    };
+
+    var checkFeedCache = function(item) {
+
+        if (!myCache.get(item.timestamp + ':' + item.id)) {
+            console.log('cache empty for item.');
+            // return getItem(item.type + ':' + item.id);
+            var result = callItemService(item);
+            console.log('placing item in cache.');
+            myCache.put(item.timestamp + ':' + item.id, result);
+            return result;
+
+        } else {
+            console.log('cache has item. Retrieving item from cache.');
+            return myCache.get(item.timestamp + ':' + item.id);
+        }
+
+    };
+
+    var checkItemCache = function(item) {
+
+        if (!myCache.get(item.type + ':' + item.id)) {
+            console.log('cache empty for item.');
+            // return getItem(item.type + ':' + item.id);
+            var result = callItemService(item);
+            console.log('placing item in cache.');
+            myCache.put(item.type + ':' + item.id, result);
+            return result;
+
+        } else
+        {
+            console.log('cache not empty.');
+            return myCache.get(item.type + ':' + item.id);
+        }
+
+    };
+
+
 
 
     self.characterImage = function(path) {

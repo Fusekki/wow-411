@@ -187,138 +187,87 @@ angular.module('wowApp')
             }
         };
 
-       // $scope.list = characterService.checkCharacterFeed();
-
-       // if (!characterService.checkCharacterFeed()) {
-       //     // Feed cache does not exist, need to call.
-       //     console.log('items are not cached. Calling API.');
-       // } else {
-       //     console.log('items are cached. Not calling API.');
-       // }
-
         // Character Feed call.  This occurs when the controller is active.
         // characterService.getCharacterFeed();
-        characterService.checkCharacterFeed();
+        $scope.list = characterService.checkCharacterFeed();
 
-        // characterService.getCharacterFeed(function(response){
-        //     // This is called once.  The entire response is then parsed $scope.characterResult
-        //     console.log('Character Feed API Call.');
-        //     $scope.characterResult = response.data;
+
+        // callItemService = function(itemElement) {
+        //     console.log('Get Item API Wrapper call.');
         //
-        //     if (!race) {
-        //         race = response.data.race;
-        //     }
-        //     thumbnail = response.data.thumbnail;
+        //     var item = {};
         //
+        //     itemService.getItem(itemElement.id, function (response) {
+        //         item['name'] = response.data.name;
+        //         item['icon'] = response.data.icon;
+        //         item['armor'] = response.data.armor;
+        //         item['bonusStats'] = response.data.bonusStats;
+        //         item['buyPrice'] = response.data.buyPrice;
+        //         item['requiredLevel'] = response.data.requiredLevel;
+        //         if (response.data.socketInfo) {
+        //             item['socketInfo'] = response.data.socketInfo;
+        //         }
+        //         item['upgradable'] = response.data.upgradable;
+        //         item['itemLevel'] = response.data.itemLevel;
+        //         item['itemBind'] = response.data.itemBind;
+        //         item['itemClass'] = response.data.itemClass;
+        //         item['maxDurability'] = response.data.maxDurability;
+        //         item['sellPrice'] = response.data.sellPrice;
+        //         item['quality'] = response.data.quality;
+        //     }, function (err) {
+        //         console.log(err.status);
+        //     });
+        //     return item;
+        // };
+
+        // This is the API call for the character Items.  This call populates the inventory slots.
+
+        // characterService.getItem(function(response){
+        //     console.log('Get Item API Call.');
+        //     // console.log('in getItem service');
+        //     var slots = characterFeed.getInventorySlots();
         //
+        //     for (var x = 0; x < slots.length; x++) {
+        //         // Map the items here before you push them.
         //
-        //     // Set the background images
-        //     $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + $scope.characterImage(thumbnail)+ ") no-repeat 182px 115px");
+        //         var inventorySlot = {};
+        //         // console.log('creating inventorySlot');
         //
-        //     // Set background image for profile based on race
-        //     $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
+        //         inventorySlot['name'] = slots[x];
+        //         inventorySlot['value'] = response.data.items[slots[x]];
+        //         // console.log(response.data.items[slots[x]]);
+        //         inventorySlot['slot'] = characterFeed.getInventorySlot(slots[x]);
+        //         inventorySlot['bonusStats'] =  [];
+        //         inventorySlot['id'] = response.data.items[slots[x]].id;
+        //         // console.log('adding inventorySlot item to inventorySlots array.');
+        //         // console.log(inventorySlot);
+        //         // console.log(inventorySlot.value.armor);
         //
-        //     // Process through items in reponse and determine the category each falls under.
-        //     // console.log(response);
-        //     for (var x = 0; x <= response.data.feed.length - 1; x++) {
-        //         var feedElement = {};
-        //         // If item is loot, modify some of the properties and add it to the end of the items array.  The item array is a temporary array to store loot items while asynch calls
-        //         // are occurring.
-        //         if (response.data.feed[x].type === 'LOOT') {
-        //             // First, we store each object of type loot into a seperate array called items.
-        //             var itemElement = {};
-        //             // Record the original position of the item from the AJAX call.
-        //             itemElement['index'] = x;
-        //             itemElement['type'] = response.data.feed[x].type;
-        //             itemElement['timestamp'] = response.data.feed[x].timestamp;
-        //             itemElement['id'] = response.data.feed[x].itemId;
-        //              // console.log(itemElement);
-        //             items.push(itemElement);
-        //             count++;
-        //             // Perform a call to the item service, passing on the itemElement that was pushed into the item array.
-        //             // console.log('calling callItemService wrapper from within getCharacterFeed');
-        //             // We assign the return object to be called feedElement.
-        //             console.log('Item Service API Call.');
-        //             console.log('invoking call item service for the items in character Feed for item:');
-        //             console.log(itemElement);
+        //         self.inventorySlots.push(inventorySlot);
         //
-        //             feedElement = callItemService(itemElement);
-        //             // console.log('returned to getCharacterFeed with the following object:');
-        //             // console.log(feedElement);
-        //             // The object has an undefined property for one of its keys at this time.
-        //             // console.log('feedElement.armor = ' + feedElement.armor);
+        //         if (slots[x] in response.data.items) {
+        //             var inventoryElement = {};
+        //             // console.log('calling callItemService from  within getItem');
+        //             // console.log(inventorySlot);
+        //             console.log('invoking call item service for the items inventory slots on item:');
+        //             console.log(inventorySlot);
         //
-        //             // We add some properties from the original item object into this new object.
-        //             feedElement['type'] = itemElement['type'];
-        //             feedElement['timestamp'] = itemElement['timestamp'];
-        //             // Insert the feedElement into the feed array at the position of the original AJAX call index.
-        //             // console.log('This is the final object before splicing into the feed array');
-        //             // console.log(feedElement);
-        //             // console.log('feedElement.armor = ' + feedElement.armor);
-        //             var i = items[idx].index - 1;
-        //             // console.log('The item is being spliced into index[' + i + ']');
-        //             self.feed.splice(items[idx].index, 0, feedElement);
-        //             // console.log('current self.feed is:');
-        //             // console.log(self.feed);
-        //             // console.log(self.feed);
-        //
-        //             // console.log(self.feed[i - 1]);
-        //             // console.log(self.feed[i - 1].quality);
+        //             inventoryElement = callItemService(inventorySlot);
         //
         //
-        //             idx++;
-        //         } else if (response.data.feed[x].type === 'BOSSKILL') {
-        //             // console.log('in boss');
-        //             feedElement['timestamp'] = response.data.feed[x].timestamp;
-        //             feedElement['type'] = response.data.feed[x].type;
-        //             // do something else
-        //             feedElement['name'] = response.data.feed[x].name;
-        //             feedElement['icon'] = response.data.feed[x].achievement.icon;
-        //             feedElement['title'] = response.data.feed[x].achievement.title;
-        //             feedElement['quantity'] = response.data.feed[x].quantity;
-        //             feedElement['id'] = response.data.feed[x].criteria.id;
-        //             if (response.data.feed[x].name) {
-        //                 feedElement['tooltip'] = "BOSS-YES";
-        //             } else {
-        //                 feedElement['tooltip'] = "BOSS-NO";
-        //             }
-        //             // console.log('BOSSKILL object:');
-        //             // console.log(feedElement);
-        //             // console.log('object is a BOSSKILL. It is being added to position : ' + self.feed.length)
-        //
-        //
-        //             self.feed.push(feedElement);
-        //             // console.log('current self.feed is:');
-        //             // console.log(self.feed);
-        //
-        //             // console.log(feedElement);
-        //         } else if (response.data.feed[x].type === 'ACHIEVEMENT') {
-        //             // console.log('in achievement');
-        //             // console.log(feedElement);
-        //             feedElement['timestamp'] = response.data.feed[x].timestamp;
-        //             feedElement['type'] = response.data.feed[x].type;
-        //             // console.log(response.data.feed[x].type);
-        //             // console.log(feedElement);
-        //             feedElement['title'] = response.data.feed[x].achievement.title;
-        //
-        //             // console.log(feedElement);
-        //             feedElement['description'] = response.data.feed[x].achievement.description;
-        //
-        //             // console.log(feedElement);
-        //             feedElement['icon'] = response.data.feed[x].achievement.icon;
-        //             feedElement['tooltip'] = "ACHIEVEMENT";
-        //             // console.log(feedElement);
-        //             // console.log('ACHIEVEMENT object:');
-        //             // console.log(feedElement);
-        //             // console.log('object is an ACHIEVEMENT. It is being added to position : ' + self.feed.length)
-        //
-        //             self.feed.push(feedElement);
-        //             // console.log('current self.feed is:');
-        //             // console.log(self.feed);
+        //             inventoryElement['slot'] = slots[x];
+        //             // console.log(inventoryElement);
+        //             self.inventoryArray.push(inventoryElement);
+        //         } else {
+        //             console.log('key does not exist. Moving on to next item.');
         //         }
         //     }
         //
-        //     $scope.list = self.feed;
+        //
+        //     $scope.inventory = self.inventoryArray.sort(function(a,b) {
+        //         console.log('sort inventory items');
+        //         return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
+        //     });
         //
         //
         // }, function(err) {
@@ -326,91 +275,8 @@ angular.module('wowApp')
         //
         // });
 
-        callItemService = function(itemElement) {
-            console.log('Get Item API Wrapper call.');
-
-            var item = {};
-
-            itemService.getItem(itemElement.id, function (response) {
-                item['name'] = response.data.name;
-                item['icon'] = response.data.icon;
-                item['armor'] = response.data.armor;
-                item['bonusStats'] = response.data.bonusStats;
-                item['buyPrice'] = response.data.buyPrice;
-                item['requiredLevel'] = response.data.requiredLevel;
-                if (response.data.socketInfo) {
-                    item['socketInfo'] = response.data.socketInfo;
-                }
-                item['upgradable'] = response.data.upgradable;
-                item['itemLevel'] = response.data.itemLevel;
-                item['itemBind'] = response.data.itemBind;
-                item['itemClass'] = response.data.itemClass;
-                item['maxDurability'] = response.data.maxDurability;
-                item['sellPrice'] = response.data.sellPrice;
-                item['quality'] = response.data.quality;
-            }, function (err) {
-                console.log(err.status);
-            });
-            return item;
-        };
-
-        // This is the API call for the character Items.  This call populates the inventory slots.
-
-        characterService.getItem(function(response){
-            console.log('Get Item API Call.');
-            // console.log('in getItem service');
-            var slots = characterFeed.getInventorySlots();
-
-            for (var x = 0; x < slots.length; x++) {
-                // Map the items here before you push them.
-
-                var inventorySlot = {};
-                // console.log('creating inventorySlot');
-
-                inventorySlot['name'] = slots[x];
-                inventorySlot['value'] = response.data.items[slots[x]];
-                // console.log(response.data.items[slots[x]]);
-                inventorySlot['slot'] = characterFeed.getInventorySlot(slots[x]);
-                inventorySlot['bonusStats'] =  [];
-                inventorySlot['id'] = response.data.items[slots[x]].id;
-                // console.log('adding inventorySlot item to inventorySlots array.');
-                // console.log(inventorySlot);
-                // console.log(inventorySlot.value.armor);
-
-                self.inventorySlots.push(inventorySlot);
-
-                if (slots[x] in response.data.items) {
-                    var inventoryElement = {};
-                    // console.log('calling callItemService from  within getItem');
-                    // console.log(inventorySlot);
-                    console.log('invoking call item service for the items inventory slots on item:');
-                    console.log(inventorySlot);
-
-                    inventoryElement = callItemService(inventorySlot);
-
-
-                    inventoryElement['slot'] = slots[x];
-                    // console.log(inventoryElement);
-                    self.inventoryArray.push(inventoryElement);
-                } else {
-                    console.log('key does not exist. Moving on to next item.');
-                }
-            }
-
-
-            $scope.inventory = self.inventoryArray.sort(function(a,b) {
-                console.log('sort inventory items');
-                return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
-            });
-
-
-        }, function(err) {
-            console.log(err.status);
-
-        });
-
-        // $scope.name = characterService.name;
-        // $scope.selectedRealm = characterService.selectedRealm;
+        $scope.name = characterService.name;
+        $scope.selectedRealm = characterService.selectedRealm;
 
 
         $scope.classMap = function(idx) {
