@@ -3,163 +3,163 @@
 angular.module('wowApp')
 
 // Assigning the cachFactory to 'myCache'
-.factory('myCache', function($cacheFactory) {
-    return $cacheFactory('myCache');
-})
+    .factory('myCache', function($cacheFactory) {
+        return $cacheFactory('myCache');
+    })
 
-.service('keys', function () {
-    var self = this;
+    .service('keys', function () {
+        var self = this;
 
-    self.region = "en_US";
-    self.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
+        self.region = "en_US";
+        self.privateKey = "jnfn9kb9a7pwgu327xq4exbedxjnzyxr";
 
-})
+    })
 
-.service('characterFeed', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService) {
-    // Private Variables
-
-
-
-    var self = this;
-
-    var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
-    var raceMap, classMap, bossMap, zoneMap = [], inventoryMap, realmMap;
-
-    var genderMap = ["Male", "Female"];
-
-    var factionMap = ["Alliance", "Horde"];
-    var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
-    var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
-    var itemBindMap =["Tradeable", "Binds when picked up"];
-    var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'trinket1', 'trinket2', 'waist', 'wrist'];
-    var itemStatMap = {
-        '1' : '+%s Health',
-        '2' : '+%s Mana',
-        '3' : '+%s Agility',
-        '4' : '+%s Strength',
-        '5' : '+%s Intellect',
-        '6' : '+%s Spirit',
-        '7' : '+%s Stamina',
-        '12' : 'Equip: Increases defense rating by %s.',
-        '13' : 'Equip: Increases your dodge rating by %s.',
-        '14' : 'Equip: Increases your parry rating by %s.',
-        '15' : 'Equip: Increases your shield block rating by %s.',
-        '16' : 'Equip: Improves melee hit rating by %s.',
-        '17' : 'Equip: Improves ranged hit rating by %s.',
-        '18' : 'Equip: Improves spell hit rating by %s.',
-        '19' : 'Equip: Improves melee critical strike rating by %s.',
-        '20' : 'Equip: Improves ranged critical strike rating by %s.',
-        '21' : 'Equip: Improves spell critical strike rating by %s.',
-        '22' : 'Equip: Improves melee hit avoidance rating by %s.',
-        '23' : 'Equip: Improves ranged hit avoidance rating by %s.',
-        '24' : 'Equip: Improves spell hit avoidance rating by %s.',
-        '25' : 'Equip: Improves melee critical avoidance rating by %s.',
-        '26' : 'Equip: Improves ranged critical avoidance rating by %s.',
-        '27' : 'Equip: Improves spell critical avoidance rating by %s.',
-        '28' : 'Equip: Improves melee haste rating by %s.',
-        '29' : 'Equip: Improves ranged haste rating by %s.',
-        '30' : 'Equip: Improves spell haste rating by %s.',
-        '31' : 'Equip: Increases your hit rating by %s.',
-        '32' : '+%s Critical Strike',
-        '33' : 'Equip: Improves hit avoidance rating by %s.',
-        '34' : 'Equip: Improves critical avoidance rating by %s.',
-        '35' : 'Equip: Increases your resilience rating by %s.',
-        '36' : '+%s Haste',
-        '37' : 'Equip: Increases your expertise rating by %s.',
-        '38' : 'Equip: Increases attack power by %s.',
-        '39' : 'Equip: Increases ranged attack power by %s.',
-        '40' : 'Equip: Increases attack power by %s in Cat, Bear, Dire Bear, and Moonkin forms only.',
-        '41' : 'Equip: Increases damage done by magical spells and effects by up to %s.',
-        '42' : 'Equip: Increases healing done by magical spells and effects by up to %s.',
-        '43' : 'Equip: Restores %s mana per 5 sec.',
-        '44' : 'Equip: Increases your armor penetration rating by %s.',
-        '45' : 'Equip: Increases spell power by %s.',
-        '46' : 'Equip: Restores %s health per 5 sec.',
-        '47' : 'Equip: Increases spell penetration by %s.',
-        '48' : 'Equip: Increases the block value of your shield by %s.',
-        '49' : '+%s Mastery',
-        '50' : "Equip: Increases your armor rating by %s.",
-        '51' : "Equip: Increases your fire resistance by %s.",
-        '52' : "Equip: Increases your frost resistance by %s.",
-        '54' : "Equip: Increases your shadow resistance by %s.",
-        '55' : "Equip: Increases your nature resistance by %s.",
-        '56' : "Equip: Increases your arcane resistance by %s.",
-        '57' : "Equip: Increases your pvp power by %s.",
-        '60' : "Equip: Increase your readiness by %s.",
-        '61' : "Equip: Increase your speed by %s.",
-        "62" : "Equip: Increase your leech by %s.",
-        "63" : "Equip: Increase your avoidence by %s.",
-        "64" : "Equip: Increase your indestructible by %s",
-        "65" : "Equip: Increase your WOD_5 by %s.",
-        '59' : "Equip: Increase your multistrike by %s.",
-        "71" : "Equip: Increase your strength, agility or intellect by %s.",
-        "72" : "Equip: Increase your strength or agility by %s.",
-        '73' : "Equip: Increase your agility or intellect by %s.",
-        "74" : "+ %s Strength or Intellect"
-    };
-    var inventorySlotMap = {
-        'head' : 0,
-        'neck' : 1,
-        'shoulder' : 2,
-        'back' : 3,
-        'chest': 4,
-        'shirt' : 5,
-        'tabard' : 6,
-        'wrist' : 7,
-        'hands' : 8,
-        'waist' : 9,
-        'legs' : 10,
-        'feet' : 11,
-        'finger1' : 12,
-        'finger2' : 13,
-        'trinket1' : 14,
-        'trinket2' : 15,
-        'mainHand' : 16,
-        'offHand' : 17
-    };
-
-    var getCacheStatus = function (cache) {
-        return myCache.get(cache);
-    };
-
-    var setCacheStatus = function (cache, items) {
-        myCache.put(cache, items);
-    };
+    .service('characterFeed', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService) {
+        // Private Variables
 
 
-    var initRealms = function() {
-        if (getCacheStatus("realms")) {
-            console.log('realms are defined');
-            console.log(realmMap);
-        } else {
-            console.log('Realms are not defined');
-            realmService.getRealms(function(response){
-                console.log('Get Realms API Call.');
-                // console.log(response.data);
-                setCacheStatus("realms", response.data);
-                // Store in local array
-                realmMap = response.data;
-                // Send broadcast to controller
-                $rootScope.$broadcast('realms_update');
-                console.log('just sent update');
-                if (getCacheStatus("realms")) {
-                    console.log('realms are now defined.');
-                    console.log(realmMap);
-                    // console.log(myCache.info());
-                    console.log('realms are cached: ');
-                    console.log(myCache.get("realms"));
 
-                    // var cachedData = myCache.get('realms');
-                }
-                // $scope.realmsResult = response.data;
-            }, function(err) {
-                console.log(err.status);
+        var self = this;
 
-            });
-        }
+        var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
+        var raceMap, classMap, bossMap, zoneMap = [], inventoryMap, realmMap;
 
-    };
-    // Public variables
+        var genderMap = ["Male", "Female"];
+
+        var factionMap = ["Alliance", "Horde"];
+        var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
+        var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
+        var itemBindMap =["Tradeable", "Binds when picked up"];
+        var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'trinket1', 'trinket2', 'waist', 'wrist'];
+        var itemStatMap = {
+            '1' : '+%s Health',
+            '2' : '+%s Mana',
+            '3' : '+%s Agility',
+            '4' : '+%s Strength',
+            '5' : '+%s Intellect',
+            '6' : '+%s Spirit',
+            '7' : '+%s Stamina',
+            '12' : 'Equip: Increases defense rating by %s.',
+            '13' : 'Equip: Increases your dodge rating by %s.',
+            '14' : 'Equip: Increases your parry rating by %s.',
+            '15' : 'Equip: Increases your shield block rating by %s.',
+            '16' : 'Equip: Improves melee hit rating by %s.',
+            '17' : 'Equip: Improves ranged hit rating by %s.',
+            '18' : 'Equip: Improves spell hit rating by %s.',
+            '19' : 'Equip: Improves melee critical strike rating by %s.',
+            '20' : 'Equip: Improves ranged critical strike rating by %s.',
+            '21' : 'Equip: Improves spell critical strike rating by %s.',
+            '22' : 'Equip: Improves melee hit avoidance rating by %s.',
+            '23' : 'Equip: Improves ranged hit avoidance rating by %s.',
+            '24' : 'Equip: Improves spell hit avoidance rating by %s.',
+            '25' : 'Equip: Improves melee critical avoidance rating by %s.',
+            '26' : 'Equip: Improves ranged critical avoidance rating by %s.',
+            '27' : 'Equip: Improves spell critical avoidance rating by %s.',
+            '28' : 'Equip: Improves melee haste rating by %s.',
+            '29' : 'Equip: Improves ranged haste rating by %s.',
+            '30' : 'Equip: Improves spell haste rating by %s.',
+            '31' : 'Equip: Increases your hit rating by %s.',
+            '32' : '+%s Critical Strike',
+            '33' : 'Equip: Improves hit avoidance rating by %s.',
+            '34' : 'Equip: Improves critical avoidance rating by %s.',
+            '35' : 'Equip: Increases your resilience rating by %s.',
+            '36' : '+%s Haste',
+            '37' : 'Equip: Increases your expertise rating by %s.',
+            '38' : 'Equip: Increases attack power by %s.',
+            '39' : 'Equip: Increases ranged attack power by %s.',
+            '40' : 'Equip: Increases attack power by %s in Cat, Bear, Dire Bear, and Moonkin forms only.',
+            '41' : 'Equip: Increases damage done by magical spells and effects by up to %s.',
+            '42' : 'Equip: Increases healing done by magical spells and effects by up to %s.',
+            '43' : 'Equip: Restores %s mana per 5 sec.',
+            '44' : 'Equip: Increases your armor penetration rating by %s.',
+            '45' : 'Equip: Increases spell power by %s.',
+            '46' : 'Equip: Restores %s health per 5 sec.',
+            '47' : 'Equip: Increases spell penetration by %s.',
+            '48' : 'Equip: Increases the block value of your shield by %s.',
+            '49' : '+%s Mastery',
+            '50' : "Equip: Increases your armor rating by %s.",
+            '51' : "Equip: Increases your fire resistance by %s.",
+            '52' : "Equip: Increases your frost resistance by %s.",
+            '54' : "Equip: Increases your shadow resistance by %s.",
+            '55' : "Equip: Increases your nature resistance by %s.",
+            '56' : "Equip: Increases your arcane resistance by %s.",
+            '57' : "Equip: Increases your pvp power by %s.",
+            '60' : "Equip: Increase your readiness by %s.",
+            '61' : "Equip: Increase your speed by %s.",
+            "62" : "Equip: Increase your leech by %s.",
+            "63" : "Equip: Increase your avoidence by %s.",
+            "64" : "Equip: Increase your indestructible by %s",
+            "65" : "Equip: Increase your WOD_5 by %s.",
+            '59' : "Equip: Increase your multistrike by %s.",
+            "71" : "Equip: Increase your strength, agility or intellect by %s.",
+            "72" : "Equip: Increase your strength or agility by %s.",
+            '73' : "Equip: Increase your agility or intellect by %s.",
+            "74" : "+ %s Strength or Intellect"
+        };
+        var inventorySlotMap = {
+            'head' : 0,
+            'neck' : 1,
+            'shoulder' : 2,
+            'back' : 3,
+            'chest': 4,
+            'shirt' : 5,
+            'tabard' : 6,
+            'wrist' : 7,
+            'hands' : 8,
+            'waist' : 9,
+            'legs' : 10,
+            'feet' : 11,
+            'finger1' : 12,
+            'finger2' : 13,
+            'trinket1' : 14,
+            'trinket2' : 15,
+            'mainHand' : 16,
+            'offHand' : 17
+        };
+
+        var getCacheStatus = function (cache) {
+            return myCache.get(cache);
+        };
+
+        var setCacheStatus = function (cache, items) {
+            myCache.put(cache, items);
+        };
+
+
+        var initRealms = function() {
+            if (getCacheStatus("realms")) {
+                console.log('realms are defined');
+                console.log(realmMap);
+            } else {
+                console.log('Realms are not defined');
+                realmService.getRealms(function(response){
+                    console.log('Get Realms API Call.');
+                    // console.log(response.data);
+                    setCacheStatus("realms", response.data);
+                    // Store in local array
+                    realmMap = response.data;
+                    // Send broadcast to controller
+                    $rootScope.$broadcast('realms_update');
+                    console.log('just sent update');
+                    if (getCacheStatus("realms")) {
+                        console.log('realms are now defined.');
+                        console.log(realmMap);
+                        // console.log(myCache.info());
+                        console.log('realms are cached: ');
+                        console.log(myCache.get("realms"));
+
+                        // var cachedData = myCache.get('realms');
+                    }
+                    // $scope.realmsResult = response.data;
+                }, function(err) {
+                    console.log(err.status);
+
+                });
+            }
+
+        };
+        // Public variables
 
         return {
 
@@ -179,7 +179,7 @@ angular.module('wowApp')
             getBoss: function(idx) {
                 // console.log(idx);
                 for(var key in bossMap) {
-                     // console.log(bossMap[key]);
+                    // console.log(bossMap[key]);
                     if(bossMap[key].name === idx) {
                         // console.log(bossMap[key]);
                         return bossMap[key];
@@ -326,7 +326,7 @@ angular.module('wowApp')
                     console.log('races are defined. skipping API call.');
                 } else {
                     console.log('races are not defined');
-                   raceService.getRaces(function(response){
+                    raceService.getRaces(function(response){
                         console.log('Race API Call.');
                         // console.log(response.data)
                         setCacheStatus("races", response.data.races);
@@ -422,80 +422,78 @@ angular.module('wowApp')
         };
     })
 
-.service('characterService', function($http, myCache, characterFeed, itemService, keys) {
+    .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, keys) {
 
-    var self = this;
+        var self = this;
 
-    var race;
-    var thumbnail;
+        var race;
+        var thumbnail;
 
-    var characterResult;
+        var characterResult;
 
-    var items = [];
-    var count = 0;
-    var idx = 0;
-
-
-    self.list = {};
-    self.feed = [];
-    self.filteredFeed = [];
-    self.inventorySlots = [];
-    self.inventoryArray = [];
-
-    var backgroundImage;
-    var raceBackgroundImage;
-
-    // console.log(self.name);
+        var items = [];
+        var count = 0;
+        var idx = 0;
 
 
-    self.checkCharacterFeed = function() {
+        self.list = {};
+        self.feed = [];
+        self.filteredFeed = [];
+        self.inventorySlots = [];
+        self.inventoryArray = [];
+
+        console.log(self.name);
+
+
+        var backgroundImage;
+        var raceBackgroundImage;
+
+        var getCacheStatus = function (cache) {
+            return myCache.get(cache);
+        };
+
+        var setCacheStatus = function (cache, items) {
+            myCache.put(cache, items);
+        };
+
+
+
+        var getCacheStatus = function (cache) {
+            return myCache.get(cache);
+        };
+
+        var setCacheStatus = function (key, items) {
+            myCache.put(key, items);
+        };
+
+        var checkCharacterFeed = function() {
             // return myCache.get(this.name + ':' + this.selectedRealm);
-        if (!myCache.get(this.name + ':' + this.selectedRealm)) {
-            console.log('cache empty for character feed.');
-            return getFeed();
-        } else {
-            console.log('cache not empty.');
-            return myCache.get(this.name + ':' + this.selectedRealm);
-        }
-    };
-
-
-    // This is a decorator function for getCharacterFeed
-    var getFeed = function() {
-        self.getCharacterFeed(function(response){
-            // This is called once.  The entire response is then parsed $scope.characterResult
-            console.log('Character Feed API Call.');
-            // $scope.characterResult = response.data;
-            // store data to the cache first
-            // myCache.put(this.name + ':' + this.selectedRealm, response.data);
-            // console.log('Feed is now cached.');
-            characterResult = response.data;
-
-            if (!race) {
-                race = response.data.race;
+            if (!myCache.get('Char:' + this.name + ':' + this.selectedRealm)) {
+                console.log('cache empty for character');
+            } else {
+                console.log('cache not empty.');
+                return myCache.get(this.name + ':' + this.selectedRealm);
             }
-            thumbnail = response.data.thumbnail;
+        };
 
-            // Set the background images
-            $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + self.characterImage(thumbnail)+ ") no-repeat 182px 115px");
 
-            // Set background image for profile based on race
-            $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
+        var processFeed = function(feed) {
+            console.log('in Process Feed.');
 
             // Process through items in reponse and determine the category each falls under.
             // console.log(response);
-            for (var x = 0; x <= response.data.feed.length - 1; x++) {
+            for (var x = 0; x <= feed.length - 1; x++) {
                 var feedElement = {};
                 // If item is loot, modify some of the properties and add it to the end of the items array.  The item array is a temporary array to store loot items while asynch calls
                 // are occurring.
-                if (response.data.feed[x].type === 'LOOT') {
+                if (feed[x].type === 'LOOT') {
                     // First, we store each object of type loot into a seperate array called items.
                     var itemElement = {};
                     // Record the original position of the item from the AJAX call.
                     itemElement['index'] = x;
-                    itemElement['type'] = response.data.feed[x].type;
-                    itemElement['timestamp'] = response.data.feed[x].timestamp;
-                    itemElement['id'] = response.data.feed[x].itemId;
+                    itemElement['type'] = feed[x].type;
+                    itemElement['timestamp'] = feed[x].timestamp;
+                    itemElement['id'] = feed[x].itemId;
                     console.log(itemElement);
                     items.push(itemElement);
                     count++;
@@ -537,17 +535,17 @@ angular.module('wowApp')
 
 
                     idx++;
-                } else if (response.data.feed[x].type === 'BOSSKILL') {
+                } else if (feed[x].type === 'BOSSKILL') {
                     // console.log('in boss');
-                    feedElement['timestamp'] = response.data.feed[x].timestamp;
-                    feedElement['type'] = response.data.feed[x].type;
+                    feedElement['timestamp'] = feed[x].timestamp;
+                    feedElement['type'] = feed[x].type;
                     // do something else
-                    feedElement['name'] = response.data.feed[x].name;
-                    feedElement['icon'] = response.data.feed[x].achievement.icon;
-                    feedElement['title'] = response.data.feed[x].achievement.title;
-                    feedElement['quantity'] = response.data.feed[x].quantity;
-                    feedElement['id'] = response.data.feed[x].criteria.id;
-                    if (response.data.feed[x].name) {
+                    feedElement['name'] = feed[x].name;
+                    feedElement['icon'] = feed[x].achievement.icon;
+                    feedElement['title'] = feed[x].achievement.title;
+                    feedElement['quantity'] = feed[x].quantity;
+                    feedElement['id'] = feed[x].criteria.id;
+                    if (feed[x].name) {
                         feedElement['tooltip'] = "BOSS-YES";
                     } else {
                         feedElement['tooltip'] = "BOSS-NO";
@@ -562,20 +560,20 @@ angular.module('wowApp')
                     // console.log(self.feed);
 
                     // console.log(feedElement);
-                } else if (response.data.feed[x].type === 'ACHIEVEMENT') {
+                } else if (feed[x].type === 'ACHIEVEMENT') {
                     // console.log('in achievement');
                     // console.log(feedElement);
-                    feedElement['timestamp'] = response.data.feed[x].timestamp;
-                    feedElement['type'] = response.data.feed[x].type;
+                    feedElement['timestamp'] = feed[x].timestamp;
+                    feedElement['type'] = feed[x].type;
                     // console.log(response.data.feed[x].type);
                     // console.log(feedElement);
-                    feedElement['title'] = response.data.feed[x].achievement.title;
+                    feedElement['title'] = feed[x].achievement.title;
 
                     // console.log(feedElement);
-                    feedElement['description'] = response.data.feed[x].achievement.description;
+                    feedElement['description'] = feed[x].achievement.description;
 
                     // console.log(feedElement);
-                    feedElement['icon'] = response.data.feed[x].achievement.icon;
+                    feedElement['icon'] = feed[x].achievement.icon;
                     feedElement['tooltip'] = "ACHIEVEMENT";
                     // console.log(feedElement);
                     // console.log('ACHIEVEMENT object:');
@@ -594,258 +592,315 @@ angular.module('wowApp')
 
             console.log(self.feed);
 
+        };
 
-        }, function(err) {
-            console.log(err.status);
+        // This is the decorator call for the inventory slots.
 
-        });
-        console.log('returning self.feed');
-        return self.feed;
-    };
+        var getItemWrapper = function() {
 
+            // This is the API call for the character Items.  This call populates the inventory slots.
 
+            self.getItem(function (response) {
+                console.log('Get Item API Call.');
+                // console.log('in getItem service');
+                var slots = characterFeed.getInventorySlots();
 
-    // This is the decorator call for the inventory slots.
+                for (var x = 0; x < slots.length; x++) {
+                    // Map the items here before you push them.
 
-    var getItemWrapper = function() {
+                    var inventorySlot = {};
+                    // console.log('creating inventorySlot');
 
-        // This is the API call for the character Items.  This call populates the inventory slots.
-
-        self.getItem(function (response) {
-            console.log('Get Item API Call.');
-            // console.log('in getItem service');
-            var slots = characterFeed.getInventorySlots();
-
-            for (var x = 0; x < slots.length; x++) {
-                // Map the items here before you push them.
-
-                var inventorySlot = {};
-                // console.log('creating inventorySlot');
-
-                inventorySlot['name'] = slots[x];
-                inventorySlot['value'] = response.data.items[slots[x]];
-                // console.log(response.data.items[slots[x]]);
-                inventorySlot['slot'] = characterFeed.getInventorySlot(slots[x]);
-                inventorySlot['bonusStats'] = [];
-                inventorySlot['id'] = response.data.items[slots[x]].id;
-                // console.log('adding inventorySlot item to inventorySlots array.');
-                // console.log(inventorySlot);
-                // console.log(inventorySlot.value.armor);
-
-                self.inventorySlots.push(inventorySlot);
-
-                if (slots[x] in response.data.items) {
-                    var inventoryElement = {};
-                    // console.log('calling callItemService from  within getItem');
+                    inventorySlot['name'] = slots[x];
+                    inventorySlot['value'] = response.data.items[slots[x]];
+                    // console.log(response.data.items[slots[x]]);
+                    inventorySlot['slot'] = characterFeed.getInventorySlot(slots[x]);
+                    inventorySlot['bonusStats'] = [];
+                    inventorySlot['id'] = response.data.items[slots[x]].id;
+                    // console.log('adding inventorySlot item to inventorySlots array.');
                     // console.log(inventorySlot);
-                    console.log('invoking call item service for the items inventory slots on item:');
-                    console.log(inventorySlot);
+                    // console.log(inventorySlot.value.armor);
 
-                    inventoryElement = callItemService(inventorySlot);
+                    self.inventorySlots.push(inventorySlot);
+
+                    if (slots[x] in response.data.items) {
+                        var inventoryElement = {};
+                        // console.log('calling callItemService from  within getItem');
+                        // console.log(inventorySlot);
+                        console.log('invoking call item service for the items inventory slots on item:');
+                        console.log(inventorySlot);
+
+                        inventoryElement = callItemService(inventorySlot);
 
 
-                    inventoryElement['slot'] = slots[x];
-                    // console.log(inventoryElement);
-                    self.inventoryArray.push(inventoryElement);
+                        inventoryElement['slot'] = slots[x];
+                        // console.log(inventoryElement);
+                        self.inventoryArray.push(inventoryElement);
+                    } else {
+                        console.log('key does not exist. Moving on to next item.');
+                    }
+                }
+
+
+                self.inventory = self.inventoryArray.sort(function (a, b) {
+                    console.log('sort inventory items');
+                    return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
+                });
+
+
+            }, function (err) {
+                console.log(err.status);
+
+            })
+        };
+
+
+
+        var callItemService = function (itemElement) {
+
+            // Function to check cache first.
+            console.log(itemElement);
+
+
+            console.log('Get Item API Wrapper call.');
+
+            var item = {};
+
+            itemService.getItem(itemElement.id, function (response) {
+                item['name'] = response.data.name;
+                item['icon'] = response.data.icon;
+                item['armor'] = response.data.armor;
+                item['bonusStats'] = response.data.bonusStats;
+                item['buyPrice'] = response.data.buyPrice;
+                item['requiredLevel'] = response.data.requiredLevel;
+                if (response.data.socketInfo) {
+                    item['socketInfo'] = response.data.socketInfo;
+                }
+                item['upgradable'] = response.data.upgradable;
+                item['itemLevel'] = response.data.itemLevel;
+                item['itemBind'] = response.data.itemBind;
+                item['itemClass'] = response.data.itemClass;
+                item['maxDurability'] = response.data.maxDurability;
+                item['sellPrice'] = response.data.sellPrice;
+                item['quality'] = response.data.quality;
+            }, function (err) {
+                console.log(err.status);
+            });
+            return item;
+        };
+
+        var checkFeedCache = function(item) {
+
+            if (!myCache.get(item.timestamp + ':' + item.id)) {
+                console.log('cache empty for item.');
+                // return getItem(item.type + ':' + item.id);
+                var result = callItemService(item);
+                console.log('placing item in cache.');
+                myCache.put(item.timestamp + ':' + item.id, result);
+                return result;
+
+            } else {
+                console.log('cache has item. Retrieving item from cache.');
+                return myCache.get(item.timestamp + ':' + item.id);
+            }
+
+        };
+
+        var checkItemCache = function(item) {
+
+            if (!myCache.get(item.type + ':' + item.id)) {
+                console.log('cache empty for item.');
+                // return getItem(item.type + ':' + item.id);
+                var result = callItemService(item);
+                console.log('placing item in cache.');
+                myCache.put(item.type + ':' + item.id, result);
+                return result;
+
+            } else
+            {
+                console.log('cache not empty.');
+                return myCache.get(item.type + ':' + item.id);
+            }
+
+        };
+
+        var getCacheItems = function(cacheName) {
+            return myCache.get(cacheName);
+        };
+
+
+
+
+         var characterImage = function(path) {
+            // console.log(path);
+            var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
+            // console.log(imagePath);
+            imagePath += "profilemain.jpg";
+            // console.log(imagePath);
+            return imagePath;
+        };
+
+
+
+
+
+        // Character Profile API Call - Charcater Profile
+        self.getCharacter = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { cache: true,  params: {  locale: keys.region, apikey: keys.privateKey } } )
+                .then(callback,err)
+        };
+
+        // Character Profile API Call - Items
+        self.getItem = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "items" } } )
+                .then(callback,err)
+        };
+
+
+        // Achievement API Call - Achievement
+        self.getAchievementDetails = function(achievementID, callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/achievement/' + achievementID + '?jsonp=JSON_CALLBACK',  { cache: true, params: { locale: keys.region, apikey: keys.privateKey } } )
+                .then(callback,err)
+        };
+
+        return {
+
+            getCacheItems: function (cacheName) {
+                return myCache.get(cacheName);
+            },
+
+
+            init: function() {
+                var self = this;
+                // console.log(this.name);
+                // console.log(this.selectedRealm);
+
+                if (getCacheStatus('Char:' + self.name + ':' + self.selectedRealm)) {
+                    console.log('character is cached. skipping API call.');
                 } else {
-                    console.log('key does not exist. Moving on to next item.');
+                    console.log('character is not defined');
+                    // Pass the parameters on to the service prior to the call.
+                    feedService.name = this.name;
+                    feedService.selectedRealm = this.selectedRealm;
+                    feedService.getCharacterFeed(function(response){
+                        console.log('Character Feed API Call.');
+                        if (!race) {
+                            race = response.data.race;
+                        }
+                        thumbnail = response.data.thumbnail;
+
+                        // Set the background images
+                        $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
+
+                        // Set background image for profile based on race
+                        $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
+
+                        var character = {
+                            'name' : response.data.name,
+                            'level' : response.data.level,
+                            'gender' : response.data.gender,
+                            'battlegroup' : response.data.battlegroup,
+                            'class': response.data.class,
+                            'faction' : response.data.faction,
+                            'realm' : response.data.realm,
+                            'thumbnail' : response.data.thumbnail,
+                            'thk' : response.data.totalHonorableKills
+                        };
+
+                        console.log(character);
+
+                        setCacheStatus('Char:' + character.name.toLowerCase() + ':' + character.realm, character);
+
+                        $rootScope.$broadcast('character_retrieved');
+                        console.log('just sent character retrieve update');
+
+                        processFeed(response.data.feed);
+
+                    }, function(err) {
+                        console.log(err.status);
+
+                    });
                 }
             }
-
-
-            self.inventory = self.inventoryArray.sort(function (a, b) {
-                console.log('sort inventory items');
-                return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
-            });
-
-
-        }, function (err) {
-            console.log(err.status);
-
-        })
-    };
-
-
-
-    var callItemService = function (itemElement) {
-
-        // Function to check cache first.
-        console.log(itemElement);
-
-
-        console.log('Get Item API Wrapper call.');
-
-        var item = {};
-
-        itemService.getItem(itemElement.id, function (response) {
-            item['name'] = response.data.name;
-            item['icon'] = response.data.icon;
-            item['armor'] = response.data.armor;
-            item['bonusStats'] = response.data.bonusStats;
-            item['buyPrice'] = response.data.buyPrice;
-            item['requiredLevel'] = response.data.requiredLevel;
-            if (response.data.socketInfo) {
-                item['socketInfo'] = response.data.socketInfo;
-            }
-            item['upgradable'] = response.data.upgradable;
-            item['itemLevel'] = response.data.itemLevel;
-            item['itemBind'] = response.data.itemBind;
-            item['itemClass'] = response.data.itemClass;
-            item['maxDurability'] = response.data.maxDurability;
-            item['sellPrice'] = response.data.sellPrice;
-            item['quality'] = response.data.quality;
-        }, function (err) {
-            console.log(err.status);
-        });
-        return item;
-    };
-
-    var checkFeedCache = function(item) {
-
-        if (!myCache.get(item.timestamp + ':' + item.id)) {
-            console.log('cache empty for item.');
-            // return getItem(item.type + ':' + item.id);
-            var result = callItemService(item);
-            console.log('placing item in cache.');
-            myCache.put(item.timestamp + ':' + item.id, result);
-            return result;
-
-        } else {
-            console.log('cache has item. Retrieving item from cache.');
-            return myCache.get(item.timestamp + ':' + item.id);
         }
 
-    };
+    })
 
-    var checkItemCache = function(item) {
+    .service('dataService', function($http, keys, characterFeed) {
 
-        if (!myCache.get(item.type + ':' + item.id)) {
-            console.log('cache empty for item.');
-            // return getItem(item.type + ':' + item.id);
-            var result = callItemService(item);
-            console.log('placing item in cache.');
-            myCache.put(item.type + ':' + item.id, result);
-            return result;
+        // DATA Resources - Charcater Achievements
+        this.getAchievements = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "achievements" } } )
+                .then(callback,err)
+        };
 
-        } else
-        {
-            console.log('cache not empty.');
-            return myCache.get(item.type + ':' + item.id);
-        }
-
-    };
+    })
 
 
+    .service('realmService', function($http, keys, myCache) {
+
+        this.getRealms = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { cache: myCache, params: {  locale: keys.region, apikey: keys.privateKey } } )
+                .then(callback,err)
+        };
+
+    })
+
+    .service('raceService', function($http, keys) {
 
 
-    self.characterImage = function(path) {
-        // console.log(path);
-        var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
-        // console.log(imagePath);
-        imagePath += "profilemain.jpg";
-        // console.log(imagePath);
-        return imagePath;
-    };
+        this.getRaces = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/data/character/races?jsonp=JSON_CALLBACK',  { cache: true, params: { locale: keys.region, apikey: keys.privateKey } } )
+                .then(callback,err)
+        };
+
+    })
+
+    .service('classService', function($http, keys) {
 
 
+        this.getClasses = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/data/character/classes?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: keys.region, apikey: keys.privateKey} } )
+                .then(callback,err)
+        };
+
+    })
+
+    .service('bossService', function($http, keys) {
+
+        this.getBosses = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/boss/?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: keys.region, apikey: keys.privateKey} } )
+                .then(callback,err)
+        };
+
+    })
+
+    .service('zoneService', function($http, keys) {
+
+        this.getZones = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/zone/?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: keys.region, apikey: keys.privateKey} } )
+                .then(callback,err)
+        };
+
+    })
+
+    .service('itemService', function($http, characterFeed, keys) {
+
+        // Item API Call - Item API
+        this.getItem = function(itemId, callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  apikey: keys.privateKey} } )
+                .then(callback,err)
+        };
+
+    })
+
+    .service('feedService', function($http, keys) {
 
 
+        // Character Profile API Call - Charcater Feed
+        this.getCharacterFeed = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "feed"} } )
+                .then(callback,err)
+        };
 
-    // Character Profile API Call - Charcater Profile
-    self.getCharacter = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  { cache: true,  params: {  locale: keys.region, apikey: keys.privateKey } } )
-         .then(callback,err)
-    };
-
-    // Character Profile API Call - Charcater Feed
-    self.getCharacterFeed = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "feed"} } )
-            .then(callback,err)
-    };
-
-    // Character Profile API Call - Items
-    self.getItem = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "items" } } )
-            .then(callback,err)
-    };
-
-
-    // Achievement API Call - Achievement
-    self.getAchievementDetails = function(achievementID, callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/achievement/' + achievementID + '?jsonp=JSON_CALLBACK',  { cache: true, params: { locale: keys.region, apikey: keys.privateKey } } )
-            .then(callback,err)
-    };
-  
-                
-})
-
-.service('dataService', function($http, keys, characterFeed) {
-
-    // DATA Resources - Charcater Achievements
-    this.getAchievements = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "achievements" } } )
-            .then(callback,err)
-    };
-
-})
-
-
-.service('realmService', function($http, keys, myCache) {
-
-    this.getRealms = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/realm/status?jsonp=JSON_CALLBACK',  { cache: myCache, params: {  locale: keys.region, apikey: keys.privateKey } } )
-         .then(callback,err)
-    };
-                
-})
-
-.service('raceService', function($http, keys) {
-
-
-    this.getRaces = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/data/character/races?jsonp=JSON_CALLBACK',  { cache: true, params: { locale: keys.region, apikey: keys.privateKey } } )
-            .then(callback,err)
-    };
-
-})
-
-.service('classService', function($http, keys) {
-
-
-    this.getClasses = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/data/character/classes?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: keys.region, apikey: keys.privateKey} } )
-            .then(callback,err)
-    };
-
-})
-
-.service('bossService', function($http, keys) {
-
-    this.getBosses = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/boss/?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: keys.region, apikey: keys.privateKey} } )
-            .then(callback,err)
-    };
-
-})
-
-.service('zoneService', function($http, keys) {
-
-    this.getZones = function(callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/zone/?jsonp=JSON_CALLBACK',  { cache: true, params: {  locale: keys.region, apikey: keys.privateKey} } )
-            .then(callback,err)
-    };
-
-})
-
-.service('itemService', function($http, characterFeed, keys) {
-
-    this.keyValue = characterFeed.getPrivateKey();
-    this.region = characterFeed.getRegion();
-
-    // Item API Call - Item API
-    this.getItem = function(itemId, callback, err) {
-        $http.jsonp('https://us.api.battle.net/wow/item/' + itemId + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  apikey: keys.privateKey} } )
-            .then(callback,err)
-    };
-
-})
+    })

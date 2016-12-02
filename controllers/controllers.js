@@ -110,25 +110,37 @@ angular.module('wowApp')
         $scope.showInfobox = false;
 
 
+        $scope.name = characterService.name;
+        $scope.selectedRealm = characterService.selectedRealm;
+
+
         // Populate realmsResult with cached items (if there are any).
         $scope.realmsResult = characterFeed.getCacheItems("realms");
 
         // This sets the service to assign the variable .name to whatever the user enters into the htm entry.
-        $scope.$watch('name', function () {
-            characterService.name = $scope.name;
-        });
+        // $scope.$watch('name', function () {
+        //     characterService.name = $scope.name;
+        // });
 
         // This sets the service to assign the variable .selectedRealm to whatever the user enters into the htm entry.
-        $scope.$watch('selectedRealm', function () {
-            characterService.selectedRealm = $scope.selectedRealm;
-        });
+        // $scope.$watch('selectedRealm', function () {
+        //     characterService.selectedRealm = $scope.selectedRealm;
+        // });
 
 
         $scope.$watch('showFeed', function() {
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
         });
-        // console.log('test');
 
+        $scope.$on('character_retrieved', function() {
+            console.log('broadcast received');
+            $scope.characterResult = characterService.getCacheItems('Char:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
+            console.log($scope.characterResult);
+        });
+
+
+        console.log('here.');
+        characterService.init();
 
         // These are used for the tooltips.  They work with $sce to sanitize the dynamic html so that it is rendered properly.
         // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
@@ -186,98 +198,6 @@ angular.module('wowApp')
                 console.log('mouse leave for');
             }
         };
-
-        // Character Feed call.  This occurs when the controller is active.
-        // characterService.getCharacterFeed();
-        $scope.list = characterService.checkCharacterFeed();
-
-
-        // callItemService = function(itemElement) {
-        //     console.log('Get Item API Wrapper call.');
-        //
-        //     var item = {};
-        //
-        //     itemService.getItem(itemElement.id, function (response) {
-        //         item['name'] = response.data.name;
-        //         item['icon'] = response.data.icon;
-        //         item['armor'] = response.data.armor;
-        //         item['bonusStats'] = response.data.bonusStats;
-        //         item['buyPrice'] = response.data.buyPrice;
-        //         item['requiredLevel'] = response.data.requiredLevel;
-        //         if (response.data.socketInfo) {
-        //             item['socketInfo'] = response.data.socketInfo;
-        //         }
-        //         item['upgradable'] = response.data.upgradable;
-        //         item['itemLevel'] = response.data.itemLevel;
-        //         item['itemBind'] = response.data.itemBind;
-        //         item['itemClass'] = response.data.itemClass;
-        //         item['maxDurability'] = response.data.maxDurability;
-        //         item['sellPrice'] = response.data.sellPrice;
-        //         item['quality'] = response.data.quality;
-        //     }, function (err) {
-        //         console.log(err.status);
-        //     });
-        //     return item;
-        // };
-
-        // This is the API call for the character Items.  This call populates the inventory slots.
-
-        // characterService.getItem(function(response){
-        //     console.log('Get Item API Call.');
-        //     // console.log('in getItem service');
-        //     var slots = characterFeed.getInventorySlots();
-        //
-        //     for (var x = 0; x < slots.length; x++) {
-        //         // Map the items here before you push them.
-        //
-        //         var inventorySlot = {};
-        //         // console.log('creating inventorySlot');
-        //
-        //         inventorySlot['name'] = slots[x];
-        //         inventorySlot['value'] = response.data.items[slots[x]];
-        //         // console.log(response.data.items[slots[x]]);
-        //         inventorySlot['slot'] = characterFeed.getInventorySlot(slots[x]);
-        //         inventorySlot['bonusStats'] =  [];
-        //         inventorySlot['id'] = response.data.items[slots[x]].id;
-        //         // console.log('adding inventorySlot item to inventorySlots array.');
-        //         // console.log(inventorySlot);
-        //         // console.log(inventorySlot.value.armor);
-        //
-        //         self.inventorySlots.push(inventorySlot);
-        //
-        //         if (slots[x] in response.data.items) {
-        //             var inventoryElement = {};
-        //             // console.log('calling callItemService from  within getItem');
-        //             // console.log(inventorySlot);
-        //             console.log('invoking call item service for the items inventory slots on item:');
-        //             console.log(inventorySlot);
-        //
-        //             inventoryElement = callItemService(inventorySlot);
-        //
-        //
-        //             inventoryElement['slot'] = slots[x];
-        //             // console.log(inventoryElement);
-        //             self.inventoryArray.push(inventoryElement);
-        //         } else {
-        //             console.log('key does not exist. Moving on to next item.');
-        //         }
-        //     }
-        //
-        //
-        //     $scope.inventory = self.inventoryArray.sort(function(a,b) {
-        //         console.log('sort inventory items');
-        //         return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
-        //     });
-        //
-        //
-        // }, function(err) {
-        //     console.log(err.status);
-        //
-        // });
-
-        $scope.name = characterService.name;
-        $scope.selectedRealm = characterService.selectedRealm;
-
 
         $scope.classMap = function(idx) {
             return characterFeed.getClass(idx);

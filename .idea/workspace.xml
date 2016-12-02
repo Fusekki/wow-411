@@ -27,9 +27,12 @@
       <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1157">
-              <caret line="221" column="0" lean-forward="true" selection-start-line="221" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="-26">
+              <caret line="136" column="103" lean-forward="false" selection-start-line="136" selection-start-column="103" selection-end-line="136" selection-end-column="103" />
+              <folding>
+                <element signature="e#247#1721#0" expanded="false" />
+                <element signature="e#1837#2603#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -37,8 +40,8 @@
       <file leaf-file-name="services.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/services/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="625" column="58" lean-forward="false" selection-start-line="625" selection-start-column="58" selection-end-line="625" selection-end-column="58" />
+            <state relative-caret-position="648">
+              <caret line="480" column="44" lean-forward="false" selection-start-line="480" selection-start-column="44" selection-end-line="480" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -47,7 +50,7 @@
       <file leaf-file-name="characterResult.htm" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/characterResult.htm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
+            <state relative-caret-position="100">
               <caret line="5" column="43" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="43" />
               <folding />
             </state>
@@ -65,7 +68,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ng-model</find>
       <find>tooltip</find>
       <find>icons/56</find>
       <find>getInventorySlots</find>
@@ -87,14 +89,15 @@
       <find>setRealms</find>
       <find>searchRealms</find>
       <find>init</find>
-      <find>getCharacterFeed</find>
       <find>list</find>
       <find>getRealms</find>
       <find>sharedProperties</find>
-      <find>getFeed</find>
       <find>getItemFeed</find>
-      <find>checkCharacterFeed</find>
       <find>myCache.put</find>
+      <find>checkCharacterFeed</find>
+      <find>broad</find>
+      <find>getCharacterFeed</find>
+      <find>getFeed</find>
     </findStrings>
     <replaceStrings>
       <replace>sortedStats</replace>
@@ -169,6 +172,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -239,7 +243,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -529,12 +532,13 @@
       <workItem from="1480348869880" duration="5004000" />
       <workItem from="1480436209212" duration="8840000" />
       <workItem from="1480519558136" duration="5033000" />
-      <workItem from="1480607186594" duration="8760000" />
+      <workItem from="1480607186594" duration="8830000" />
+      <workItem from="1480688012688" duration="12149000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="401342000" />
+    <option name="totallyTimeSpent" value="413561000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -574,7 +578,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -709,13 +713,6 @@
     <entry file="file://$PROJECT_DIR$/directives/realmReport.html" />
     <entry file="file://$PROJECT_DIR$/directives/boss-tooltip.html" />
     <entry file="file://$PROJECT_DIR$/vendor/ui-bootstrap-tpls-2.2.0.min.js" />
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1439">
-          <caret line="147" column="0" lean-forward="false" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/home.htm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -864,7 +861,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="10" lean-forward="false" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -886,7 +882,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="27" column="131" lean-forward="false" selection-start-line="27" selection-start-column="131" selection-end-line="27" selection-end-column="131" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -894,13 +889,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="25" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-164">
+          <caret line="591" column="0" lean-forward="false" selection-start-line="591" selection-start-column="0" selection-end-line="591" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/characterResult.htm">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
+        <state relative-caret-position="100">
           <caret line="5" column="43" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="43" />
           <folding />
         </state>
@@ -908,16 +910,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1157">
-          <caret line="221" column="0" lean-forward="true" selection-start-line="221" selection-start-column="0" selection-end-line="223" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="-26">
+          <caret line="136" column="103" lean-forward="false" selection-start-line="136" selection-start-column="103" selection-end-line="136" selection-end-column="103" />
+          <folding>
+            <element signature="e#247#1721#0" expanded="false" />
+            <element signature="e#1837#2603#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/services/services.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="625" column="58" lean-forward="false" selection-start-line="625" selection-start-column="58" selection-end-line="625" selection-end-column="58" />
+        <state relative-caret-position="648">
+          <caret line="480" column="44" lean-forward="false" selection-start-line="480" selection-start-column="44" selection-end-line="480" selection-end-column="44" />
           <folding />
         </state>
       </provider>
