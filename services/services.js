@@ -502,7 +502,9 @@ angular.module('wowApp')
                     // We assign the return object to be called feedElement.
 
                     // Let's check the cache on the item first.  We'll retrieve item from either cache or direct API call.
-                    feedElement = checkFeedCache(itemElement);
+                    // feedElement = checkFeedCache(itemElement);
+
+                    feedElement = callItemService(itemElement);
 
                     // console.log('Item Service API Call.');
                     //
@@ -587,10 +589,13 @@ angular.module('wowApp')
             }
 
             // self.list = self.feed;
-            myCache.put(this.name + ':' + this.selectedRealm, self.feed);
+            myCache.put('Feed:'+ this.name.toLowerCase() + ':' + this.selectedRealm, self.feed);
+            var temp = myCache.get('Feed:'+ this.name.toLowerCase() + ':' + this.selectedRealm);
             console.log('Feed is now cached.');
-
+            console.log(temp);
             console.log(self.feed);
+
+            $rootScope.$broadcast('feed_retrieved');
 
         };
 
@@ -697,6 +702,7 @@ angular.module('wowApp')
                 var result = callItemService(item);
                 console.log('placing item in cache.');
                 myCache.put(item.timestamp + ':' + item.id, result);
+                console.log(result);
                 return result;
 
             } else {
@@ -775,8 +781,13 @@ angular.module('wowApp')
                 // console.log(this.name);
                 // console.log(this.selectedRealm);
 
-                if (getCacheStatus('Char:' + self.name + ':' + self.selectedRealm)) {
+                if (getCacheStatus('Char:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
                     console.log('character is cached. skipping API call.');
+                    console.log('Checking cache for feed.');
+                    if (getCacheStatus('Feed' +self.name.toLowerCase() + ':' + self.selectedRealm, self.feed)) {
+                        console.log('feed is cached.');
+                        $rootScope.$broadcast('feed_retrieved');
+                    }
                 } else {
                     console.log('character is not defined');
                     // Pass the parameters on to the service prior to the call.

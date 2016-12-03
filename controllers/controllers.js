@@ -138,6 +138,14 @@ angular.module('wowApp')
             console.log($scope.characterResult);
         });
 
+        $scope.$on('feed_retrieved', function() {
+            console.log('feed broadcast received');
+            $scope.list = characterService.getCacheItems('Feed:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
+            console.log($scope.name);
+            console.log($scope.selectedRealm);
+            console.log($scope.list);
+        });
+
 
         console.log('here.');
         characterService.init();
