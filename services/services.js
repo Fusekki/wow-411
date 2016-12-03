@@ -481,6 +481,7 @@ angular.module('wowApp')
             console.log('in Process Feed.');
             console.log(self.name);
             console.log(self.selectedRealm);
+            console.log(feed);
 
             // Process through items in reponse and determine the category each falls under.
             // console.log(response);
@@ -597,7 +598,7 @@ angular.module('wowApp')
 
             console.log('Feed is now cached.');
             // console.log(temp);
-            // console.log(self.feed);
+            console.log(self.feed);
 
             $rootScope.$broadcast('feed_retrieved');
 
