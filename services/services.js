@@ -424,12 +424,10 @@ angular.module('wowApp')
 
     .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, keys) {
 
-        var self = this;
+        // var self = this;
 
         var race;
         var thumbnail;
-
-        var characterResult;
 
         var items = [];
         var count = 0;
@@ -442,12 +440,6 @@ angular.module('wowApp')
         self.inventorySlots = [];
         self.inventoryArray = [];
 
-        console.log(self.name);
-
-
-        var backgroundImage;
-        var raceBackgroundImage;
-
         var getCacheStatus = function (cache) {
             return myCache.get(cache);
         };
@@ -459,15 +451,21 @@ angular.module('wowApp')
 
 
         var getCacheStatus = function (cache) {
+            // console.log(this.name);
+            // console.log(this.selectedRealm);
             return myCache.get(cache);
         };
 
         var setCacheStatus = function (key, items) {
+            // console.log(self.name);
+            // console.log(self.selectedRealm);
             myCache.put(key, items);
         };
 
         var checkCharacterFeed = function() {
             // return myCache.get(this.name + ':' + this.selectedRealm);
+            // console.log(this.name);
+            // console.log(this.selectedRealm);
             if (!myCache.get('Char:' + this.name + ':' + this.selectedRealm)) {
                 console.log('cache empty for character');
             } else {
@@ -477,8 +475,12 @@ angular.module('wowApp')
         };
 
 
-        var processFeed = function(feed) {
+        var processFeed = function(name, realm, feed) {
+            self.name = name;
+            self.selectedRealm = realm;
             console.log('in Process Feed.');
+            console.log(self.name);
+            console.log(self.selectedRealm);
 
             // Process through items in reponse and determine the category each falls under.
             // console.log(response);
@@ -589,11 +591,13 @@ angular.module('wowApp')
             }
 
             // self.list = self.feed;
-            myCache.put('Feed:'+ this.name.toLowerCase() + ':' + this.selectedRealm, self.feed);
-            var temp = myCache.get('Feed:'+ this.name.toLowerCase() + ':' + this.selectedRealm);
+            // console.log(self.selectedRealm);
+            // console.log(self.name);
+            myCache.put('Feed:'+ self.name.toLowerCase() + ':' + self.selectedRealm, self.feed);
+
             console.log('Feed is now cached.');
-            console.log(temp);
-            console.log(self.feed);
+            // console.log(temp);
+            // console.log(self.feed);
 
             $rootScope.$broadcast('feed_retrieved');
 
@@ -778,8 +782,8 @@ angular.module('wowApp')
 
             init: function() {
                 var self = this;
-                // console.log(this.name);
-                // console.log(this.selectedRealm);
+                console.log(self.name);
+                console.log(self.selectedRealm);
 
                 if (getCacheStatus('Char:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
                     console.log('character is cached. skipping API call.');
@@ -824,8 +828,10 @@ angular.module('wowApp')
 
                         $rootScope.$broadcast('character_retrieved');
                         console.log('just sent character retrieve update');
+                        console.log(self.name);
+                        console.log(self.selectedRealm);
 
-                        processFeed(response.data.feed);
+                        processFeed(self.name, self.selectedRealm, response.data.feed);
 
                     }, function(err) {
                         console.log(err.status);
