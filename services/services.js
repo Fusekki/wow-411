@@ -433,6 +433,9 @@ angular.module('wowApp')
         var count = 0;
         var idx = 0;
 
+        self.background = '';
+        self.backgroundImage = '';
+
 
         self.list = {};
         self.processedFeed = [];
@@ -733,6 +736,23 @@ angular.module('wowApp')
             return myCache.get(cacheName);
         };
 
+        var setBackground = function() {
+            console.log('setting background.');
+            console.log(self.backgroundImg);
+            console.log(self.background);
+
+
+            // Set the background images
+            // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
+            $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
+
+            // Set background image for profile based on race
+            // $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
+            $(".content-top").css("background", "url" + self.background + ") left top no-repeat" );
+
+
+        };
+
 
 
 
@@ -783,7 +803,12 @@ angular.module('wowApp')
                 if (getCacheStatus('Char:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
                     console.log('character is cached. skipping API call.');
                     console.log('Checking cache for feed.');
-                    if (getCacheStatus('Feed' +self.name.toLowerCase() + ':' + self.selectedRealm, self.processedFeed)) {
+                    $rootScope.$broadcast('character_retrieved');
+
+                    setBackground();
+
+
+                    if (getCacheStatus('Feed:' +self.name.toLowerCase() + ':' + self.selectedRealm)) {
                         console.log('feed is cached.');
                         $rootScope.$broadcast('feed_retrieved');
                     }
@@ -801,25 +826,37 @@ angular.module('wowApp')
                         }
                         thumbnail = response.data.thumbnail;
 
-                        // Set the background images
-                        $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
 
-                        // Set background image for profile based on race
-                        $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
+                        // Set the background images
+                        // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
+                        //
+                        // // Set background image for profile based on race
+                        // $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
 
                         var character = {
                             'name' : response.data.name,
                             'level' : response.data.level,
                             'gender' : response.data.gender,
+                            'race' : race,
                             'battlegroup' : response.data.battlegroup,
                             'class': response.data.class,
                             'faction' : response.data.faction,
                             'realm' : response.data.realm,
                             'thumbnail' : response.data.thumbnail,
-                            'thk' : response.data.totalHonorableKills
+                            'thk' : response.data.totalHonorableKills,
+                            'backgroundImg' : "http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail),
+                            'background' : "http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg"
                         };
 
                         console.log(character);
+
+                        self.background = character.background;
+                        self.backgroundImg = character.backgroundImg;
+
+                        console.log(self.background);
+                        console.log(self.backgroundImg);
+
+                        setBackground();
 
                         setCacheStatus('Char:' + character.name.toLowerCase() + ':' + character.realm, character);
 
@@ -835,7 +872,6 @@ angular.module('wowApp')
                         console.log(err.status);
 
                     });
-                    console.log('here');
                 }
                 console.log('end of init function.');
             }

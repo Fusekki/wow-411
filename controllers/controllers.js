@@ -142,8 +142,14 @@ angular.module('wowApp')
 
         $scope.$on('character_retrieved', function() {
             console.log('broadcast received');
+
             $scope.characterResult = characterService.getCacheItems('Char:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
+
             console.log($scope.characterResult);
+            characterService.background = $scope.characterResult.background;
+            characterService.backgroundImg = $scope.characterResult.backgroundImg;
+            console.log(characterService.background);
+            console.log(characterService.backgroundImg);
         });
 
         $scope.$on('feed_retrieved', function() {
@@ -154,16 +160,9 @@ angular.module('wowApp')
             console.log($scope.list);
         });
 
+        // This kicks things off.
+        characterService.init();
 
-
-        if (!loadedFeed) {
-            loadedFeed = true;
-            console.log('feed loading.');
-            characterService.init();
-
-        } else {
-            console.log('feed tried to load again but stoopped it.');
-        }
 
 
         // These are used for the tooltips.  They work with $sce to sanitize the dynamic html so that it is rendered properly.
