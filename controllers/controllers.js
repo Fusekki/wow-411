@@ -8,9 +8,39 @@ angular.module('wowApp')
 
     })
 
+    // This is the controller for the realms page
+    .controller('realmCtrl', function ($scope, characterFeed) {
 
-    .controller('characterSearchCtrl', function ($scope, $location, $cacheFactory, characterFeed, myCache, characterService, itemService, realmService) {
+
+        // First check the Realms cache to see if the API needs to be called.
+        characterFeed.initRealms();
+
+        // Populate realmsResult with cached items (if there are any).
+        $scope.realmsResult = characterFeed.getCacheItems("realms");
+
+        $scope.$on('realms_update', function() {
+            console.log('here');
+            $scope.realmsResult = characterFeed.getCacheItems("realms");
+        });
+
+        $scope.sortType = 'name';
+        $scope.sortReverse = false;
+        $scope.searchRealms = '';
+        // console.log($scope.searchRealms);
+
+
+        $scope.sliceCountryFromTimezone = function(timezone) {
+            var idx = timezone.indexOf("/");
+            return timezone.slice(idx + 1).replace(/_/g," ");
+        };
+
+    })
+
+
+    .controller('characterSearchCtrl', function ($scope, $location, characterFeed, characterService, itemService) {
         // Start the characterFeed service.  This is going to check/populate races, classes, bosses, and zones.
+
+        console.log('in CHARACTERSEARCH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 
 
 
@@ -52,41 +82,15 @@ angular.module('wowApp')
 
         $scope.submit = function() {
             $location.path("/characterResult");
+            console.log('button pressed');
         };
 
     })
 
-
-    // This is the controller for the realms page
-    .controller('realmCtrl', function ($scope, characterFeed) {
-
-
-        // First check the Realms cache to see if the API needs to be called.
-        characterFeed.initRealms();
-
-        // Populate realmsResult with cached items (if there are any).
-        $scope.realmsResult = characterFeed.getCacheItems("realms");
-
-        $scope.$on('realms_update', function() {
-            console.log('here');
-            $scope.realmsResult = characterFeed.getCacheItems("realms");
-        });
-
-        $scope.sortType = 'name';
-        $scope.sortReverse = false;
-        $scope.searchRealms = '';
-        // console.log($scope.searchRealms);
-
-
-        $scope.sliceCountryFromTimezone = function(timezone) {
-            var idx = timezone.indexOf("/");
-            return timezone.slice(idx + 1).replace(/_/g," ");
-        };
-
-    })
 
     .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, characterFeed, characterService, itemService) {
 
+        console.log('IN CHARACTERCTRL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         var self = this;
 
         self.feed = [];
@@ -94,11 +98,13 @@ angular.module('wowApp')
         self.inventorySlots = [];
         self.inventoryArray = [];
 
-        var items = [];
-        var count = 0;
-        var idx = 0;
-        var race;
-        var thumbnail;
+        // var items = [];
+        // var count = 0;
+        // var idx = 0;
+        // var race;
+        // var thumbnail;
+
+        var loadedFeed = false;
 
         $scope.show = false;
 
@@ -116,6 +122,8 @@ angular.module('wowApp')
 
         // Populate realmsResult with cached items (if there are any).
         $scope.realmsResult = characterFeed.getCacheItems("realms");
+
+
 
         // This sets the service to assign the variable .name to whatever the user enters into the htm entry.
         // $scope.$watch('name', function () {
@@ -147,8 +155,16 @@ angular.module('wowApp')
         });
 
 
-        console.log('here.');
-        characterService.init();
+
+        if (!loadedFeed) {
+            loadedFeed = true;
+            console.log('feed loading.');
+            characterService.init();
+
+        } else {
+            console.log('feed tried to load again but stoopped it.');
+        }
+
 
         // These are used for the tooltips.  They work with $sce to sanitize the dynamic html so that it is rendered properly.
         // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.

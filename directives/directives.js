@@ -6,18 +6,18 @@ angular.module('wowApp')
 .directive("feedTable", function() {
     return {
         templateUrl: 'templates/feedTable.htm',
-        controller: 'characterCtrl',
+        // controller: 'characterCtrl',
         replace: true
-    }
+    };
 })
 
 
 .directive("inventoryItem", function() {
     return {
         templateUrl: 'templates/inventoryItem.htm',
-        controller: 'characterCtrl',
+        // controller: 'characterCtrl',
         replace: true
-    }
+    };
 })
 
 
