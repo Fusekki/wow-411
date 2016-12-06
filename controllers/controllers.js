@@ -78,7 +78,7 @@ angular.module('wowApp')
 
         $scope.submit = function() {
             $location.path("/characterResult");
-            console.log('button pressed');
+            // console.log('button pressed');
         };
 
     })
@@ -129,9 +129,18 @@ angular.module('wowApp')
         $scope.$on('feed_retrieved', function() {
             console.log('feed broadcast received');
             $scope.list = characterService.getCacheItems('Feed:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
-            console.log($scope.name);
-            console.log($scope.selectedRealm);
-            console.log($scope.list);
+            // console.log($scope.name);
+            // console.log($scope.selectedRealm);
+            // console.log($scope.list);
+        });
+
+        $scope.$on('inventory_retrieved', function() {
+            console.log('broadcast received for inventory');
+
+
+            $scope.inventory = characterService.getCacheItems('Inv:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
+            console.log($scope.inventory);
+
         });
 
         // This kicks things off.

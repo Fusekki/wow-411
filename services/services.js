@@ -144,10 +144,10 @@ angular.module('wowApp')
                     console.log('just sent update');
                     if (getCacheStatus("realms")) {
                         console.log('realms are now defined.');
-                        console.log(realmMap);
+                        // console.log(realmMap);
                         // console.log(myCache.info());
                         console.log('realms are cached: ');
-                        console.log(myCache.get("realms"));
+                        // console.log(myCache.get("realms"));
 
                         // var cachedData = myCache.get('realms');
                     }
@@ -336,7 +336,7 @@ angular.module('wowApp')
                         if (getCacheStatus("races")) {
                             console.log('races are now defined.');
                             console.log('races are cached: ');
-                            console.log(myCache.get("races"));
+                            // console.log(myCache.get("races"));
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -359,7 +359,7 @@ angular.module('wowApp')
                         if (getCacheStatus("classes")) {
                             console.log('classes are now defined.');
                             console.log('classes are cached: ');
-                            console.log(myCache.get("classes"));
+                            // console.log(myCache.get("classes"));
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -380,7 +380,7 @@ angular.module('wowApp')
                         if (getCacheStatus("bosses")) {
                             console.log('Bosses are now defined.');
                             console.log('bosses are cached: ');
-                            console.log(myCache.get("bosses"));
+                            // console.log(myCache.get("bosses"));
 
                         }
                         // console.log(characterFeed.getBossStatus());
@@ -403,7 +403,7 @@ angular.module('wowApp')
                         if (getCacheStatus("zones")) {
                             console.log('zones are now defined.');
                             console.log('zones are cached: ');
-                            console.log(myCache.get("zones"));
+                            // console.log(myCache.get("zones"));
                         }
                         // console.log(characterFeed.getZoneStatus());
                     }, function(err) {
@@ -422,7 +422,7 @@ angular.module('wowApp')
         };
     })
 
-    .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, keys) {
+    .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, inventoryService, keys) {
 
         // var self = this;
 
@@ -469,20 +469,20 @@ angular.module('wowApp')
         };
 
 
-        var processFeed = function(name, realm, feed) {
+        var processFeed = function(realm, feed) {
 
-            self.name = name;
+            // self.name = name;
             self.selectedRealm = realm;
             console.log('in Process Feed.');
-            console.log(self.name);
-            console.log(self.selectedRealm);
-            console.log(feed.length);
+            // console.log(self.name);
+            // console.log(self.selectedRealm);
+            // console.log(feed.length);
 
             // Process through items in reponse and determine the category each falls under.
             // console.log(response);
             for (var x = 0; x <= feed.length - 1; x++) {
                 var feedElement = {};
-                console.log('in feed index of ' + x.toString());
+                // console.log('in feed index of ' + x.toString());
                 // If item is loot, modify some of the properties and add it to the end of the items array.  The item array is a temporary array to store loot items while asynch calls
                 // are occurring.
                 if (feed[x].type === 'LOOT') {
@@ -493,7 +493,7 @@ angular.module('wowApp')
                     itemElement.type = feed[x].type;
                     itemElement.timestamp = feed[x].timestamp;
                     itemElement.id = feed[x].itemId;
-                    console.log(itemElement);
+                    // console.log(itemElement);
                     items.push(itemElement);
                     count++;
                     // Perform a call to the item service, passing on the itemElement that was pushed into the item array.
@@ -508,7 +508,7 @@ angular.module('wowApp')
                     // console.log('Item Service API Call.');
                     //
                     // console.log('invoking call item service for the items in character Feed for item:');
-                    console.log('back from checking cache/API call for following item: ');
+                    console.log('back from checking cache/API call for following item for FEED: ');
                     console.log(feedElement);
 
                     // feedElement = callItemService(itemElement);
@@ -525,10 +525,10 @@ angular.module('wowApp')
                     // console.log(feedElement);
                     // console.log('feedElement.armor = ' + feedElement.armor);
                     var i = items[idx].index - 1;
-                    console.log('The item is being spliced into index[' + i + ']');
+                    // console.log('The item is being spliced into index[' + i + ']');
                     self.processedFeed.splice(items[idx].index, 0, feedElement);
-                    console.log('currentself.processedFeed length is:');
-                    console.log(self.processedFeed.length);
+                    // console.log('currentself.processedFeed length is:');
+                    // console.log(self.processedFeed.length);
                     // console.log(self.feed);
 
                     // console.log(self.feed[i - 1]);
@@ -594,22 +594,27 @@ angular.module('wowApp')
 
             console.log('Feed is now cached.');
             // console.log(temp);
-            console.log(self.processedFeed);
+            // console.log(self.processedFeed);
 
             $rootScope.$broadcast('feed_retrieved');
 
         };
 
         // This is the decorator call for the inventory slots.
+        var getItemWrapper = function(realm) {
+            self.selectedRealm = realm;
 
-        var getItemWrapper = function() {
+            console.log('in getItemWrapper for Inventory Items.');
+            // console.log(this.name);
+            // console.log(this.selectedRealm);
 
             // This is the API call for the character Items.  This call populates the inventory slots.
 
-            self.getItem(function (response) {
-                console.log('Get Item API Call.');
+            inventoryService.getItem(function (response) {
+                console.log('Get Item API Call for inventory items');
                 // console.log('in getItem service');
                 var slots = characterFeed.getInventorySlots();
+                // console.log(slots);
 
                 for (var x = 0; x < slots.length; x++) {
                     // Map the items here before you push them.
@@ -652,7 +657,15 @@ angular.module('wowApp')
                     console.log('sort inventory items');
                     return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
                 });
+                console.log(self.name);
+                console.log(self.selectedRealm);
+                console.log(self.inventory);
 
+                myCache.put('Inv:'+ self.name.toLowerCase() + ':' + self.selectedRealm, self.inventory);
+
+                console.log('inventory is now cached.');
+                // console.log(self.inventory);
+                $rootScope.$broadcast('inventory_retrieved');
 
             }, function (err) {
                 console.log(err.status);
@@ -665,10 +678,10 @@ angular.module('wowApp')
         var callItemService = function (itemElement) {
 
             // Function to check cache first.
-            console.log(itemElement);
+            // console.log(itemElement);
 
 
-            console.log('Get Item API Wrapper call.');
+            console.log('itemService API Wrapper call for FEED.');
 
             var item = {};
 
@@ -738,10 +751,6 @@ angular.module('wowApp')
 
         var setBackground = function() {
             console.log('setting background.');
-            console.log(this.backgroundImg);
-            console.log(self.background);
-            console.log(self.characterResult);
-
 
             // Set the background images
             // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
@@ -797,9 +806,11 @@ angular.module('wowApp')
 
 
             init: function() {
+                // This starts both the Feed Call and the Inventory Call.
                 var self = this;
-                console.log(self.name);
-                console.log(self.selectedRealm);
+
+
+
 
                 if (getCacheStatus('Char:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
                     console.log('character is cached. skipping API call.');
@@ -814,19 +825,23 @@ angular.module('wowApp')
                     console.log('character is not defined');
                     // Pass the parameters on to the service prior to the call.
                     console.log('here');
+                    // Set up the inventoryService call.
+                    console.log(this.name);
+                    console.log(this.selectedRealm);
+
+                    inventoryService.name = this.name;
+                    inventoryService.selectedRealm = this.selectedRealm;
+                    getItemWrapper(this.selectedRealm);
+
+                    // Setting up the feedService call.
                     feedService.name = this.name;
                     feedService.selectedRealm = this.selectedRealm;
-                    console.log('here');
                     feedService.getCharacterFeed(function(response){
                         console.log('Character Feed API Call.');
                         if (!race) {
                             race = response.data.race;
                         }
                         thumbnail = response.data.thumbnail;
-
-                        console.log(thumbnail);
-                        console.log(characterImage(thumbnail));
-
 
                         // // Set the background images
                         // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
@@ -849,7 +864,7 @@ angular.module('wowApp')
                             'background' : "http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg"
                         };
 
-                        console.log(character);
+                        // console.log(character);
 
                         // Set the background based on the recent API call.
                         setBackground(character.backgroundImg, character.background);
@@ -858,11 +873,11 @@ angular.module('wowApp')
 
                         $rootScope.$broadcast('character_retrieved');
                         console.log('just sent character retrieve update');
-                        console.log(self.name);
-                        console.log(self.selectedRealm);
-                        console.log(response.data.feed.length);
+                        // console.log(self.name);
+                        // console.log(self.selectedRealm);
+                        // console.log(response.data.feed.length);
 
-                        processFeed(self.name, self.selectedRealm, response.data.feed);
+                        processFeed(self.selectedRealm, response.data.feed);
 
                     }, function(err) {
                         console.log(err.status);
@@ -873,8 +888,8 @@ angular.module('wowApp')
             },
 
             setBackground: function(first_url, second_url) {
-                console.log(first_url);
-                console.log(second_url);
+                // console.log(first_url);
+                // console.log(second_url);
 
                 // Set the background images
                 // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
@@ -957,6 +972,7 @@ angular.module('wowApp')
                 .then(callback,err);
         };
 
+
     })
 
     .service('feedService', function($http, keys) {
@@ -965,6 +981,17 @@ angular.module('wowApp')
         // Character Profile API Call - Charcater Feed
         this.getCharacterFeed = function(callback, err) {
             $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "feed"} } )
+                .then(callback,err);
+        };
+
+    })
+
+    .service('inventoryService', function($http, keys) {
+
+
+        // Character Profile API Call - Items
+        this.getItem = function(callback, err) {
+            $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "items" } } )
                 .then(callback,err);
         };
 
