@@ -40,10 +40,6 @@ angular.module('wowApp')
     .controller('characterSearchCtrl', function ($scope, $location, characterFeed, characterService, itemService) {
         // Start the characterFeed service.  This is going to check/populate races, classes, bosses, and zones.
 
-        console.log('in CHARACTERSEARCH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-
-
-
         // myCache.put('key', 'value');
         // console.log(myCache.get('key'));
         // var cache = myCache;
@@ -90,21 +86,13 @@ angular.module('wowApp')
 
     .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, characterFeed, characterService, itemService) {
 
-        console.log('IN CHARACTERCTRL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+
         var self = this;
 
         self.feed = [];
         self.filteredFeed = [];
         self.inventorySlots = [];
         self.inventoryArray = [];
-
-        // var items = [];
-        // var count = 0;
-        // var idx = 0;
-        // var race;
-        // var thumbnail;
-
-        var loadedFeed = false;
 
         $scope.show = false;
 
@@ -122,19 +110,6 @@ angular.module('wowApp')
 
         // Populate realmsResult with cached items (if there are any).
         $scope.realmsResult = characterFeed.getCacheItems("realms");
-
-
-
-        // This sets the service to assign the variable .name to whatever the user enters into the htm entry.
-        // $scope.$watch('name', function () {
-        //     characterService.name = $scope.name;
-        // });
-
-        // This sets the service to assign the variable .selectedRealm to whatever the user enters into the htm entry.
-        // $scope.$watch('selectedRealm', function () {
-        //     characterService.selectedRealm = $scope.selectedRealm;
-        // });
-
 
         $scope.$watch('showFeed', function() {
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
@@ -161,8 +136,6 @@ angular.module('wowApp')
 
         // This kicks things off.
         characterService.init();
-
-
 
         // These are used for the tooltips.  They work with $sce to sanitize the dynamic html so that it is rendered properly.
         // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
