@@ -6,7 +6,6 @@ angular.module('wowApp')
 .directive("feedTable", function() {
     return {
         templateUrl: 'templates/feedTable.htm',
-        // controller: 'characterCtrl',
         replace: true
     };
 })

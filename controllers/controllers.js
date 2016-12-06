@@ -140,16 +140,15 @@ angular.module('wowApp')
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
         });
 
+
         $scope.$on('character_retrieved', function() {
             console.log('broadcast received');
 
             $scope.characterResult = characterService.getCacheItems('Char:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
 
-            console.log($scope.characterResult);
-            characterService.background = $scope.characterResult.background;
-            characterService.backgroundImg = $scope.characterResult.backgroundImg;
-            console.log(characterService.background);
-            console.log(characterService.backgroundImg);
+            // Set the bavkground following the cache success.
+            characterService.setBackground($scope.characterResult.background, $scope.characterResult.backgroundImg);
+
         });
 
         $scope.$on('feed_retrieved', function() {

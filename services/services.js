@@ -738,8 +738,9 @@ angular.module('wowApp')
 
         var setBackground = function() {
             console.log('setting background.');
-            console.log(self.backgroundImg);
+            console.log(this.backgroundImg);
             console.log(self.background);
+            console.log(self.characterResult);
 
 
             // Set the background images
@@ -805,9 +806,6 @@ angular.module('wowApp')
                     console.log('Checking cache for feed.');
                     $rootScope.$broadcast('character_retrieved');
 
-                    setBackground();
-
-
                     if (getCacheStatus('Feed:' +self.name.toLowerCase() + ':' + self.selectedRealm)) {
                         console.log('feed is cached.');
                         $rootScope.$broadcast('feed_retrieved');
@@ -826,8 +824,11 @@ angular.module('wowApp')
                         }
                         thumbnail = response.data.thumbnail;
 
+                        console.log(thumbnail);
+                        console.log(characterImage(thumbnail));
 
-                        // Set the background images
+
+                        // // Set the background images
                         // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
                         //
                         // // Set background image for profile based on race
@@ -850,13 +851,8 @@ angular.module('wowApp')
 
                         console.log(character);
 
-                        self.background = character.background;
-                        self.backgroundImg = character.backgroundImg;
-
-                        console.log(self.background);
-                        console.log(self.backgroundImg);
-
-                        setBackground();
+                        // Set the background based on the recent API call.
+                        setBackground(character.backgroundImg, character.background);
 
                         setCacheStatus('Char:' + character.name.toLowerCase() + ':' + character.realm, character);
 
@@ -874,6 +870,21 @@ angular.module('wowApp')
                     });
                 }
                 console.log('end of init function.');
+            },
+
+            setBackground: function(first_url, second_url) {
+                console.log(first_url);
+                console.log(second_url);
+
+                // Set the background images
+                // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
+                $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat 182px 115px");
+
+                // Set background image for profile based on race
+                // $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
+
+                $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
+
             }
 
         };
