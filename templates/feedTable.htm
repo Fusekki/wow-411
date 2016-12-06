@@ -48,8 +48,9 @@
                                                   <!--</tbody>-->
                                               <!--</table>">-->
             <!--{{feedItem.quantity }} {{ feedItem.title }}</td>-->
-        <td ng-switch-when="BOSS-NO">{{feedItem.quantity }} {{ feedItem.title }}</td>
-        <td ng-switch-default data-toggle="tooltip" data-placement="top" title="{{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br>">{{ feedItem.name  || feedItem.title }}</td>
+        <!--<td ng-switch-when="BOSS-NO">{{feedItem.quantity }} {{ feedItem.title }}</td>-->
+        <td ng-switch-default tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip-template="'templates/achievementTooltip.htm'">{{ feedItem.name  || feedItem.title }}</td>
+        <!--<td ng-switch-default data-toggle="tooltip" data-placement="top" title="{{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br>">{{ feedItem.name  || feedItem.title }}</td>-->
         <td> {{ convertToStandard(feedItem.timestamp) }}</td>
         <!--<td ng-switch-default data-toggle="tooltip" data-placement="top" title="{{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br>">{{ feedItem.name  || feedItem.title }}</td>-->
         <!--<td> {{ convertToStandard(feedItem.timestamp) }}</td>-->
