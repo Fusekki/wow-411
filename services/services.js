@@ -130,7 +130,7 @@ angular.module('wowApp')
         var initRealms = function() {
             if (getCacheStatus("realms")) {
                 console.log('realms are defined');
-                console.log(realmMap);
+                // console.log(realmMap);
             } else {
                 console.log('Realms are not defined');
                 realmService.getRealms(function(response){
@@ -469,9 +469,9 @@ angular.module('wowApp')
         };
 
 
-        var processFeed = function(realm, feed) {
+        var processFeed = function(name, realm, feed) {
 
-            // self.name = name;
+            self.name = name.toLowerCase();
             self.selectedRealm = realm;
             console.log('in Process Feed.');
             // console.log(self.name);
@@ -589,8 +589,8 @@ angular.module('wowApp')
 
             // self.list = self.feed;
             // console.log(self.selectedRealm);
-            // console.log(self.name);
-            myCache.put('Feed:'+ self.name.toLowerCase() + ':' + self.selectedRealm,self.processedFeed);
+            // console.log(this.name);
+            myCache.put('Feed:'+ self.name + ':' + self.selectedRealm, self.processedFeed);
 
             console.log('Feed is now cached.');
             // console.log(temp);
@@ -820,6 +820,11 @@ angular.module('wowApp')
                     if (getCacheStatus('Feed:' +self.name.toLowerCase() + ':' + self.selectedRealm)) {
                         console.log('feed is cached.');
                         $rootScope.$broadcast('feed_retrieved');
+
+                        if (getCacheStatus('Inv:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
+                         console.log('inventory is cached.');
+                         $rootScope.$broadcast('inventory_retrieved');
+                        }
                     }
                 } else {
                     console.log('character is not defined');
@@ -877,7 +882,7 @@ angular.module('wowApp')
                         // console.log(self.selectedRealm);
                         // console.log(response.data.feed.length);
 
-                        processFeed(self.selectedRealm, response.data.feed);
+                        processFeed(self.name, self.selectedRealm, response.data.feed);
 
                     }, function(err) {
                         console.log(err.status);
