@@ -419,3 +419,7 @@
     height: 44px;
     padding: 3px 0 0 3px;
 }
+
+.uncommon {
+    color: green;
+}

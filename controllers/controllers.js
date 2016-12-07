@@ -286,6 +286,7 @@ angular.module('wowApp')
             console.log($scope.bossMap(bossName));
             return $scope.bossMap(bossName);
         };
+
     })
 
     .filter('unsafe', function($sce) {

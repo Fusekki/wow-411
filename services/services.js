@@ -319,6 +319,8 @@ angular.module('wowApp')
 
             init: function() {
 
+                console.log(itemQualityMap[2]);
+
                 initRealms();
 
                 // Build the races map
