@@ -3,7 +3,8 @@
     <tbody>
     <tr>
         <td>
-            <b class= {{ itemqualityMap(i.quality) }}> {{  i.name }} </b> <br>
+            <b ng-class= "{poor: i.quality == 1, common: i.quality == 2, uncommon: i.quality == 3, rare: i.quality == 4, epi: i.quality == 5, legendary: i.quality == 6, artifact: i.quality == 7, heirloom: i.quality == 8}"> {{  i.name }} </b> <br>
+            <!--<b class= {{ itemqualityMap(i.quality) }}> {{  i.name }} </b> <br>-->
             Item Level {{ i.itemLevel }} <br>
             <!--{{ itemupgradableMap(i.upgradable) }} </span> <br>-->
             <span class="item-white-text"> {{ itembindMap(i.itemBind) }}</span> <br>

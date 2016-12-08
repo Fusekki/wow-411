@@ -420,6 +420,73 @@
     padding: 3px 0 0 3px;
 }
 
-.uncommon {
-    color: green;
+.poor {
+
 }
+
+.common {
+    color: #1eff00;
+}
+
+.uncommon {
+    color: #0081ff;
+}
+
+.rare {
+
+}
+
+.epic {
+
+}
+
+
+.lengendary {
+
+}
+
+.artifact {
+
+}
+
+.heirloom {
+
+}
+
+
+.border_poor {
+
+}
+
+.border_common {
+    border: 1px solid #1eff00;
+    border-radius: 0.25em;
+}
+
+.border_uncommon {
+    border: 1px solid #0081ff;
+    border-radius: 0.25em;
+}
+
+.border_rare {
+
+}
+
+.border_epic {
+
+}
+
+
+.border_lengendary {
+
+}
+
+.border_artifact {
+
+}
+
+.border_heirloom {
+
+
+}
+
