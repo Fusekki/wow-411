@@ -1,9 +1,13 @@
 <img src='http://media.blizzard.com/wow/icons/56/{{ i.icon }}.jpg'>
 <table>
     <tbody>
-    <tr>
-        <td>
-            <b ng-class= "{poor: i.quality == 1, common: i.quality == 2, uncommon: i.quality == 3, rare: i.quality == 4, epi: i.quality == 5, legendary: i.quality == 6, artifact: i.quality == 7, heirloom: i.quality == 8}"> {{  i.name }} </b> <br>
+    <tr ng-switch on="i.quality">
+        <td ng-switch-when="none">
+            <b class="item-white-text">{{ i.name }}</b> <br>
+            <span class="item-yellow-text">Empty slot</span>
+        </td>
+        <td ng-switch-default>
+            <b ng-class= "{poor: i.quality == 1, common: i.quality == 2, uncommon: i.quality == 3, rare: i.quality == 4, epic: i.quality == 5, legendary: i.quality == 6, artifact: i.quality == 7, heirloom: i.quality == 8}"> {{  i.name }} </b> <br>
             <!--<b class= {{ itemqualityMap(i.quality) }}> {{  i.name }} </b> <br>-->
             Item Level {{ i.itemLevel }} <br>
             <!--{{ itemupgradableMap(i.upgradable) }} </span> <br>-->

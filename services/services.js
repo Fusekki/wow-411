@@ -470,6 +470,20 @@ angular.module('wowApp')
             }
         };
 
+        var mapItem = function(idx) {
+            // console.log(idx);
+            for(var key in bossMap) {
+                // console.log(bossMap[key]);
+                if(bossMap[key].name === idx) {
+                    // console.log(bossMap[key]);
+                    return bossMap[key];
+                }
+            }
+
+            console.log('not found in bosses');
+            return "";
+        };
+
 
         var processFeed = function(name, realm, feed) {
 
@@ -510,8 +524,8 @@ angular.module('wowApp')
                     // console.log('Item Service API Call.');
                     //
                     // console.log('invoking call item service for the items in character Feed for item:');
-                    console.log('back from checking cache/API call for following item for FEED: ');
-                    console.log(feedElement);
+                    // console.log('back from checking cache/API call for following item for FEED: ');
+                    // console.log(feedElement);
 
                     // feedElement = callItemService(itemElement);
                     // console.log('returned to getCharacterFeed with the following object:');
@@ -616,8 +630,8 @@ angular.module('wowApp')
                 console.log('Get Item API Call for inventory items');
                 // console.log('in getItem service');
                 var slots = characterFeed.getInventorySlots();
-                // console.log(slots);
-
+                console.log(response.data.items);
+                // for (var x = 0; x < response.data.items.length; x++) {
                 for (var x = 0; x < slots.length; x++) {
                     // Map the items here before you push them.
 
@@ -625,33 +639,45 @@ angular.module('wowApp')
                     // console.log('creating inventorySlot');
 
                     inventorySlot.name = slots[x];
-                    inventorySlot.value = response.data.items[slots[x]];
-                    // console.log(response.data.items[slots[x]]);
-                    inventorySlot.slot = characterFeed.getInventorySlot(slots[x]);
-                    inventorySlot.bonusStats = [];
-                    inventorySlot.id = response.data.items[slots[x]].id;
-                    // console.log('adding inventorySlot item to inventorySlots array.');
-                    // console.log(inventorySlot);
-                    // console.log(inventorySlot.value.armor);
-
-                    self.inventorySlots.push(inventorySlot);
 
                     if (slots[x] in response.data.items) {
-                        var inventoryElement = {};
+                        inventorySlot.value = response.data.items[slots[x]];
+                        // console.log(response.data.items[slots[x]]);
+                        inventorySlot.slot = characterFeed.getInventorySlot(slots[x]);
+                        inventorySlot.bonusStats = [];
+                        inventorySlot.id = response.data.items[slots[x]].id;
+                        // console.log('adding inventorySlot item to inventorySlots array.');
+                        // console.log(inventorySlot);
+                        // console.log(inventorySlot.value.armor);
+                    } else {
+                        console.log('item does not exist.');
+                        inventorySlot.value = "none";
+                    }
+
+
+                    self.inventorySlots.push(inventorySlot);
+                    var inventoryElement = {};
+                    if (slots[x] in response.data.items) {
+                        // var inventoryElement = {};
                         // console.log('calling callItemService from  within getItem');
                         // console.log(inventorySlot);
-                        console.log('invoking call item service for the items inventory slots on item:');
-                        console.log(inventorySlot);
+                        // console.log('invoking call item service for the items inventory slots on item:');
+                        // console.log(inventorySlot);
 
                         inventoryElement = callItemService(inventorySlot);
 
 
                         inventoryElement.slot = slots[x];
                         // console.log(inventoryElement);
-                        self.inventoryArray.push(inventoryElement);
+                        // self.inventoryArray.push(inventoryElement);
                     } else {
                         console.log('key does not exist. Moving on to next item.');
+                        inventoryElement.slot = slots[x];
+                        inventoryElement.name = slots[x];
+                        inventoryElement.quality = 'none';
                     }
+                    // Pushing element either way.
+                    self.inventoryArray.push(inventoryElement);
                 }
 
 
@@ -659,6 +685,8 @@ angular.module('wowApp')
                     console.log('sort inventory items');
                     return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
                 });
+                console.log(self.inventoryArray);
+                console.log(self.inventorySlots);
                 console.log(self.name);
                 console.log(self.selectedRealm);
                 console.log(self.inventory);
@@ -666,7 +694,7 @@ angular.module('wowApp')
                 myCache.put('Inv:'+ self.name.toLowerCase() + ':' + self.selectedRealm, self.inventory);
 
                 console.log('inventory is now cached.');
-                // console.log(self.inventory);
+                console.log(self.inventory);
                 $rootScope.$broadcast('inventory_retrieved');
 
             }, function (err) {
@@ -683,7 +711,7 @@ angular.module('wowApp')
             // console.log(itemElement);
 
 
-            console.log('itemService API Wrapper call for FEED.');
+            // console.log('itemService API Wrapper call for FEED.');
 
             var item = {};
 
@@ -707,7 +735,7 @@ angular.module('wowApp')
             }, function (err) {
                 console.log(err.status);
             });
-            console.log(item);
+            // console.log(item);
             return item;
         };
 
@@ -755,6 +783,8 @@ angular.module('wowApp')
             console.log('setting background.');
 
             // Set the background images
+            // this first one has problems loading sometimes.
+
             // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
             $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
 
@@ -867,7 +897,8 @@ angular.module('wowApp')
                             'realm' : response.data.realm,
                             'thumbnail' : response.data.thumbnail,
                             'thk' : response.data.totalHonorableKills,
-                            'backgroundImg' : "http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail),
+                            // 'backgroundImg' : "http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail),
+                            'backgroundImg' : "http://render-us.worldofwarcraft.com/character/" + characterImage(thumbnail),
                             'background' : "http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg"
                         };
 
@@ -895,8 +926,8 @@ angular.module('wowApp')
             },
 
             setBackground: function(first_url, second_url) {
-                // console.log(first_url);
-                // console.log(second_url);
+                console.log(first_url);
+                console.log(second_url);
 
                 // Set the background images
                 // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");

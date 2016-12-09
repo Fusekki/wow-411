@@ -139,7 +139,7 @@ angular.module('wowApp')
 
 
             $scope.inventory = characterService.getCacheItems('Inv:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
-            // console.log($scope.inventory);
+            console.log($scope.inventory);
 
         });
 
