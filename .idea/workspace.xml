@@ -5,8 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/controllers.js" afterPath="$PROJECT_DIR$/controllers/controllers.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/services/services.js" afterPath="$PROJECT_DIR$/services/services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/inventoryTooltip.htm" afterPath="$PROJECT_DIR$/templates/inventoryTooltip.htm" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/lootTooltip.htm" afterPath="$PROJECT_DIR$/templates/lootTooltip.htm" />
     </list>
     <ignored path="wow.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,18 +27,18 @@
       <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+            <state relative-caret-position="598">
+              <caret line="132" column="40" lean-forward="true" selection-start-line="132" selection-start-column="40" selection-end-line="132" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="services.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/services/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="673" column="83" lean-forward="true" selection-start-line="673" selection-start-column="83" selection-end-line="673" selection-end-column="83" />
+            <state relative-caret-position="450">
+              <caret line="489" column="107" lean-forward="false" selection-start-line="489" selection-start-column="107" selection-end-line="489" selection-end-column="107" />
               <folding />
             </state>
           </provider>
@@ -69,14 +67,14 @@
       <file leaf-file-name="feedTable.htm" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/feedTable.htm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
+            <state relative-caret-position="527">
               <caret line="31" column="12" lean-forward="false" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="33" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="inventoryTooltip.htm" pinned="false" current-in-tab="true">
+      <file leaf-file-name="inventoryTooltip.htm" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/inventoryTooltip.htm">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="51">
@@ -109,7 +107,7 @@
       <file leaf-file-name="characterResult.htm" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/characterResult.htm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="153">
               <caret line="9" column="45" lean-forward="false" selection-start-line="9" selection-start-column="45" selection-end-line="9" selection-end-column="45" />
               <folding />
             </state>
@@ -162,11 +160,11 @@
       <find>ng-controller</find>
       <find>self.feed</find>
       <find>searchFeed</find>
-      <find>getItemWrapper</find>
       <find>image-hover</find>
       <find>icons</find>
       <find>icon</find>
       <find>backgroundImg</find>
+      <find>getItemWrapper</find>
     </findStrings>
     <replaceStrings>
       <replace>sortedStats</replace>
@@ -212,10 +210,10 @@
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/templates/inventoryItem.htm" />
         <option value="$PROJECT_DIR$/templates/characterResult.htm" />
-        <option value="$PROJECT_DIR$/controllers/controllers.js" />
-        <option value="$PROJECT_DIR$/services/services.js" />
         <option value="$PROJECT_DIR$/templates/lootTooltip.htm" />
         <option value="$PROJECT_DIR$/templates/inventoryTooltip.htm" />
+        <option value="$PROJECT_DIR$/controllers/controllers.js" />
+        <option value="$PROJECT_DIR$/services/services.js" />
       </list>
     </option>
   </component>
@@ -599,12 +597,13 @@
       <workItem from="1481033439181" duration="10864000" />
       <workItem from="1481126468917" duration="6164000" />
       <workItem from="1481208045279" duration="9289000" />
-      <workItem from="1481296624755" duration="6128000" />
+      <workItem from="1481296624755" duration="6493000" />
+      <workItem from="1481552468375" duration="3033000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="463695000" />
+    <option name="totallyTimeSpent" value="467093000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -931,14 +930,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/characterSearch.htm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -949,7 +940,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/characterResult.htm">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="153">
           <caret line="9" column="45" lean-forward="false" selection-start-line="9" selection-start-column="45" selection-end-line="9" selection-end-column="45" />
           <folding />
         </state>
@@ -957,7 +948,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/feedTable.htm">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
+        <state relative-caret-position="527">
           <caret line="31" column="12" lean-forward="false" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="33" />
           <folding />
         </state>
@@ -967,14 +958,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="40" lean-forward="false" selection-start-line="4" selection-start-column="40" selection-end-line="4" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/services/services.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="673" column="83" lean-forward="true" selection-start-line="673" selection-start-column="83" selection-end-line="673" selection-end-column="83" />
           <folding />
         </state>
       </provider>
@@ -991,6 +974,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="31" lean-forward="false" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="598">
+          <caret line="132" column="40" lean-forward="true" selection-start-line="132" selection-start-column="40" selection-end-line="132" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/services/services.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="489" column="107" lean-forward="false" selection-start-line="489" selection-start-column="107" selection-end-line="489" selection-end-column="107" />
           <folding />
         </state>
       </provider>

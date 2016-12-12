@@ -442,8 +442,8 @@ angular.module('wowApp')
         self.list = {};
         self.processedFeed = [];
         self.filteredFeed = [];
-        self.inventorySlots = [];
-        self.inventoryArray = [];
+        // self.inventorySlots = [];
+        // self.inventoryArray = [];
 
 
         var getCacheStatus = function (cache) {
@@ -486,6 +486,10 @@ angular.module('wowApp')
 
 
         var processFeed = function(name, realm, feed) {
+
+            // Clear the arrays before we start in case there is leftover information from a previous call.
+            self.inventoryArray = [];
+            self.inventorySlots = [];
 
             self.name = name.toLowerCase();
             self.selectedRealm = realm;
@@ -617,7 +621,8 @@ angular.module('wowApp')
         };
 
         // This is the decorator call for the inventory slots.
-        var getItemWrapper = function(realm) {
+        var getItemWrapper = function(name, realm) {
+            self.name = name;
             self.selectedRealm = realm;
 
             console.log('in getItemWrapper for Inventory Items.');
@@ -685,8 +690,8 @@ angular.module('wowApp')
                     console.log('sort inventory items');
                     return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
                 });
-                console.log(self.inventoryArray);
-                console.log(self.inventorySlots);
+                console.log(self.inventoryArray.length);
+                console.log(self.inventorySlots.length);
                 console.log(self.name);
                 console.log(self.selectedRealm);
                 console.log(self.inventory);
@@ -868,7 +873,7 @@ angular.module('wowApp')
 
                     inventoryService.name = this.name;
                     inventoryService.selectedRealm = this.selectedRealm;
-                    getItemWrapper(this.selectedRealm);
+                    getItemWrapper(this.name, this.selectedRealm);
 
                     // Setting up the feedService call.
                     feedService.name = this.name;
