@@ -39,8 +39,6 @@
 }
 
 .navbar-custom .nav li a {
-    -webkit-transition: background .3s ease-in-out;
-    -moz-transition: background .3s ease-in-out;
     transition: background .3s ease-in-out;
 }
 
@@ -122,7 +120,7 @@
 }
 
 .rare {
-    olor: #0070ff;
+    oolor: #0070ff;
 }
 
 .epic {
@@ -411,82 +409,133 @@
     height: 49px;
     display: block;
     position: absolute;
+    /*-webkit-box-shadow: 0 0 8px black;*/
+    box-shadow: 0 0 8px black;
 }
 
 .summary-inventory .item img {
     display: block;
-    width: 44px;
-    height: 44px;
+    width: 47px;
+    height: 47px;
     padding: 3px 0 0 3px;
 }
 
 .poor {
-
+    color: #9d9d9d;
 }
 
 .common {
-    color: #1eff00;
+    color: #fff;
 }
 
 .uncommon {
-    color: #0081ff;
+    color: #1eff00
 }
 
 .rare {
-
+    color: #0070ff;
 }
 
 .epic {
-
+    color: #a335ee;
 }
 
 
 .lengendary {
-
+    color: #ff8000;
 }
 
 .artifact {
-
+    color: #e6cc80;
 }
 
 .heirloom {
-
+    color: #e6cc80;
 }
 
 
 .border_poor {
-
+    border: 1px solid #9d9d9d;
 }
 
 .border_common {
-    border: 1px solid #1eff00;
-    border-radius: 0.25em;
+    border: 1px solid #fff;
 }
 
 .border_uncommon {
-    border: 1px solid #0081ff;
-    border-radius: 0.25em;
+    border: 1px solid #1eff00;
 }
 
 .border_rare {
-
+    border: 1px solid #0070ff;
 }
 
 .border_epic {
-
+    border: 1px solid #a335ee;
 }
 
 
 .border_lengendary {
-
+    border: 1px solid #ff8000;
 }
 
 .border_artifact {
-
+    border: 1px solid #e6cc80;
 }
 
 .border_heirloom {
+    border: 1px solid #e6cc80;
+
+}
+
+.frame {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 49px;
+    height: 49px;
+    /*background-position: -147px 0;*/
+    /*background: url(/images/inventory-slots.png) no-repeat;*/
+    border-radius: 0.5em;
+}
 
 
+.frame_poor {
+    border: 1px solid #9d9d9d;
+}
+
+
+.frame_common {
+    border: 1px solid #fff;
+}
+
+
+.frame_uncommon {
+
+    border: 1px solid #1eff00;
+}
+
+.frame_rare {
+    border: 1px solid #0070ff;
+}
+
+
+.frame_epic {
+    border: 1px solid #a335ee;
+}
+
+
+.frame_legendary {
+    border: 1px solid #ff8000;
+}
+
+
+.frame-artifact {
+    border: 1px solid #e6cc80;
+}
+
+
+.frame-heirloom {
+    border: 1px solid #e6cc80;
 }
 

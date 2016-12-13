@@ -2,7 +2,7 @@
 <table>
     <tbody>
     <tr>
-        <td switch on "feeditem.quality">
+        <td>
             <b ng-class="{poor: feedItem.quality == 1, common: feedItem.quality == 2, uncommon: feedItem.quality == 3, rare: feedItem.quality == 4, epic: feedItem.quality == 5, legendary: feedItem.quality == 6, artifact: feedItem.quality == 7, heirloom: feedItem.quality == 8}"> {{  feedItem.name }} </b> <br>
             <span class='item-yellow-text'>Item Level {{ feedItem.itemLevel }} <br>
                                                                   {{ itemupgradableMap(feedItem.upgradable) }} </span> <br>

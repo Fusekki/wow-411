@@ -442,8 +442,8 @@ angular.module('wowApp')
         self.list = {};
         self.processedFeed = [];
         self.filteredFeed = [];
-        // self.inventorySlots = [];
-        // self.inventoryArray = [];
+        self.inventorySlots = [];
+        self.inventoryArray = [];
 
 
         var getCacheStatus = function (cache) {
@@ -622,6 +622,7 @@ angular.module('wowApp')
 
         // This is the decorator call for the inventory slots.
         var getItemWrapper = function(name, realm) {
+
             self.name = name;
             self.selectedRealm = realm;
 
@@ -632,6 +633,7 @@ angular.module('wowApp')
             // This is the API call for the character Items.  This call populates the inventory slots.
 
             inventoryService.getItem(function (response) {
+                console.log(self.inventorySlots);
                 console.log('Get Item API Call for inventory items');
                 // console.log('in getItem service');
                 var slots = characterFeed.getInventorySlots();

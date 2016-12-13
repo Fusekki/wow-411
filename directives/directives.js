@@ -15,7 +15,7 @@ angular.module('wowApp')
     return {
         templateUrl: 'templates/inventoryItem.htm',
         // controller: 'characterCtrl',
-        replace: false
+        replace: true
     };
 })
 
