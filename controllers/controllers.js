@@ -290,6 +290,11 @@ angular.module('wowApp')
             return $scope.bossMap(bossName);
         };
 
+        $scope.capitalizeName = function(name) {
+            console.log(name);
+            return name.charAt(0).toUpperCase() + name.slice(1);
+        };
+
     })
 
     .filter('unsafe', function($sce) {

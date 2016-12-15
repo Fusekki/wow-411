@@ -1,7 +1,6 @@
 <div class="item" tooltip-placement="auto left" uib-tooltip-template="'templates/inventoryTooltip.htm'">
-    <img class="media-object image-hover" src="http://media.blizzard.com/wow/icons/56/{{ i.icon }}.jpg" alt="{{ i.name }}" />
+    <img ng-show="i.icon" class="media-object image-hover" src="http://media.blizzard.com/wow/icons/56/{{ i.icon }}.jpg" alt="{{ i.name }}" />
     <!--We are using underscores because a dash would be the same as camelcase.-->
-    <span class="frame" ng-class="{poor: i.quality == 0, common: i.quality == 1, frame_uncommon: i.quality == 2, frame_rare: i.quality == 3, frame_epic: i.quality == 4, frame_legendary: i.quality == 5, frame_artifact: i.quality == 6, frame_heirloom: i.quality == 7}"> {{  i.quality }} </span>
-
+    <span class="frame" ng-class="{poor: i.quality == 0, common: i.quality == 1, frame_uncommon: i.quality == 2, frame_rare: i.quality == 3, frame_epic: i.quality == 4, frame_legendary: i.quality == 5, frame_artifact: i.quality == 6, frame_heirloom: i.quality == 7}"></span>
 </div>
 
