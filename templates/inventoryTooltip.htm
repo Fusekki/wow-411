@@ -3,11 +3,11 @@
     <tbody>
     <tr ng-switch on="i.quality">
         <td ng-switch-when="none">
-            <b class="item-white-text">{{ i.name }}</b> <br>
+            <b class="item-white-text">{{ capitalizeName(i.name) }}</b> <br>
             <span class="item-yellow-text">Empty slot</span>
         </td>
         <td ng-switch-default>
-            <b ng-class= "{poor: i.quality == 1, common: i.quality == 2, uncommon: i.quality == 3, rare: i.quality == 4, epic: i.quality == 5, legendary: i.quality == 6, artifact: i.quality == 7, heirloom: i.quality == 8}"> {{  i.name }} </b> <br>
+            <b ng-class= "{poor: i.quality == 9, common: i.quality == 1, uncommon: i.quality == 2, rare: i.quality == 3, epic: i.quality == 4, legendary: i.quality == 5, artifact: i.quality == 6, heirloom: i.quality == 7}"> {{  i.name }} </b> <br>
             <!--<b class= {{ itemqualityMap(i.quality) }}> {{  i.name }} </b> <br>-->
             Item Level {{ i.itemLevel }} <br>
             <!--{{ itemupgradableMap(i.upgradable) }} </span> <br>-->

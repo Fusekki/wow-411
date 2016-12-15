@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd6f9b02-75a6-491b-a19f-b51cde94a6ac" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/controllers.js" afterPath="$PROJECT_DIR$/controllers/controllers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/characterResult.htm" afterPath="$PROJECT_DIR$/templates/characterResult.htm" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/inventoryItem.htm" afterPath="$PROJECT_DIR$/templates/inventoryItem.htm" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/inventoryTooltip.htm" afterPath="$PROJECT_DIR$/templates/inventoryTooltip.htm" />
     </list>
@@ -28,8 +28,8 @@
       <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4981">
-              <caret line="293" column="30" lean-forward="false" selection-start-line="293" selection-start-column="30" selection-end-line="293" selection-end-column="30" />
+            <state relative-caret-position="996">
+              <caret line="305" column="10" lean-forward="true" selection-start-line="305" selection-start-column="10" selection-end-line="305" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -78,28 +78,28 @@
       <file leaf-file-name="inventoryTooltip.htm" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/inventoryTooltip.htm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="2" column="11" lean-forward="true" selection-start-line="2" selection-start-column="11" selection-end-line="2" selection-end-column="11" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="inventoryItem.htm" pinned="false" current-in-tab="true">
+      <file leaf-file-name="inventoryItem.htm" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/inventoryItem.htm">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="1" column="66" lean-forward="true" selection-start-line="1" selection-start-column="66" selection-end-line="1" selection-end-column="66" />
+              <caret line="1" column="151" lean-forward="false" selection-start-line="1" selection-start-column="151" selection-end-line="1" selection-end-column="151" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="characterResult.htm" pinned="false" current-in-tab="false">
+      <file leaf-file-name="characterResult.htm" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/characterResult.htm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+            <state relative-caret-position="697">
+              <caret line="59" column="112" lean-forward="false" selection-start-line="59" selection-start-column="112" selection-end-line="59" selection-end-column="112" />
               <folding />
             </state>
           </provider>
@@ -199,12 +199,12 @@
         <option value="$PROJECT_DIR$/templates/characterSearch.htm" />
         <option value="$PROJECT_DIR$/services/services.js" />
         <option value="$PROJECT_DIR$/templates/lootTooltip.htm" />
-        <option value="$PROJECT_DIR$/templates/characterResult.htm" />
         <option value="$PROJECT_DIR$/directives/directives.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
+        <option value="$PROJECT_DIR$/templates/inventoryItem.htm" />
         <option value="$PROJECT_DIR$/controllers/controllers.js" />
         <option value="$PROJECT_DIR$/templates/inventoryTooltip.htm" />
-        <option value="$PROJECT_DIR$/templates/inventoryItem.htm" />
+        <option value="$PROJECT_DIR$/templates/characterResult.htm" />
       </list>
     </option>
   </component>
@@ -592,12 +592,12 @@
       <workItem from="1481552468375" duration="3296000" />
       <workItem from="1481643237210" duration="20000" />
       <workItem from="1481643281279" duration="9934000" />
-      <workItem from="1481813567102" duration="866000" />
+      <workItem from="1481813567102" duration="1549000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="478176000" />
+    <option name="totallyTimeSpent" value="478859000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -916,14 +916,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/characterSearch.htm">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="10" lean-forward="false" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/services/services.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="10608">
@@ -939,22 +931,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4981">
-          <caret line="293" column="30" lean-forward="false" selection-start-line="293" selection-start-column="30" selection-end-line="293" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/inventoryTooltip.htm">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="11" lean-forward="true" selection-start-line="2" selection-start-column="11" selection-end-line="2" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/feedTable.htm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -963,18 +939,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/characterResult.htm">
+    <entry file="file://$PROJECT_DIR$/templates/inventoryItem.htm">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+        <state relative-caret-position="17">
+          <caret line="1" column="151" lean-forward="false" selection-start-line="1" selection-start-column="151" selection-end-line="1" selection-end-column="151" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/inventoryItem.htm">
+    <entry file="file://$PROJECT_DIR$/controllers/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="66" lean-forward="true" selection-start-line="1" selection-start-column="66" selection-end-line="1" selection-end-column="66" />
+        <state relative-caret-position="996">
+          <caret line="305" column="10" lean-forward="true" selection-start-line="305" selection-start-column="10" selection-end-line="305" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/inventoryTooltip.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/characterSearch.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="10" lean-forward="false" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/characterResult.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="59" column="112" lean-forward="false" selection-start-line="59" selection-start-column="112" selection-end-line="59" selection-end-column="112" />
           <folding />
         </state>
       </provider>

@@ -292,7 +292,17 @@ angular.module('wowApp')
 
         $scope.capitalizeName = function(name) {
             console.log(name);
-            return name.charAt(0).toUpperCase() + name.slice(1);
+            switch (name) {
+                case 'offHand':
+                    return 'Off Hand';
+                    break;
+                case 'mainHand':
+                    return 'Main Hand';
+                    break;
+                default:
+                    return name.charAt(0).toUpperCase() + name.slice(1);
+            }
+
         };
 
     })
