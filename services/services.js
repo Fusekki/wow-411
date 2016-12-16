@@ -126,12 +126,10 @@ angular.module('wowApp')
         var initRealms = function() {
             if (getCacheStatus("realms")) {
                 console.log('realms are defined');
-                // console.log(realmMap);
             } else {
                 console.log('Realms are not defined');
                 realmService.getRealms(function(response){
                     console.log('Get Realms API Call.');
-                    // console.log(response.data);
                     setCacheStatus("realms", response.data);
                     // Store in local array
                     realmMap = response.data;
