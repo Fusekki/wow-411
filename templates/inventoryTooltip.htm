@@ -3,7 +3,7 @@
     <tbody>
     <tr ng-switch on="i.quality">
         <td ng-switch-when="none">
-            <b class="item-white-text">{{ capitalizeName(i.name) }}</b> <br>
+            <b ng-show="i.name" class="item-white-text">{{ capitalizeName(i.name) }}</b> <br>
             <span class="item-yellow-text">Empty slot</span>
         </td>
         <td ng-switch-default>

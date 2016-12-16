@@ -331,74 +331,74 @@
     top: 290px;
     left: 0;
 }
-/*.summary-inventory .slot:nth-of-type(7) {*/
-
-    /*top: 348px;*/
-    /*left: 0;*/
-/*}*/
 .summary-inventory .slot:nth-of-type(7) {
 
-    top: 406px;
+    top: 348px;
     left: 0;
 }
 .summary-inventory .slot:nth-of-type(8) {
 
-    top: 0;
-    right: 0;
+    top: 406px;
+    left: 0;
 }
 .summary-inventory .slot:nth-of-type(9) {
 
-    top: 58px;
+    top: 0;
     right: 0;
 }
 .summary-inventory .slot:nth-of-type(10) {
 
-    top: 116px;
+    top: 58px;
     right: 0;
 }
 .summary-inventory .slot:nth-of-type(11) {
 
-    top: 174px;
+    top: 116px;
     right: 0;
 }
 .summary-inventory .slot:nth-of-type(12) {
 
-    top: 232px;
+    top: 174px;
     right: 0;
 }
 .summary-inventory .slot:nth-of-type(13) {
 
-    top: 290px;
+    top: 232px;
     right: 0;
 }
 .summary-inventory .slot:nth-of-type(14) {
 
-    top: 348px;
+    top: 290px;
     right: 0;
 }
 .summary-inventory .slot:nth-of-type(15) {
 
-    top: 406px;
+    top: 348px;
     right: 0;
 }
 .summary-inventory .slot:nth-of-type(16) {
+
+    top: 406px;
+    right: 0;
+}
+.summary-inventory .slot:nth-of-type(17) {
 
     left: 273.5px;
     bottom: 0px;
  }
 
-.summary-inventory .slot:nth-of-type(17) {
+.summary-inventory .slot:nth-of-type(18) {
 
     left: 348px;
     bottom: 0;
 }
 
 /*Tabard Slot*/
-.summary-inventory .slot:nth-of-type(18) {
+/*.summary-inventory .slot:nth-of-type(18) {*/
 
-    left: 0px;
-    top: 348px;
-}
+    /*left: 0px;*/
+    /*top: 348px;*/
+/*}*/
 
 
 

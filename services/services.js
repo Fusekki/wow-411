@@ -31,7 +31,7 @@ angular.module('wowApp')
         var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
         var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
         var itemBindMap =["Tradeable", "Binds when picked up"];
-        var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'trinket1', 'trinket2', 'waist', 'wrist'];
+        var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'tabard', 'trinket1', 'trinket2', 'waist', 'wrist'];
         var itemStatMap = {
             '1' : '+%s Health',
             '2' : '+%s Mana',
@@ -627,6 +627,12 @@ angular.module('wowApp')
             self.selectedRealm = realm;
 
             console.log('in getItemWrapper for Inventory Items.');
+
+            // First clear the array if it has any items from previous calls.
+            if (self.inventorySlots){
+                console.log('clearing inventory slots of extra items.');
+                self.inventorySlots = [];
+            }
             // console.log(this.name);
             // console.log(this.selectedRealm);
 
@@ -636,7 +642,10 @@ angular.module('wowApp')
                 console.log(self.inventorySlots);
                 console.log('Get Item API Call for inventory items');
                 // console.log('in getItem service');
+                // Mapping the array by item slot name
                 var slots = characterFeed.getInventorySlots();
+                console.log(slots);
+                console.log(response.data);
                 console.log(response.data.items);
                 // for (var x = 0; x < response.data.items.length; x++) {
                 for (var x = 0; x < slots.length; x++) {
@@ -657,7 +666,8 @@ angular.module('wowApp')
                         // console.log(inventorySlot);
                         // console.log(inventorySlot.value.armor);
                     } else {
-                        console.log('item does not exist.');
+                        console.log('item does not exist for slot name: ');
+                        console.log(slots[x]);
                         inventorySlot.value = "none";
                     }
 

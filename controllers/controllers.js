@@ -153,12 +153,17 @@ angular.module('wowApp')
         // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
 
         $scope.calcGold = function (idx) {
-            // console.log(typeof idx);
-            // console.log(idx);
-            if (typeof idx == 'number') {
-                return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
-            }
+            if (idx) {
+                // console.log(typeof idx);
+                // console.log(idx);
+                if (typeof idx == 'number') {
+                    return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
+                }
                 return $scope.convertGold(idx.sellPrice);
+            }
+            // else
+            return null;
+
         };
 
         $scope.calcStats =  function (idx) {
@@ -291,17 +296,23 @@ angular.module('wowApp')
         };
 
         $scope.capitalizeName = function(name) {
-            console.log(name);
-            switch (name) {
-                case 'offHand':
-                    return 'Off Hand';
-                    break;
-                case 'mainHand':
-                    return 'Main Hand';
-                    break;
-                default:
-                    return name.charAt(0).toUpperCase() + name.slice(1);
+            if (name) {
+
+                // console.log(name);
+                switch (name) {
+                    case 'offHand':
+                        return 'Off Hand';
+                        break;
+                    case 'mainHand':
+                        return 'Main Hand';
+                        break;
+                    default:
+                        return name.charAt(0).toUpperCase() + name.slice(1);
+                }
             }
+            // else
+            return "";
+
 
         };
 
