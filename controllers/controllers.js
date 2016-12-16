@@ -146,6 +146,17 @@ angular.module('wowApp')
 
         });
 
+
+        $scope.$on('achievements_retrieved', function() {
+
+            console.log('achievements broadcast received');
+            $scope.ach = characterService.getCacheItems('Ach');
+
+            // console.log($scope.name);
+            // console.log($scope.selectedRealm);
+            // console.log($scope.list);
+        });
+
         // This kicks things off.
         characterService.init();
 
@@ -214,15 +225,13 @@ angular.module('wowApp')
         $scope.classMap = function(idx) {
             return characterFeed.getClass(idx);
         };
-        $scope.bossMap = function(idx) {
+        $scope.bossMap = function(item) {
             // console.log(characterFeed.getRace(idx));
-            var test = characterFeed.getBoss(idx.name);
-            if (test.name) {
-                $scope.boss = characterFeed.getBoss(idx.name);
-            } else {
-                idx.tooltip = "BOSS-NO";
+            if (item.name) {
+                $scope.boss = characterFeed.getBoss(item.name);
+            }   else {
+                item.tooltip = "BOSS-NO";
             }
-
             // console.log($scope.boss);
         };
 

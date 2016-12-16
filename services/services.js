@@ -15,14 +15,14 @@ angular.module('wowApp')
 
     })
 
-    .service('characterFeed', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService) {
+    .service('characterFeed', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService, dataService) {
         // Private Variables
 
 
 
         var self = this;
 
-        var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
+        // var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
         var raceMap, classMap, bossMap, zoneMap = [], inventoryMap, realmMap;
 
         var genderMap = ["Male", "Female"];
@@ -176,11 +176,12 @@ angular.module('wowApp')
             getPrivateKey: function() {
                 return self.privateKey;
             },
-            getBoss: function(idx) {
-                // console.log(idx);
+            getBoss: function(name) {
+                console.log(name);
+                console.log(bossMap);
                 for(var key in bossMap) {
                     // console.log(bossMap[key]);
-                    if(bossMap[key].name === idx) {
+                    if(bossMap[key].name === name) {
                         // console.log(bossMap[key]);
                         return bossMap[key];
                     }
@@ -413,6 +414,27 @@ angular.module('wowApp')
                     });
                 }
 
+                // if (getCacheStatus("achievements")) {
+                //     console.log('achievements are defined');
+                // } else {
+                //     console.log('achievements are not defined');
+                //     dataService.getAchievements(function(response){
+                //         console.log('Get achievements API Call.');
+                //         console.log(response);
+                //         // setCacheStatus("achievements", response.data.zones);
+                //         // Store in local array
+                //         // zoneMap = response.data.zones;
+                //         if (getCacheStatus("achievements")) {
+                //             console.log('achievements are now defined.');
+                //             console.log('achievements are cached: ');
+                //             // console.log(myCache.get("zones"));
+                //         }
+                //         // console.log(characterFeed.getZoneStatus());
+                //     }, function(err) {
+                //         console.log(err.status);
+                //     });
+                // }
+
             },
 
 
@@ -424,7 +446,7 @@ angular.module('wowApp')
         };
     })
 
-    .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, inventoryService, keys) {
+    .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, inventoryService, dataService, keys) {
 
         // var self = this;
 
@@ -497,6 +519,7 @@ angular.module('wowApp')
             // console.log(self.name);
             // console.log(self.selectedRealm);
             // console.log(feed.length);
+            console.log(feed);
 
             // Process through items in reponse and determine the category each falls under.
             // console.log(response);
@@ -858,7 +881,22 @@ angular.module('wowApp')
                 // This starts both the Feed Call and the Inventory Call.
                 var self = this;
 
-
+                // if (getCacheStatus('Ach')) {
+                //     console.log('achievements are cached.');
+                //     $rootScope.$broadcast('achievements_retrieved');
+                //
+                //
+                // } else {
+                //     console.log('making achievements API call.');
+                //     dataService.getAchievements(function (response) {
+                //         setCacheStatus('Ach', response);
+                //         $rootScope.$broadcast('achievements_retrieved');
+                //     }, function (err) {
+                //         console.log(err.status);
+                //     });
+                //     // console.log(item);
+                //     // return item;
+                // }
 
 
                 if (getCacheStatus('Char:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
@@ -961,11 +999,11 @@ angular.module('wowApp')
 
     })
 
-    .service('dataService', function($http, keys, characterFeed) {
+    .service('dataService', function($http, keys) {
 
         // DATA Resources - Charcater Achievements
         this.getAchievements = function(callback, err) {
-            $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name + '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "achievements" } } )
+            $http.jsonp('https://us.api.battle.net/wow/data/character/achievements?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey } } )
                 .then(callback,err);
         };
 

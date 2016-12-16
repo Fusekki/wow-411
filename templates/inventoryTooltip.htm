@@ -1,7 +1,7 @@
 <img src='http://media.blizzard.com/wow/icons/56/{{ i.icon }}.jpg'>
 <table>
     <tbody>
-    <tr ng-switch on="i.quality">
+    <tr ng-switch="i.quality">
         <td ng-switch-when="none">
             <b ng-show="i.name" class="item-white-text">{{ capitalizeName(i.name) }}</b> <br>
             <span class="item-yellow-text">Empty slot</span>
