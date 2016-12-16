@@ -3,9 +3,6 @@
 angular.module('wowApp')
 
     .controller('homeCtrl', function () {
-
-
-
     })
 
     // This is the controller for the realms page
@@ -26,38 +23,22 @@ angular.module('wowApp')
         $scope.sortType = 'name';
         $scope.sortReverse = false;
         $scope.searchRealms = '';
-        // console.log($scope.searchRealms);
-
 
         $scope.sliceCountryFromTimezone = function(timezone) {
             var idx = timezone.indexOf("/");
             return timezone.slice(idx + 1).replace(/_/g," ");
         };
-
     })
 
 
     .controller('characterSearchCtrl', function ($scope, $location, characterFeed, characterService, itemService) {
         // Start the characterFeed service.  This is going to check/populate races, classes, bosses, and zones.
 
-        // myCache.put('key', 'value');
-        // console.log(myCache.get('key'));
-        // var cache = myCache;
-        //
-        // if (cache) { // If there’s something in the cache, use it!
-        //     $scope.variable = cache;
-        // } else { // Otherwise, let’s generate a new instance
-        //     cache.put(‘myData’, 'This is cached data!');
-        //     $scope.variable = myCache.get('myData');
-        // }
-
         // First check what API calls need to be performed and call them if cache items are not present.
         characterFeed.init();
 
         // Populate realmsResult with cached items (if there are any).
         $scope.realmsResult = characterFeed.getCacheItems("realms");
-
-
 
         $scope.selectedRealm = characterService.selectedRealm;
 
@@ -78,14 +59,11 @@ angular.module('wowApp')
 
         $scope.submit = function() {
             $location.path("/characterResult");
-            // console.log('button pressed');
         };
 
     })
 
-
     .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, characterFeed, characterService, itemService) {
-
 
         var self = this;
 
@@ -102,7 +80,6 @@ angular.module('wowApp')
         $scope.showFeed = true;
 
         $scope.showInfobox = false;
-
 
         $scope.name = characterService.name;
         $scope.selectedRealm = characterService.selectedRealm;
@@ -130,20 +107,12 @@ angular.module('wowApp')
 
             console.log('feed broadcast received');
             $scope.list = characterService.getCacheItems('Feed:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
-            // console.log($scope.name);
-            // console.log($scope.selectedRealm);
-            // console.log($scope.list);
         });
 
         $scope.$on('inventory_retrieved', function() {
             console.log('broadcast received for inventory');
-            console.log('list before retrieve:');
-            console.log($scope.inventory);
-
 
             $scope.inventory = characterService.getCacheItems('Inv:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
-            console.log($scope.inventory);
-
         });
 
 
@@ -151,10 +120,6 @@ angular.module('wowApp')
 
             console.log('achievements broadcast received');
             $scope.ach = characterService.getCacheItems('Ach');
-
-            // console.log($scope.name);
-            // console.log($scope.selectedRealm);
-            // console.log($scope.list);
         });
 
         // This kicks things off.
@@ -165,8 +130,6 @@ angular.module('wowApp')
 
         $scope.calcGold = function (idx) {
             if (idx) {
-                // console.log(typeof idx);
-                // console.log(idx);
                 if (typeof idx == 'number') {
                     return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
                 }
@@ -178,14 +141,9 @@ angular.module('wowApp')
         };
 
         $scope.calcStats =  function (idx) {
-            // console.log(typeof idx);
-            // console.log(idx);
             if (typeof idx == 'number') {
-                // console.log('here');
-                // console.log(idx);
-                // console.log($scope.inventory[idx].bonusStats);
                 return $scope.bonusstatsParse($scope.inventory[idx].bonusStats);
-            }
+            } // else
                 return $scope.bonusstatsParse(idx);
         };
 
@@ -211,12 +169,9 @@ angular.module('wowApp')
         $scope.showinfo = function(feedItem, bool) {
             if(bool === true) {
                 $scope.showInfobox = true;
-                // $scope.personColour = {color: '#'+person.colour};
-                // console.log(feedItem);
                 console.log('mouse enter for');
             } else if (bool === false) {
                 $scope.showInfobox = false;
-                // $scope.personColour = {color: 'white'}; //or, whatever the original color is
                 console.log(feedItem);
                 console.log('mouse leave for');
             }
@@ -226,24 +181,19 @@ angular.module('wowApp')
             return characterFeed.getClass(idx);
         };
         $scope.bossMap = function(item) {
-            // console.log(characterFeed.getRace(idx));
             if (item.name) {
                 $scope.boss = characterFeed.getBoss(item.name);
             }   else {
                 item.tooltip = "BOSS-NO";
             }
-            // console.log($scope.boss);
         };
 
         $scope.zoneMap = function(zoneId) {
-            // console.log(characterFeed.getRace(idx));
-            // console.log(zoneId);
             var zone = characterFeed.getZone(zoneId);
             return zone;
         };
 
         $scope.raceMap = function(idx) {
-            // console.log(characterFeed.getRace(idx));
             return characterFeed.getRace(idx);
 
 
@@ -274,18 +224,14 @@ angular.module('wowApp')
         };
 
         $scope.characterImage = function(path) {
-            // console.log(path);
             var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
-            // console.log(imagePath);
             imagePath += "profilemain.jpg";
-            // console.log(imagePath);
             return imagePath;
         };
 
 
 
         $scope.convertGold = function(sellValue) {
-            // return characterFeed.getGold(sellValue);
             return characterFeed.getGold(sellValue);
         };
 
@@ -306,8 +252,6 @@ angular.module('wowApp')
 
         $scope.capitalizeName = function(name) {
             if (name) {
-
-                // console.log(name);
                 switch (name) {
                     case 'offHand':
                         return 'Off Hand';
@@ -321,8 +265,6 @@ angular.module('wowApp')
             }
             // else
             return "";
-
-
         };
 
     })

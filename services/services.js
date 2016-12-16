@@ -17,12 +17,8 @@ angular.module('wowApp')
 
     .service('characterFeed', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService, dataService) {
         // Private Variables
-
-
-
         var self = this;
 
-        // var racesDefined, classesDefined, bossesDefined, zonesDefined, realmsDefined = false;
         var raceMap, classMap, bossMap, zoneMap = [], inventoryMap, realmMap;
 
         var genderMap = ["Male", "Female"];
@@ -144,14 +140,8 @@ angular.module('wowApp')
                     console.log('just sent update');
                     if (getCacheStatus("realms")) {
                         console.log('realms are now defined.');
-                        // console.log(realmMap);
-                        // console.log(myCache.info());
                         console.log('realms are cached: ');
-                        // console.log(myCache.get("realms"));
-
-                        // var cachedData = myCache.get('realms');
                     }
-                    // $scope.realmsResult = response.data;
                 }, function(err) {
                     console.log(err.status);
 
@@ -170,29 +160,17 @@ angular.module('wowApp')
             getInventorySlots: function() {
                 return inventorySlots;
             },
-            getRegion: function () {
-                return self.region;
-            },
-            getPrivateKey: function() {
-                return self.privateKey;
-            },
             getBoss: function(name) {
-                console.log(name);
-                console.log(bossMap);
                 for(var key in bossMap) {
-                    // console.log(bossMap[key]);
                     if(bossMap[key].name === name) {
-                        // console.log(bossMap[key]);
                         return bossMap[key];
                     }
                 }
-
                 console.log('not found in bosses');
                 return "";
             },
             getClass: function(idx) {
                 for(var key in classMap) {
-                    // console.log(raceMap.races[key].id);
                     if(classMap[key].id === idx) {
                         return classMap[key].name;
                     }
@@ -232,7 +210,6 @@ angular.module('wowApp')
             },
             getRace: function(idx) {
                 for(var key in raceMap) {
-                    // console.log(raceMap.races[key].id);
                     if(raceMap[key].id === idx) {
                         return raceMap[key].name;
                     }
@@ -256,31 +233,16 @@ angular.module('wowApp')
                 return itemBindMap[idx];
             },
             getBonusstatsparse: function(statsArray){
-                // console.log(statsArray);
                 var line = "";
                 var combinedStats = "";
                 // Sort the order by stat number
                 var sortedStats = [];
                 sortedStats = statsArray.sort(function(a,b) {
-                    // console.log(a);
-                    // console.log(a.stat);
-                    // console.log(b.stat);
-                    //
-                    // console.log(statsArray[a]);
                     return a.stat - b.stat;
                 });
 
-                // console.log(sortedStats);
-
                 for (var x = 0; x <= sortedStats.length -1; x++) {
-                    // console.log(x);
-                    // console.log(statsArray);
-                    // var temp = statsArray[x].stat;
-                    // console.log(temp);
                     line = itemStatMap[sortedStats[x].stat];
-                    // console.log(line);
-                    // console.log(statsArray[x].stat);
-                    // console.log(statsArray[x].amount);
                     if (sortedStats[x].stat == 74 || sortedStats[x].stat == 36 || sortedStats[x].stat == 49 || sortedStats[x].stat == 7 ) {
                         var statCalc = Math.round(sortedStats[x].amount * 0.046);
                         line = line.replace("%s", statCalc);
@@ -300,15 +262,11 @@ angular.module('wowApp')
             },
 
             getZone: function(idx) {
-                // console.log(idx);
                 for(var key in zoneMap) {
-                    // console.log(bossMap[key]);
                     if(zoneMap[key].id === idx) {
-                        // console.log(zoneMap[key].description);
                         return zoneMap[key].description;
                     }
                 }
-
                 console.log('not found in zones');
                 return "";
             },
@@ -319,11 +277,7 @@ angular.module('wowApp')
             },
 
             init: function() {
-
-                console.log(itemQualityMap[2]);
-
                 initRealms();
-
                 // Build the races map
                 if (getCacheStatus("races")) {
                     console.log('races are defined. skipping API call.');
@@ -331,7 +285,6 @@ angular.module('wowApp')
                     console.log('races are not defined');
                     raceService.getRaces(function(response){
                         console.log('Race API Call.');
-                        // console.log(response.data)
                         setCacheStatus("races", response.data.races);
                         // Store data in local array.
                         raceMap = response.data.races;
@@ -339,7 +292,6 @@ angular.module('wowApp')
                         if (getCacheStatus("races")) {
                             console.log('races are now defined.');
                             console.log('races are cached: ');
-                            // console.log(myCache.get("races"));
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -350,19 +302,15 @@ angular.module('wowApp')
                 if (getCacheStatus("classes")) {
                     console.log('classes are defined. skipping API call.');
                 } else {
-                    // console.log('they are not defined');
                     console.log('classes are not defined');
                     classService.getClasses(function(response){
                         console.log('Classes API Call.');
-                        // console.log(response.data);
                         setCacheStatus("classes", response.data.classes);
-                        // setClasses(response.data.classes);
                         // Store response in local array
                         classMap = response.data.classes;
                         if (getCacheStatus("classes")) {
                             console.log('classes are now defined.');
                             console.log('classes are cached: ');
-                            // console.log(myCache.get("classes"));
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -372,21 +320,16 @@ angular.module('wowApp')
                 if (getCacheStatus("bosses")) {
                     console.log('they are defined');
                 } else {
-                    // console.log('they are not defined');
                     console.log('Bosses are not defined');
                     bossService.getBosses(function(response){
                         console.log('Boss API Call.');
-                        // console.log(response.data);
                         setCacheStatus("bosses", response.data.bosses);
                         // Store in local array
                         bossMap = response.data.bosses;
                         if (getCacheStatus("bosses")) {
                             console.log('Bosses are now defined.');
                             console.log('bosses are cached: ');
-                            // console.log(myCache.get("bosses"));
-
                         }
-                        // console.log(characterFeed.getBossStatus());
                     }, function(err) {
                         console.log(err.status);
                     });
@@ -395,46 +338,20 @@ angular.module('wowApp')
                 if (getCacheStatus("zones")) {
                     console.log('zones are defined');
                 } else {
-                    // console.log('zones are not defined');
                     console.log('Zones are not defined');
                     zoneService.getZones(function(response){
                         console.log('Get Zones API Call.');
-                        // console.log(response.data);
                         setCacheStatus("zones", response.data.zones);
                         // Store in local array
                         zoneMap = response.data.zones;
                         if (getCacheStatus("zones")) {
                             console.log('zones are now defined.');
                             console.log('zones are cached: ');
-                            // console.log(myCache.get("zones"));
                         }
-                        // console.log(characterFeed.getZoneStatus());
                     }, function(err) {
                         console.log(err.status);
                     });
                 }
-
-                // if (getCacheStatus("achievements")) {
-                //     console.log('achievements are defined');
-                // } else {
-                //     console.log('achievements are not defined');
-                //     dataService.getAchievements(function(response){
-                //         console.log('Get achievements API Call.');
-                //         console.log(response);
-                //         // setCacheStatus("achievements", response.data.zones);
-                //         // Store in local array
-                //         // zoneMap = response.data.zones;
-                //         if (getCacheStatus("achievements")) {
-                //             console.log('achievements are now defined.');
-                //             console.log('achievements are cached: ');
-                //             // console.log(myCache.get("zones"));
-                //         }
-                //         // console.log(characterFeed.getZoneStatus());
-                //     }, function(err) {
-                //         console.log(err.status);
-                //     });
-                // }
-
             },
 
 
@@ -447,8 +364,6 @@ angular.module('wowApp')
     })
 
     .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, inventoryService, dataService, keys) {
-
-        // var self = this;
 
         var race;
         var thumbnail;
@@ -469,21 +384,14 @@ angular.module('wowApp')
 
 
         var getCacheStatus = function (cache) {
-            // console.log(this.name);
-            // console.log(this.selectedRealm);
             return myCache.get(cache);
         };
 
         var setCacheStatus = function (key, items) {
-            // console.log(self.name);
-            // console.log(self.selectedRealm);
             myCache.put(key, items);
         };
 
         var checkCharacterFeed = function() {
-            // return myCache.get(this.name + ':' + this.selectedRealm);
-            // console.log(this.name);
-            // console.log(this.selectedRealm);
             if (!myCache.get('Char:' + this.name + ':' + this.selectedRealm)) {
                 console.log('cache empty for character');
             } else {
@@ -493,11 +401,8 @@ angular.module('wowApp')
         };
 
         var mapItem = function(idx) {
-            // console.log(idx);
             for(var key in bossMap) {
-                // console.log(bossMap[key]);
                 if(bossMap[key].name === idx) {
-                    // console.log(bossMap[key]);
                     return bossMap[key];
                 }
             }
@@ -516,16 +421,11 @@ angular.module('wowApp')
             self.name = name.toLowerCase();
             self.selectedRealm = realm;
             console.log('in Process Feed.');
-            // console.log(self.name);
-            // console.log(self.selectedRealm);
-            // console.log(feed.length);
-            console.log(feed);
 
             // Process through items in reponse and determine the category each falls under.
-            // console.log(response);
+
             for (var x = 0; x <= feed.length - 1; x++) {
                 var feedElement = {};
-                // console.log('in feed index of ' + x.toString());
                 // If item is loot, modify some of the properties and add it to the end of the items array.  The item array is a temporary array to store loot items while asynch calls
                 // are occurring.
                 if (feed[x].type === 'LOOT') {
@@ -536,54 +436,22 @@ angular.module('wowApp')
                     itemElement.type = feed[x].type;
                     itemElement.timestamp = feed[x].timestamp;
                     itemElement.id = feed[x].itemId;
-                    // console.log(itemElement);
                     items.push(itemElement);
                     count++;
                     // Perform a call to the item service, passing on the itemElement that was pushed into the item array.
-                    // console.log('calling callItemService wrapper from within getCharacterFeed');
-                    // We assign the return object to be called feedElement.
-
-                    // Let's check the cache on the item first.  We'll retrieve item from either cache or direct API call.
-                    // feedElement = checkFeedCache(itemElement);
 
                     feedElement = callItemService(itemElement);
-
-                    // console.log('Item Service API Call.');
-                    //
-                    // console.log('invoking call item service for the items in character Feed for item:');
-                    // console.log('back from checking cache/API call for following item for FEED: ');
-                    // console.log(feedElement);
-
-                    // feedElement = callItemService(itemElement);
-                    // console.log('returned to getCharacterFeed with the following object:');
-                    // console.log(feedElement);
-                    // The object has an undefined property for one of its keys at this time.
-                    // console.log('feedElement.armor = ' + feedElement.armor);
 
                     // We add some properties from the original item object into this new object.
                     feedElement.type = itemElement.type;
                     feedElement.timestamp = itemElement.timestamp;
                     // Insert the feedElement into the feed array at the position of the original AJAX call index.
-                    // console.log('This is the final object before splicing into the feed array');
-                    // console.log(feedElement);
-                    // console.log('feedElement.armor = ' + feedElement.armor);
                     var i = items[idx].index - 1;
-                    // console.log('The item is being spliced into index[' + i + ']');
                     self.processedFeed.splice(items[idx].index, 0, feedElement);
-                    // console.log('currentself.processedFeed length is:');
-                    // console.log(self.processedFeed.length);
-                    // console.log(self.feed);
-
-                    // console.log(self.feed[i - 1]);
-                    // console.log(self.feed[i - 1].quality);
-
-
                     idx++;
                 } else if (feed[x].type === 'BOSSKILL') {
-                    // console.log('in boss');
                     feedElement.timestamp = feed[x].timestamp;
                     feedElement.type = feed[x].type;
-                    // do something else
                     feedElement.name = feed[x].name;
                     feedElement.icon = feed[x].achievement.icon;
                     feedElement.title = feed[x].achievement.title;
@@ -594,51 +462,22 @@ angular.module('wowApp')
                     } else {
                         feedElement.tooltip = "BOSS-NO";
                     }
-                    // console.log('BOSSKILL object:');
-                    // console.log(feedElement);
-                    // console.log('object is a BOSSKILL. It is being added to position : ' + self.feed.length)
-
-
                    self.processedFeed.push(feedElement);
-                    // console.log('current self.feed is:');
-                    // console.log(self.feed);
 
-                    // console.log(feedElement);
                 } else if (feed[x].type === 'ACHIEVEMENT') {
-                    // console.log('in achievement');
-                    // console.log(feedElement);
                     feedElement.timestamp = feed[x].timestamp;
                     feedElement.type = feed[x].type;
-                    // console.log(response.data.feed[x].type);
-                    // console.log(feedElement);
                     feedElement.title = feed[x].achievement.title;
-
-                    // console.log(feedElement);
                     feedElement.description = feed[x].achievement.description;
-
-                    // console.log(feedElement);
                     feedElement.icon = feed[x].achievement.icon;
                     feedElement.tooltip = "ACHIEVEMENT";
-                    // console.log(feedElement);
-                    // console.log('ACHIEVEMENT object:');
-                    // console.log(feedElement);
-                    // console.log('object is an ACHIEVEMENT. It is being added to position : ' + self.feed.length)
-
                    self.processedFeed.push(feedElement);
-                    // console.log('current self.feed is:');
-                    // console.log(self.feed);
                 }
             }
 
-            // self.list = self.feed;
-            // console.log(self.selectedRealm);
-            // console.log(this.name);
             myCache.put('Feed:'+ self.name + ':' + self.selectedRealm, self.processedFeed);
 
             console.log('Feed is now cached.');
-            // console.log(temp);
-            // console.log(self.processedFeed);
-
             $rootScope.$broadcast('feed_retrieved');
 
         };
@@ -656,41 +495,24 @@ angular.module('wowApp')
                 console.log('clearing inventory slots of extra items.');
                 self.inventorySlots = [];
             }
-            // console.log(this.name);
-            // console.log(this.selectedRealm);
 
             // This is the API call for the character Items.  This call populates the inventory slots.
 
             inventoryService.getItem(function (response) {
-                console.log(self.inventorySlots);
                 console.log('Get Item API Call for inventory items');
-                // console.log('in getItem service');
                 // Mapping the array by item slot name
                 var slots = characterFeed.getInventorySlots();
-                console.log(slots);
-                console.log(response.data);
-                console.log(response.data.items);
-                // for (var x = 0; x < response.data.items.length; x++) {
                 for (var x = 0; x < slots.length; x++) {
                     // Map the items here before you push them.
-
                     var inventorySlot = {};
-                    // console.log('creating inventorySlot');
-
                     inventorySlot.name = slots[x];
 
                     if (slots[x] in response.data.items) {
                         inventorySlot.value = response.data.items[slots[x]];
-                        // console.log(response.data.items[slots[x]]);
                         inventorySlot.slot = characterFeed.getInventorySlot(slots[x]);
                         inventorySlot.bonusStats = [];
                         inventorySlot.id = response.data.items[slots[x]].id;
-                        // console.log('adding inventorySlot item to inventorySlots array.');
-                        // console.log(inventorySlot);
-                        // console.log(inventorySlot.value.armor);
                     } else {
-                        console.log('item does not exist for slot name: ');
-                        console.log(slots[x]);
                         inventorySlot.value = "none";
                     }
 
@@ -698,18 +520,8 @@ angular.module('wowApp')
                     self.inventorySlots.push(inventorySlot);
                     var inventoryElement = {};
                     if (slots[x] in response.data.items) {
-                        // var inventoryElement = {};
-                        // console.log('calling callItemService from  within getItem');
-                        // console.log(inventorySlot);
-                        // console.log('invoking call item service for the items inventory slots on item:');
-                        // console.log(inventorySlot);
-
                         inventoryElement = callItemService(inventorySlot);
-
-
                         inventoryElement.slot = slots[x];
-                        // console.log(inventoryElement);
-                        // self.inventoryArray.push(inventoryElement);
                     } else {
                         console.log('key does not exist. Moving on to next item.');
                         inventoryElement.slot = slots[x];
@@ -722,19 +534,12 @@ angular.module('wowApp')
 
 
                 self.inventory = self.inventoryArray.sort(function (a, b) {
-                    console.log('sort inventory items');
                     return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
                 });
-                console.log(self.inventoryArray.length);
-                console.log(self.inventorySlots.length);
-                console.log(self.name);
-                console.log(self.selectedRealm);
-                console.log(self.inventory);
 
                 myCache.put('Inv:'+ self.name.toLowerCase() + ':' + self.selectedRealm, self.inventory);
 
                 console.log('inventory is now cached.');
-                console.log(self.inventory);
                 $rootScope.$broadcast('inventory_retrieved');
 
             }, function (err) {
@@ -746,13 +551,6 @@ angular.module('wowApp')
 
 
         var callItemService = function (itemElement) {
-
-            // Function to check cache first.
-            // console.log(itemElement);
-
-
-            // console.log('itemService API Wrapper call for FEED.');
-
             var item = {};
 
             itemService.getItem(itemElement.id, function (response) {
@@ -775,7 +573,6 @@ angular.module('wowApp')
             }, function (err) {
                 console.log(err.status);
             });
-            // console.log(item);
             return item;
         };
 
@@ -783,7 +580,6 @@ angular.module('wowApp')
 
             if (!myCache.get(item.timestamp + ':' + item.id)) {
                 console.log('cache empty for item.');
-                // return getItem(item.type + ':' + item.id);
                 var result = callItemService(item);
                 console.log('placing item in cache.');
                 myCache.put(item.timestamp + ':' + item.id, result);
@@ -825,31 +621,19 @@ angular.module('wowApp')
             // Set the background images
             // this first one has problems loading sometimes.
 
-            // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
             $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
 
             // Set background image for profile based on race
-            // $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
             $(".content-top").css("background", "url" + self.background + ") left top no-repeat" );
 
 
         };
 
-
-
-
          var characterImage = function(path) {
-            // console.log(path);
             var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
-            // console.log(imagePath);
             imagePath += "profilemain.jpg";
-            // console.log(imagePath);
             return imagePath;
         };
-
-
-
-
 
         // Character Profile API Call - Charcater Profile
         self.getCharacter = function(callback, err) {
@@ -881,24 +665,6 @@ angular.module('wowApp')
                 // This starts both the Feed Call and the Inventory Call.
                 var self = this;
 
-                // if (getCacheStatus('Ach')) {
-                //     console.log('achievements are cached.');
-                //     $rootScope.$broadcast('achievements_retrieved');
-                //
-                //
-                // } else {
-                //     console.log('making achievements API call.');
-                //     dataService.getAchievements(function (response) {
-                //         setCacheStatus('Ach', response);
-                //         $rootScope.$broadcast('achievements_retrieved');
-                //     }, function (err) {
-                //         console.log(err.status);
-                //     });
-                //     // console.log(item);
-                //     // return item;
-                // }
-
-
                 if (getCacheStatus('Char:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
                     console.log('character is cached. skipping API call.');
                     console.log('Checking cache for feed.');
@@ -916,11 +682,6 @@ angular.module('wowApp')
                 } else {
                     console.log('character is not defined');
                     // Pass the parameters on to the service prior to the call.
-                    console.log('here');
-                    // Set up the inventoryService call.
-                    console.log(this.name);
-                    console.log(this.selectedRealm);
-
                     inventoryService.name = this.name;
                     inventoryService.selectedRealm = this.selectedRealm;
                     getItemWrapper(this.name, this.selectedRealm);
@@ -934,12 +695,6 @@ angular.module('wowApp')
                             race = response.data.race;
                         }
                         thumbnail = response.data.thumbnail;
-
-                        // // Set the background images
-                        // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
-                        //
-                        // // Set background image for profile based on race
-                        // $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
 
                         var character = {
                             'name' : response.data.name,
@@ -957,8 +712,6 @@ angular.module('wowApp')
                             'background' : "http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg"
                         };
 
-                        // console.log(character);
-
                         // Set the background based on the recent API call.
                         setBackground(character.backgroundImg, character.background);
 
@@ -966,10 +719,6 @@ angular.module('wowApp')
 
                         $rootScope.$broadcast('character_retrieved');
                         console.log('just sent character retrieve update');
-                        // console.log(self.name);
-                        // console.log(self.selectedRealm);
-                        // console.log(response.data.feed.length);
-
                         processFeed(self.name, self.selectedRealm, response.data.feed);
 
                     }, function(err) {
@@ -981,22 +730,14 @@ angular.module('wowApp')
             },
 
             setBackground: function(first_url, second_url) {
-                console.log(first_url);
-                console.log(second_url);
 
                 // Set the background images
-                // $(".profile-wrapper").css("background", "url(http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail)+ ") no-repeat 182px 115px");
                 $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat 182px 115px");
 
                 // Set background image for profile based on race
-                // $(".content-top").css("background", "url(http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg) left top no-repeat" );
-
                 $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
-
             }
-
         };
-
     })
 
     .service('dataService', function($http, keys) {

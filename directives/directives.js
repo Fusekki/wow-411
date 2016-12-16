@@ -14,21 +14,9 @@ angular.module('wowApp')
 .directive("inventoryItem", function() {
     return {
         templateUrl: 'templates/inventoryItem.htm',
-        // controller: 'characterCtrl',
         replace: true
     };
 })
-
-
-
-// .directive("feedTooltip", function() {
-//     return {
-//         template: ' {{ feedItem.name }} <br> Acquired: {{ convertToStandard(feedItem.timestamp) }} <br> {{ feedItem.name  || feedItem.title }}',
-//         controller: 'characterCtrl',
-//         replace: true
-//     }
-// })
-
 
 .filter('html', function(sce$) {
     return function(val) {

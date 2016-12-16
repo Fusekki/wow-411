@@ -6,11 +6,9 @@
     margin-bottom: 0;
     border-bottom: 1px solid rgba(255,255,255,.3);
     text-transform: uppercase;
-/*    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;*/
     font-family: 'Sansation Bold';
     background-color: #f0f0f0;
     color: #999;
-/*    background-color: */
 }
 
 .navbar-custom .navbar-brand {
@@ -34,7 +32,6 @@
 
 
 .navbar-custom a {
-/*    color: #fff;*/
     color: #999;
 }
 
@@ -86,13 +83,6 @@
 #panel-heading button:active {
     border: hidden;
 }
-
-
-
-
-/*customizing tooltip color*/
-/*right tooltip*/
-
 
 /*top tooltip*/
 .tooltip.top > .tooltip-arrow {
@@ -188,7 +178,6 @@
 
 .content-top {
     height: 100%;
-    /*background: url("http://us.battle.net/wow/static/images/character/summary/backgrounds/race/1.jpg");*/
 }
 .profile-wrapper {
     height: 100%;
@@ -216,9 +205,6 @@
 .profile-info-anchor {
     width: 768px;
     position: relative;
-    /*height: 218px;*/
-    /*background: no-repeat;*/
-    /*z-index: 1;*/
 }
 
 .profile-info {
@@ -393,23 +379,12 @@
     bottom: 0;
 }
 
-/*Tabard Slot*/
-/*.summary-inventory .slot:nth-of-type(18) {*/
-
-    /*left: 0px;*/
-    /*top: 348px;*/
-/*}*/
-
-
-
-
 
 .summary-inventory .item {
     width: 49px;
     height: 49px;
     display: block;
     position: absolute;
-    /*-webkit-box-shadow: 0 0 8px black;*/
     box-shadow: 0 0 8px black;
 }
 
@@ -494,8 +469,6 @@
     top: 0;
     width: 49px;
     height: 49px;
-    /*background-position: -147px 0;*/
-    /*background: url(/images/inventory-slots.png) no-repeat;*/
     border-radius: 0.5em;
 }
 

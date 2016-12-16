@@ -8,7 +8,6 @@ Results for {{ name }} on {{ selectedRealm }}
         <div class="content">
             <div class="content-top">
                 <div class="profile-wrapper">
-                    <!--<img class="img-responsive" src="http://render-api-us.worldofwarcraft.com/static-render/us/{{ characterImage(characterResult.thumbnail) }}" alt="...">-->
                     <div class="profile-sidebar-anchor">
                         <div class="profile-sidebar-outer">
                             <div class="profile-sidebar-inner">
@@ -19,28 +18,20 @@ Results for {{ name }} on {{ selectedRealm }}
                                         </div>
                                         <div class="title">
                                             <div class="guild">
-
                                             </div>
-
                                         </div>
-
                                         <span class="clear"></span>
                                         <div class="under-name">
                                             <span class="level">
                                                 <strong> {{ characterResult.level }}</strong>
                                             </span>
                                             <span class="character-class"> {{ raceMap(characterResult.race) }} {{ classMap(characterResult.class) }},</span> <span class="realm"> {{ selectedRealm  }}</span>
-                                             <!--{{ characterResult.race }} {{ characterResult. }}-->
                                         </div>
                                     </div>
-                                    <!--<img class="img-responsive" src ="http://us.battle.net/wow/static/images/character/summary/sidebar-bg.png" alt="...">-->
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="profile-contents">
                         <div class="summary-top">
                             <div class="summary-top-right">
@@ -53,30 +44,17 @@ Results for {{ name }} on {{ selectedRealm }}
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--<div class="slot">-->
-                                            <!--<div class="slot-inner">-->
-                                                <!--<div class="slot-contents">-->
-                                                    <!--<div class="item item-tabard" tooltip-placement="auto left" uib-tooltip-template="'templates/inventoryTooltip.htm'">-->
-                                                        <!--<img class="media-object image-hover" src="" alt="Tabard">-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="summary-bottom">
-
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
     </div>
-
       <div class="media-left media-top">
         <a href="#">
           <img class="media-object image-hover" src="http://render-api-us.worldofwarcraft.com/static-render/us/{{ characterResult.thumbnail }}" alt="...">
@@ -107,9 +85,7 @@ Results for {{ name }} on {{ selectedRealm }}
                       <div class="form-group">
                           <div class="input-group">
                               <div class="input-group-addon"><i class="fa fa-search"></i></div>
-
                               <input type="text" class="form-control" placeholder="Search feed" ng-model="searchFeed">
-
                           </div>
                       </div>
                   </form>
@@ -117,121 +93,9 @@ Results for {{ name }} on {{ selectedRealm }}
               </div>
           </div>
       </div>
-
 </div>
 
 
 <div ng-hide="characterResult">
     No characters found with that name.
 </div>
-
-
-<!--<td ng-switch-when="BOSSKILL" data-toggle="tooltip" data-placement="top" title="-->
-                                          <!--<table>-->
-                                              <!--<tbody>-->
-                                                  <!--<tr>-->
-                                                      <!--<td>-->
-                                                          <!--<span ng-switch='feedItem.name'>-->
-                                                              <!--<span ng-switch-when=&#34;&#34;> {{ nameFromtitle(feedItem.title) }} </span>-->
-                                                              <!--<span ng-switch-default> {{ bossMap(feedItem.name) }} </span>-->
-                                                          <!--</span>-->
-                                                          <!--<span class='boss-name'> {{ boss.name }} </span> <br> <br>-->
-                                                          <!--<span class='boss-yellow-text'>Level: </span> {{ boss.level }} <br>-->
-                                                          <!--<span class='boss-yellow-text'>Health: </span> {{ boss.health }} <br>-->
-                                                          <!--<span class='boss-yellow-text'>Location: </span> {{ boss.zoneId }} <br>-->
-                                                          <!--{{ boss.description }}-->
-                                                      <!--</td>-->
-                                                  <!--</tr>-->
-                                              <!--</tbody>-->
-                                          <!--</table>">-->
-
-
-
-<!--<table>-->
-    <!--<tbody>-->
-    <!--<tr>-->
-        <!--<td>-->
-            <!--<table>-->
-                <!--<tbody>-->
-                <!--<tr>-->
-                    <!--<td>-->
-                        <!--<b> {{ feedItem.name  }} </b>-->
-                        <!--<span> <br>Item Level  {{ feedItem.itemLevel }}</span> <br>-->
-                        <!--<span>Upgrade able {{ feedItem.upgradeable }}</span> <br>-->
-                        <!--{{ feedItem.itemBind}}-->
-                        <!--<table>-->
-                            <!--<tbody>-->
-                            <!--<tr>-->
-                                <!--<th>-->
-                                    <!--<span> {{ feedElement.itemClass}}</span>-->
-                                <!--</th>-->
-                            <!--</tr>-->
-                            <!--</tbody>-->
-                            <!--<span > {{ feedItem.armor}} Armor</span> <br>-->
-                            <!--<span ng-repeat="bonusStat in feedItem.bonusStats">-->
-                                  <!--{{ bonusStats.bonusStat }}-->
-                            <!--</span> <br>-->
-                            <!--<br>-->
-
-                            <!--<span ng-repeat="socket in socketlist">-->
-                                  <!--{{ socket.socketlist }}-->
-                            <!--</span> <br>-->
-                            <!--<span ng-repeat="socketBonus in feedItem.socketBonus">-->
-                                  <!--{{ feedItem.socketBonus.socketBonus }}-->
-                            <!--</span> <br>-->
-                            <!--Durability {{feedItem.maxDurability}} <br>-->
-                            <!--Requires level {{ feedItem.requiredLevel }}-->
-                            <!--Sell price: {{ feedItem.sellPrice  }}-->
-                        <!--</table>-->
-                    <!--</td>-->
-                <!--</tr>-->
-                <!--</tbody>-->
-            <!--</table>-->
-        <!--</td>-->
-    <!--</tr>-->
-    <!--</tbody>-->
-<!--</table>-->
-
-<!--<table>-->
-    <!--<tbody>-->
-    <!--<tr>-->
-        <!--<td>-->
-            <!--<table>-->
-                <!--<tbody>-->
-                <!--<tr>-->
-                    <!--<td>-->
-                        <!--<b> {{ feedItem.name  }} </b>-->
-                        <!--<span> <br>Item Level  {{ feedItem.itemLevel }}</span> <br>-->
-                        <!--<span>Upgrade able {{ feedItem.upgradeable }}</span> <br>-->
-                        <!--{{ feedItem.itemBind}}-->
-                        <!--<table>-->
-                            <!--<tbody>-->
-                            <!--<tr>-->
-                                <!--<th>-->
-                                    <!--<span> {{ feedElement.itemClass}}</span>-->
-                                <!--</th>-->
-                            <!--</tr>-->
-                            <!--</tbody>-->
-                            <!--<span > {{ feedItem.armor}} Armor</span> <br>-->
-                            <!--<span ng-repeat=/'bonusStat in feedItem.bonusStats/'>-->
-                            <!--{{ bonusStats.bonusStat }}-->
-                            <!--</span> <br>-->
-                            <!--<br>-->
-                            <!--<span ng-repeat=/'socket in socketlist/'>-->
-                            <!--{{ socket.socketlist }}-->
-                            <!--</span> <br>-->
-                            <!--<span ng-repeat=/'socketBonus in feedItem.socketBonus/'>-->
-                            <!--{{ feedItem.socketBonus.socketBonus }}-->
-                            <!--</span> <br>-->
-                            <!--Durability {{feedItem.maxDurability}} <br>-->
-                            <!--Requires level {{ feedItem.requiredLevel }}-->
-                            <!--Sell price: {{ feedItem.sellPrice  }}-->
-                        <!--</table>-->
-                    <!--</td>-->
-                <!--</tr>-->
-                <!--</tbody>-->
-            <!--</table>-->
-        <!--</td>-->
-    <!--</tr>-->
-    <!--</tbody>-->
-<!--</table>-->

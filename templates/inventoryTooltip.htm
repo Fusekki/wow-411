@@ -8,19 +8,14 @@
         </td>
         <td ng-switch-default>
             <b ng-class= "{poor: i.quality == 9, common: i.quality == 1, uncommon: i.quality == 2, rare: i.quality == 3, epic: i.quality == 4, legendary: i.quality == 5, artifact: i.quality == 6, heirloom: i.quality == 7}"> {{  i.name }} </b> <br>
-            <!--<b class= {{ itemqualityMap(i.quality) }}> {{  i.name }} </b> <br>-->
             Item Level {{ i.itemLevel }} <br>
-            <!--{{ itemupgradableMap(i.upgradable) }} </span> <br>-->
             <span class="item-white-text"> {{ itembindMap(i.itemBind) }}</span> <br>
             <span ng-show="i.armor"> {{ i.armor }} Armor<br></span>
             <span ng-bind-html="calcStats($index) | unsafe"></span>
-            <!--<span> {{ bonusstatsParse(i.bonusStats) }} </span>-->
             <br>
             <span ng-show="i.maxDurability">Durability {{ i.maxDurability }} <br></span>
-            <!--Durability {{ i.maxDurability }} <br>-->
             <span ng-show="i.requiredLevel">Requires level {{ i.requiredLevel }} <br></span>
             <span ng-bind-html="calcGold($index) | unsafe"></span>
-            <!--Sell price: {{ convertGold(i.sellPrice) }}-->
         </td>
     </tr>
     </tbody>
