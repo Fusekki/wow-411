@@ -26,7 +26,7 @@ angular.module('wowApp')
         var factionMap = ["Alliance", "Horde"];
         var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
         var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
-        var itemBindMap =["Tradeable", "Binds when picked up"];
+        var itemBindMap =["Tradeable", "Binds when picked up", "Binds when equipped"];
         var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'tabard', 'trinket1', 'trinket2', 'waist', 'wrist'];
         var itemStatMap = {
             '1' : '+%s Health',
@@ -36,62 +36,62 @@ angular.module('wowApp')
             '5' : '+%s Intellect',
             '6' : '+%s Spirit',
             '7' : '+%s Stamina',
-            '12' : 'Equip: Increases defense rating by %s.',
-            '13' : 'Equip: Increases your dodge rating by %s.',
-            '14' : 'Equip: Increases your parry rating by %s.',
-            '15' : 'Equip: Increases your shield block rating by %s.',
-            '16' : 'Equip: Improves melee hit rating by %s.',
-            '17' : 'Equip: Improves ranged hit rating by %s.',
-            '18' : 'Equip: Improves spell hit rating by %s.',
-            '19' : 'Equip: Improves melee critical strike rating by %s.',
-            '20' : 'Equip: Improves ranged critical strike rating by %s.',
-            '21' : 'Equip: Improves spell critical strike rating by %s.',
-            '22' : 'Equip: Improves melee hit avoidance rating by %s.',
-            '23' : 'Equip: Improves ranged hit avoidance rating by %s.',
-            '24' : 'Equip: Improves spell hit avoidance rating by %s.',
-            '25' : 'Equip: Improves melee critical avoidance rating by %s.',
-            '26' : 'Equip: Improves ranged critical avoidance rating by %s.',
-            '27' : 'Equip: Improves spell critical avoidance rating by %s.',
-            '28' : 'Equip: Improves melee haste rating by %s.',
-            '29' : 'Equip: Improves ranged haste rating by %s.',
-            '30' : 'Equip: Improves spell haste rating by %s.',
-            '31' : 'Equip: Increases your hit rating by %s.',
+            '12' : '+%s Defense',
+            '13' : '+%s Dodge',
+            '14' : '+%s Parry',
+            '15' : '+%s Shield Block',
+            '16' : '+%s Melee Hit Rating',
+            '17' : '+%s Hit Rating',
+            '18' : '+%s Spell Hit Rating',
+            '19' : '+%s Melee Critical Strike Rating',
+            '20' : '+%s Ranged Critical Strike Rating',
+            '21' : '+%s Spell Critical Strike Rating',
+            '22' : '+%s Melee Hit Avoidance Rating',
+            '23' : '+%s Ranged Hit Avoidance Rating',
+            '24' : '+%s Spell Hit Avoidance Rating',
+            '25' : '+%s Melee Critical Avoidance Rating',
+            '26' : '+%s Ranged Critical Avoidance Rating',
+            '27' : '+%s Spell Critical Avoidance Rating',
+            '28' : '+%s Melee Haste Rating',
+            '29' : '+%s Ranged Haste Rating',
+            '30' : '+%s Spell Haste Rating',
+            '31' : '+%s Hit Rating',
             '32' : '+%s Critical Strike',
-            '33' : 'Equip: Improves hit avoidance rating by %s.',
-            '34' : 'Equip: Improves critical avoidance rating by %s.',
-            '35' : 'Equip: Increases your resilience rating by %s.',
+            '33' : '+%s Hit Avoidance Rating',
+            '34' : '+%s Critical Avoidance Rating',
+            '35' : '+%s resilience Rating',
             '36' : '+%s Haste',
-            '37' : 'Equip: Increases your expertise rating by %s.',
-            '38' : 'Equip: Increases attack power by %s.',
-            '39' : 'Equip: Increases ranged attack power by %s.',
-            '40' : 'Equip: Increases attack power by %s in Cat, Bear, Dire Bear, and Moonkin forms only.',
-            '41' : 'Equip: Increases damage done by magical spells and effects by up to %s.',
-            '42' : 'Equip: Increases healing done by magical spells and effects by up to %s.',
-            '43' : 'Equip: Restores %s mana per 5 sec.',
-            '44' : 'Equip: Increases your armor penetration rating by %s.',
-            '45' : 'Equip: Increases spell power by %s.',
-            '46' : 'Equip: Restores %s health per 5 sec.',
-            '47' : 'Equip: Increases spell penetration by %s.',
-            '48' : 'Equip: Increases the block value of your shield by %s.',
+            '37' : '+%s Expertise Rating',
+            '38' : '+%s Attack Power',
+            '39' : '+%s Ranged Attack Power',
+            '40' : '+%s Attack Power by %s in Cat, Bear, Dire Bear, and Moonkin forms only',
+            '41' : '+%s Damage done by Magical Spells and Effects',
+            '42' : '+%s Healing done by Magical Spells and Effects',
+            '43' : 'Restores %s Mana per 5 sec',
+            '44' : '+%s Armor Penetration Rating',
+            '45' : '+%s Spell Power',
+            '46' : 'Restores %s Health per 5 sec',
+            '47' : '+%s Spell Penetration',
+            '48' : '+%s Block Value of your Shield',
             '49' : '+%s Mastery',
-            '50' : "Equip: Increases your armor rating by %s.",
-            '51' : "Equip: Increases your fire resistance by %s.",
-            '52' : "Equip: Increases your frost resistance by %s.",
-            '54' : "Equip: Increases your shadow resistance by %s.",
-            '55' : "Equip: Increases your nature resistance by %s.",
-            '56' : "Equip: Increases your arcane resistance by %s.",
-            '57' : "Equip: Increases your pvp power by %s.",
-            '60' : "Equip: Increase your readiness by %s.",
-            '61' : "Equip: Increase your speed by %s.",
-            "62" : "Equip: Increase your leech by %s.",
-            "63" : "Equip: Increase your avoidence by %s.",
-            "64" : "Equip: Increase your indestructible by %s",
-            "65" : "Equip: Increase your WOD_5 by %s.",
-            '59' : "Equip: Increase your multistrike by %s.",
-            "71" : "Equip: Increase your strength, agility or intellect by %s.",
-            "72" : "Equip: Increase your strength or agility by %s.",
-            '73' : "Equip: Increase your agility or intellect by %s.",
-            "74" : "+ %s Strength or Intellect"
+            '50' : "+%s Armor Rating",
+            '51' : "+%s Fire Resistance",
+            '52' : "+%s Frost Resistance",
+            '54' : "+%s Shadow Resistance",
+            '55' : "+%s Nature Resistance",
+            '56' : "+%s Arcane Resistance",
+            '57' : "+%s PvP Power",
+            '60' : "+%s Readiness",
+            '61' : "+%s Speed",
+            "62" : "+%s Leech",
+            "63" : "+%s Avoidence",
+            "64" : "+%s Indestructible",
+            "65" : "+%s WOD_5",
+            '59' : "+%s Multistrike",
+            "71" : "+%s Strength, Agility or Intellect",
+            "72" : "+%s Strength or Agility",
+            '73' : "+%s Agility or Intellect",
+            "74" : "+%s Strength or Intellect"
         };
         var inventorySlotMap = {
             'head' : 0,
@@ -178,6 +178,7 @@ angular.module('wowApp')
                 return genderMap[idx];
             },
             getGold: function(sellValue) {
+                // console.log(sellValue);
                 var n = sellValue;
                 var s = "";
                 if (sellValue < 0) {
@@ -241,14 +242,21 @@ angular.module('wowApp')
 
                 for (var x = 0; x <= sortedStats.length -1; x++) {
                     line = itemStatMap[sortedStats[x].stat];
-                    if (sortedStats[x].stat == 74 || sortedStats[x].stat == 36 || sortedStats[x].stat == 49 || sortedStats[x].stat == 7 ) {
+                    // There is currently cofusion with stat 7 (stamina) and stat 36 (haste).  If the amount > 100, divide the amount by 0.046.  Otherwise, use the
+                    // provided amount.
+                    if (sortedStats[x].stat == 74 ||
+                        sortedStats[x].stat == 49 ||
+                        (sortedStats[x].stat == 32 && sortedStats[x].amount > 100) ||
+                        (sortedStats[x].stat == 7 && sortedStats[x].amount > 100) ||
+                        (sortedStats[x].stat == 4 && sortedStats[x].amount > 100) ||
+                        (sortedStats[x].stat == 36 && sortedStats[x].amount > 100)) {
                         var statCalc = Math.round(sortedStats[x].amount * 0.046);
                         line = line.replace("%s", statCalc);
                     } else {
                         line = line.replace("%s", sortedStats[x].amount);
                     }
 
-                    if (sortedStats[x].stat > 7) {
+                    if (sortedStats[x].stat > 7 && sortedStats[x].stat !== 74) {
                         line = "<span class='item-green-text'>" + line + "</span>";
                     } else {
                         line = "<span class='item-white-text'>" + line + "</span>";
@@ -734,6 +742,20 @@ angular.module('wowApp')
 
                 // Set background image for profile based on race
                 $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
+            },
+
+            getArmorValue: function(val){
+                if (val < 100)
+                    return val;
+                else
+                    return Math.round(val * 0.146);
+            },
+
+            getLevelValue: function(val){
+                if (val < 100)
+                    return val;
+                else
+                    return Math.round(val * 0.08);
             }
         };
     })

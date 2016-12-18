@@ -129,11 +129,13 @@ angular.module('wowApp')
         // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
 
         $scope.calcGold = function (idx) {
-            if (idx) {
-                if (typeof idx == 'number') {
+            // console.log(idx);
+            if (typeof idx != 'undefined') {
+
+                    // console.log($scope.inventory[idx].sellPrice);
+                    // console.log($scope.convertGold($scope.inventory[idx].sellPrice));
                     return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
-                }
-                return $scope.convertGold(idx.sellPrice);
+                // return $scope.convertGold(idx.sellPrice);
             }
             // else
             return null;
@@ -141,10 +143,18 @@ angular.module('wowApp')
         };
 
         $scope.calcStats =  function (idx) {
-            if (typeof idx == 'number') {
-                return $scope.bonusstatsParse($scope.inventory[idx].bonusStats);
+            if (typeof idx != 'undefined') {
+                return bonusstatsParse($scope.inventory[idx].bonusStats);
             } // else
-                return $scope.bonusstatsParse(idx);
+                return bonusstatsParse(idx);
+        };
+
+        $scope.calcArmor =  function (value) {
+            return characterService.getArmorValue(value);
+        };
+
+        $scope.calcLevel =  function (value) {
+            return characterService.getLevelValue(value);
         };
 
         // Set tooltips for feed and inventory areas.
@@ -217,7 +227,7 @@ angular.module('wowApp')
             return characterFeed.getItemBind(idx);
         };
 
-        $scope.bonusstatsParse = function(item) {
+        var bonusstatsParse = function(item) {
             if (item) {
                 return characterFeed.getBonusstatsparse(item);
             }
@@ -260,7 +270,8 @@ angular.module('wowApp')
                         return 'Main Hand';
                         break;
                     default:
-                        return name.charAt(0).toUpperCase() + name.slice(1);
+                        var withNoDigits = name.replace(/[0-9]/g, '');
+                        return withNoDigits.charAt(0).toUpperCase() + withNoDigits.slice(1);
                 }
             }
             // else
