@@ -6,23 +6,22 @@ angular.module('wowApp')
     })
 
     // This is the controller for the realms page
-    .controller('realmCtrl', function ($scope, characterFeed) {
-
-
-        // First check the Realms cache to see if the API needs to be called.
-        characterFeed.initRealms();
-
-        // Populate realmsResult with cached items (if there are any).
-        $scope.realmsResult = characterFeed.getCacheItems("realms");
-
-        $scope.$on('realms_update', function() {
-            console.log('here');
-            $scope.realmsResult = characterFeed.getCacheItems("realms");
-        });
+    .controller('realmCtrl', function ($scope, searchService) {
 
         $scope.sortType = 'name';
         $scope.sortReverse = false;
         $scope.searchRealms = '';
+
+        // First check the Realms cache to see if the API needs to be called.
+        searchService.initRealms();
+
+        // Populate realmsResult with cached items (if there are any).
+        $scope.realmsResult = searchService.getCacheItems("realms");
+
+        $scope.$on('realms_update', function() {
+            $scope.realmsResult = searchService.getCacheItems("realms");
+        });
+
 
         $scope.sliceCountryFromTimezone = function(timezone) {
             var idx = timezone.indexOf("/");
@@ -31,14 +30,14 @@ angular.module('wowApp')
     })
 
 
-    .controller('characterSearchCtrl', function ($scope, $location, characterFeed, characterService, itemService) {
-        // Start the characterFeed service.  This is going to check/populate races, classes, bosses, and zones.
+    .controller('searchCtrl', function ($scope, $location, searchService, characterService, itemService) {
+        // Start the searchService service.  This is going to check/populate races, classes, bosses, and zones.
 
         // First check what API calls need to be performed and call them if cache items are not present.
-        characterFeed.init();
+        searchService.init();
 
         // Populate realmsResult with cached items (if there are any).
-        $scope.realmsResult = characterFeed.getCacheItems("realms");
+        $scope.realmsResult = searchService.getCacheItems("realms");
 
         $scope.selectedRealm = characterService.selectedRealm;
 
@@ -54,7 +53,7 @@ angular.module('wowApp')
 
 
         $scope.$on('realms_update', function() {
-            $scope.realmsResult = characterFeed.getCacheItems("realms");
+            $scope.realmsResult = searchService.getCacheItems("realms");
         });
 
         $scope.submit = function() {
@@ -63,7 +62,7 @@ angular.module('wowApp')
 
     })
 
-    .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, characterFeed, characterService, itemService) {
+    .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, searchService, characterService, itemService) {
 
         var self = this;
 
@@ -86,7 +85,7 @@ angular.module('wowApp')
 
 
         // Populate realmsResult with cached items (if there are any).
-        $scope.realmsResult = characterFeed.getCacheItems("realms");
+        $scope.realmsResult = searchService.getCacheItems("realms");
 
         $scope.$watch('showFeed', function() {
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
@@ -95,32 +94,27 @@ angular.module('wowApp')
 
         $scope.$on('character_retrieved', function() {
             console.log('broadcast received');
-
             $scope.characterResult = characterService.getCacheItems('Char:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
-
             // Set the bavkground following the cache success.
             characterService.setBackground($scope.characterResult.background, $scope.characterResult.backgroundImg);
-
         });
 
         $scope.$on('feed_retrieved', function() {
-
             console.log('feed broadcast received');
             $scope.list = characterService.getCacheItems('Feed:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
         });
 
         $scope.$on('inventory_retrieved', function() {
             console.log('broadcast received for inventory');
-
             $scope.inventory = characterService.getCacheItems('Inv:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
         });
 
 
         $scope.$on('achievements_retrieved', function() {
-
             console.log('achievements broadcast received');
             $scope.ach = characterService.getCacheItems('Ach');
         });
+
 
         // This kicks things off.
         characterService.init();
@@ -129,24 +123,19 @@ angular.module('wowApp')
         // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
 
         $scope.calcGold = function (idx) {
-            // console.log(idx);
             if (typeof idx != 'undefined') {
-
-                    // console.log($scope.inventory[idx].sellPrice);
-                    // console.log($scope.convertGold($scope.inventory[idx].sellPrice));
-                    return "Sell Price: " + $scope.convertGold($scope.inventory[idx].sellPrice);
-                // return $scope.convertGold(idx.sellPrice);
+                return "Sell Price: " + searchService.getGold($scope.inventory[idx].sellPrice)
             }
-            // else
             return null;
-
         };
 
         $scope.calcStats =  function (idx) {
-            if (typeof idx != 'undefined') {
-                return bonusstatsParse($scope.inventory[idx].bonusStats);
-            } // else
-                return bonusstatsParse(idx);
+            if (typeof idx !== 'undefined') {
+                if ($scope.inventory[idx].bonusStats) {
+                    return searchService.getBonusstatsparse($scope.inventory[idx].bonusStats);
+                }
+            }
+            return null;
         };
 
         $scope.calcArmor =  function (value) {
@@ -157,93 +146,67 @@ angular.module('wowApp')
             return characterService.getLevelValue(value);
         };
 
-        // Set tooltips for feed and inventory areas.
-        $(document).ready(function () {
-
-            //Tooltip, activated by hover event
-            $("#table-feed").tooltip({
-                selector: "[data-toggle='tooltip']",
-                container: "#table-feed",
-                html: true
-            });
-
-            $("#summary-inventory").tooltip({
-                selector: "[data-toggle='tooltip']",
-                container: "#summary-inventory",
-                html: true
-            });
-
-
-        });
-
-        $scope.showinfo = function(feedItem, bool) {
-            if(bool === true) {
-                $scope.showInfobox = true;
-                console.log('mouse enter for');
-            } else if (bool === false) {
-                $scope.showInfobox = false;
-                console.log(feedItem);
-                console.log('mouse leave for');
-            }
-        };
+        // $scope.showinfo = function(feedItem, bool) {
+        //     if(bool === true) {
+        //         $scope.showInfobox = true;
+        //         console.log('mouse enter for');
+        //     } else if (bool === false) {
+        //         $scope.showInfobox = false;
+        //         console.log(feedItem);
+        //         console.log('mouse leave for');
+        //     }
+        // };
 
         $scope.classMap = function(idx) {
-            return characterFeed.getClass(idx);
+            return searchService.getClass(idx);
         };
         $scope.bossMap = function(item) {
             if (item.name) {
-                $scope.boss = characterFeed.getBoss(item.name);
+                $scope.boss = searchService.getBoss(item.name);
             }   else {
                 item.tooltip = "BOSS-NO";
             }
         };
 
-        $scope.zoneMap = function(zoneId) {
-            var zone = characterFeed.getZone(zoneId);
-            return zone;
-        };
+        // $scope.zoneMap = function(zoneId) {
+        //     return searchService.getZone(zoneId);
+        // };
 
         $scope.raceMap = function(idx) {
-            return characterFeed.getRace(idx);
+            return searchService.getRace(idx);
 
 
         };
         $scope.factionMap = function(idx) {
-            return characterFeed.getFaction(idx);
+            return searchService.getFaction(idx);
         };
         $scope.genderMap = function(idx) {
-            return characterFeed.getGender(idx);
+            return searchService.getGender(idx);
         };
 
-        $scope.itemqualityMap = function(idx) {
-            return characterFeed.getItemQuality(idx);
-        };
+        // $scope.itemqualityMap = function(idx) {
+        //     return searchService.getItemQuality(idx);
+        // };
 
         $scope.itemupgradableMap = function(idx) {
-            return characterFeed.getItemUpgradable(idx);
+            return searchService.getItemUpgradable(idx);
         };
 
         $scope.itembindMap = function(idx) {
-            return characterFeed.getItemBind(idx);
+            return searchService.getItemBind(idx);
         };
 
-        var bonusstatsParse = function(item) {
-            if (item) {
-                return characterFeed.getBonusstatsparse(item);
-            }
-        };
-
-        $scope.characterImage = function(path) {
-            var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
-            imagePath += "profilemain.jpg";
-            return imagePath;
-        };
+        // $scope.characterImage = function(path) {
+        //     var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
+        //     imagePath += "profilemain.jpg";
+        //     return imagePath;
+        // };
 
 
 
-        $scope.convertGold = function(sellValue) {
-            return characterFeed.getGold(sellValue);
-        };
+        //  var convertGold = function(sellValue) {
+        //     return searchService.getGold(sellValue);
+        // };
 
 
 
@@ -251,14 +214,14 @@ angular.module('wowApp')
             return new Date(lastModified).toUTCString();
         };
 
-        $scope.nameFromtitle = function(title) {
-            console.log(title);
-            console.log($scope.bossMap(title.substr(0, title.indexOf(' '))));
-            var bossName = title.substr(0, title.indexOf(' ')).toLowerCase();
-            console.log(bossName);
-            console.log($scope.bossMap(bossName));
-            return $scope.bossMap(bossName);
-        };
+        // $scope.nameFromtitle = function(title) {
+        //     console.log(title);
+        //     console.log($scope.bossMap(title.substr(0, title.indexOf(' '))));
+        //     var bossName = title.substr(0, title.indexOf(' ')).toLowerCase();
+        //     console.log(bossName);
+        //     console.log($scope.bossMap(bossName));
+        //     return $scope.bossMap(bossName);
+        // };
 
         $scope.capitalizeName = function(name) {
             if (name) {
@@ -274,7 +237,6 @@ angular.module('wowApp')
                         return withNoDigits.charAt(0).toUpperCase() + withNoDigits.slice(1);
                 }
             }
-            // else
             return "";
         };
 

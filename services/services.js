@@ -15,7 +15,7 @@ angular.module('wowApp')
 
     })
 
-    .service('characterFeed', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService, dataService) {
+    .service('searchService', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService, dataService) {
         // Private Variables
         var self = this;
 
@@ -369,7 +369,7 @@ angular.module('wowApp')
         };
     })
 
-    .service('characterService', function($http, $rootScope, myCache, characterFeed, itemService, feedService, inventoryService, dataService, keys) {
+    .service('characterService', function($http, $rootScope, myCache, searchService, itemService, feedService, inventoryService, dataService, keys) {
 
         var race;
         var thumbnail;
@@ -397,14 +397,14 @@ angular.module('wowApp')
             myCache.put(key, items);
         };
 
-        var checkCharacterFeed = function() {
-            if (!myCache.get('Char:' + this.name + ':' + this.selectedRealm)) {
-                console.log('cache empty for character');
-            } else {
-                console.log('cache not empty.');
-                return myCache.get(this.name + ':' + this.selectedRealm);
-            }
-        };
+        // var checkCharacterFeed = function() {
+        //     if (!myCache.get('Char:' + this.name + ':' + this.selectedRealm)) {
+        //         console.log('cache empty for character');
+        //     } else {
+        //         console.log('cache not empty.');
+        //         return myCache.get(this.name + ':' + this.selectedRealm);
+        //     }
+        // };
 
         var mapItem = function(idx) {
             for(var key in bossMap) {
@@ -412,17 +412,12 @@ angular.module('wowApp')
                     return bossMap[key];
                 }
             }
-
             console.log('not found in bosses');
             return "";
         };
 
 
         var processFeed = function(name, realm, feed) {
-
-            // Clear the arrays before we start in case there is leftover information from a previous call.
-            self.inventoryArray = [];
-            self.inventorySlots = [];
 
             self.name = name.toLowerCase();
             self.selectedRealm = realm;
@@ -452,7 +447,7 @@ angular.module('wowApp')
                     feedElement.type = itemElement.type;
                     feedElement.timestamp = itemElement.timestamp;
                     // Insert the feedElement into the feed array at the position of the original AJAX call index.
-                    var i = items[idx].index - 1;
+                    // var i = items[idx].index - 1;
                     self.processedFeed.splice(items[idx].index, 0, feedElement);
                     idx++;
                 } else if (feed[x].type === 'BOSSKILL') {
@@ -496,18 +491,12 @@ angular.module('wowApp')
 
             console.log('in getItemWrapper for Inventory Items.');
 
-            // First clear the array if it has any items from previous calls.
-            if (self.inventorySlots){
-                console.log('clearing inventory slots of extra items.');
-                self.inventorySlots = [];
-            }
-
             // This is the API call for the character Items.  This call populates the inventory slots.
 
             inventoryService.getItem(function (response) {
                 console.log('Get Item API Call for inventory items');
                 // Mapping the array by item slot name
-                var slots = characterFeed.getInventorySlots();
+                var slots = searchService.getInventorySlots();
                 for (var x = 0; x < slots.length; x++) {
                     // Map the items here before you push them.
                     var inventorySlot = {};
@@ -515,7 +504,7 @@ angular.module('wowApp')
 
                     if (slots[x] in response.data.items) {
                         inventorySlot.value = response.data.items[slots[x]];
-                        inventorySlot.slot = characterFeed.getInventorySlot(slots[x]);
+                        inventorySlot.slot = searchService.getInventorySlot(slots[x]);
                         inventorySlot.bonusStats = [];
                         inventorySlot.id = response.data.items[slots[x]].id;
                     } else {
@@ -540,7 +529,7 @@ angular.module('wowApp')
 
 
                 self.inventory = self.inventoryArray.sort(function (a, b) {
-                    return characterFeed.getInventorySlot(a.slot) - characterFeed.getInventorySlot(b.slot);
+                    return searchService.getInventorySlot(a.slot) - searchService.getInventorySlot(b.slot);
                 });
 
                 myCache.put('Inv:'+ self.name.toLowerCase() + ':' + self.selectedRealm, self.inventory);
@@ -582,37 +571,61 @@ angular.module('wowApp')
             return item;
         };
 
-        var checkFeedCache = function(item) {
+        // var checkFeedCache = function(item) {
+        //
+        //     if (!myCache.get(item.timestamp + ':' + item.id)) {
+        //         console.log('cache empty for item.');
+        //         var result = callItemService(item);
+        //         console.log('placing item in cache.');
+        //         myCache.put(item.timestamp + ':' + item.id, result);
+        //         console.log(result);
+        //         return result;
+        //
+        //     } else {
+        //         console.log('cache has item. Retrieving item from cache.');
+        //         return myCache.get(item.timestamp + ':' + item.id);
+        //     }
+        //
+        // };
 
-            if (!myCache.get(item.timestamp + ':' + item.id)) {
-                console.log('cache empty for item.');
-                var result = callItemService(item);
-                console.log('placing item in cache.');
-                myCache.put(item.timestamp + ':' + item.id, result);
-                console.log(result);
-                return result;
+        // var checkItemCache = function(item) {
+        //
+        //     if (!myCache.get(item.type + ':' + item.id)) {
+        //         console.log('cache empty for item.');
+        //         // return getItem(item.type + ':' + item.id);
+        //         var result = callItemService(item);
+        //         console.log('placing item in cache.');
+        //         myCache.put(item.type + ':' + item.id, result);
+        //         return result;
+        //
+        //     } else
+        //     {
+        //         console.log('cache not empty.');
+        //         return myCache.get(item.type + ':' + item.id);
+        //     }
+        //
+        // };
 
-            } else {
-                console.log('cache has item. Retrieving item from cache.');
-                return myCache.get(item.timestamp + ':' + item.id);
+        var clearItems = function() {
+            // First clear the array if it has any items from previous calls.
+            if (self.inventorySlots){
+                console.log('clearing inventory slots of extra items.');
+                self.inventorySlots = [];
             }
 
-        };
+            if (self.processedFeed) {
+                console.log('clearing processedFeed.');
+                self.processedFeed = [];
+            }
 
-        var checkItemCache = function(item) {
+            if (self.inventoryArray) {
+                console.log('clearing inventoryArray.');
+                self.inventoryArray = [];
+            }
 
-            if (!myCache.get(item.type + ':' + item.id)) {
-                console.log('cache empty for item.');
-                // return getItem(item.type + ':' + item.id);
-                var result = callItemService(item);
-                console.log('placing item in cache.');
-                myCache.put(item.type + ':' + item.id, result);
-                return result;
-
-            } else
-            {
-                console.log('cache not empty.');
-                return myCache.get(item.type + ':' + item.id);
+            if (self.inventorySlots) {
+                console.log('clearing inventorySlots.');
+                self.inventorySlots = [];
             }
 
         };
@@ -687,6 +700,8 @@ angular.module('wowApp')
                     }
                 } else {
                     console.log('character is not defined');
+                    // Clear any previous memory
+                    clearItems();
                     // Pass the parameters on to the service prior to the call.
                     inventoryService.name = this.name;
                     inventoryService.selectedRealm = this.selectedRealm;
@@ -818,7 +833,7 @@ angular.module('wowApp')
 
     })
 
-    .service('itemService', function($http, characterFeed, keys) {
+    .service('itemService', function($http, searchService, keys) {
 
         // Item API Call - Item API
         this.getItem = function(itemId, callback, err) {

@@ -12,7 +12,7 @@ wowApp.config(function ($routeProvider) {
 
    .when('/characterSearch', {
         templateUrl: 'templates/characterSearch.htm',
-        controller: 'characterSearchCtrl'
+        controller: 'searchCtrl'
     })
     
     .when('/characterResult', {
