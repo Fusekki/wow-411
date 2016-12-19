@@ -19,7 +19,7 @@ angular.module('wowApp')
         // Private Variables
         var self = this;
 
-        var raceMap, classMap, bossMap, zoneMap = [], inventoryMap, realmMap;
+        var raceMap, classMap, bossMap, realmMap;
 
         var genderMap = ["Male", "Female"];
 
@@ -142,10 +142,8 @@ angular.module('wowApp')
                     }
                 }, function(err) {
                     console.log(err.status);
-
                 });
             }
-
         };
         // Public variables
 
@@ -178,7 +176,6 @@ angular.module('wowApp')
                 return genderMap[idx];
             },
             getGold: function(sellValue) {
-                // console.log(sellValue);
                 var n = sellValue;
                 var s = "";
                 if (sellValue < 0) {
@@ -217,16 +214,14 @@ angular.module('wowApp')
             getFaction: function(idx) {
                 return factionMap[idx];
             },
-            getItemQuality: function(idx) {
-                return itemQualityMap[idx];
-            },
+            // getItemQuality: function(idx) {
+            //     return itemQualityMap[idx];
+            // },
             getItemUpgradable: function(isUpgradable) {
                 if (isUpgradable) {
-                    idx = 1;
-                } else {
-                    idx = 0;
+                    return itemUpgradableMap[1];
                 }
-                return itemUpgradableMap[idx];
+                return itemUpgradableMap[0];
             },
             getItemBind: function(idx) {
                 return itemBindMap[idx];
