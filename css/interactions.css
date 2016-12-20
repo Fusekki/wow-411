@@ -28,7 +28,7 @@
 }
 
 .button {
-    color: #4a99ca;
+    color: #211510;
     background: #fff;
     border: 2px solid;
     transition-property: background, border-radius, color;    
@@ -37,7 +37,7 @@
 
 .button:hover {
     color: #fff;
-    background: #4a89ca;
+    background: #211510;
     border-radius: 1em;
 }
 

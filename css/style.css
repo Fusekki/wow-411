@@ -43,7 +43,7 @@ body {
     font-family: 'Sansation Bold';
     background-color: #f0f0f0;
     color: #999;
-    background: #211510 url(../components/SiteNav/sitenav-bar-bg-1fce1b9a3f.jpg) repeat-x 80px 0;
+    background: #211510 url(images/sitenav-bar-user-bg-a5aceeed07.jpg) repeat-x 80px 0;
 }
 
 .navbar-custom .navbar-brand {
@@ -214,6 +214,11 @@ body {
 
 .content-top {
     height: 100%;
+    background: url(/wow/static/images/character/summary/backgrounds/race/1.jpg) left top no-repeat;
+}
+
+.panel-primary>.panel-heading {
+    background: #c09a67;
 }
 .profile-wrapper {
     height: 100%;
