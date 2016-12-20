@@ -341,12 +341,6 @@ angular.module('wowApp')
                         setCacheStatus("zones", response.data.zones);
                         // Store in local array
                         zoneMap = response.data.zones;
-                        console.log(zoneMap);
-                        console.log(zoneMap[18535]);
-                        console.log(zoneMap[3265]);
-                        console.log(zoneMap[18528]);
-                        console.log(zoneMap[19698]);
-
                         if (getCacheStatus("zones")) {
                             console.log('zones are now defined.');
                             console.log('zones are cached: ');
@@ -429,7 +423,6 @@ angular.module('wowApp')
                     processedFeed.splice(items[idx].index, 0, feedElement);
                     idx++;
                 } else if (feed[x].type === 'BOSSKILL') {
-                    console.log(feed[x]);
                     feedElement.timestamp = feed[x].timestamp;
                     feedElement.type = feed[x].type;
                     feedElement.name = feed[x].name;
@@ -618,7 +611,6 @@ angular.module('wowApp')
                     feedService.selectedRealm = this.selectedRealm;
                     feedService.getCharacterFeed(function(response){
                         console.log('Character Feed API Call.');
-                        console.log(response);
                         if (!race) {
                             race = response.data.race;
                         }
