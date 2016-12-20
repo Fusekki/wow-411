@@ -22,7 +22,7 @@
 
 
     </head>
-    <body ng-app="wowApp">
+    <body class="background_image" ng-app="wowApp">
         <header>
             <!-- Navigation -->
             <nav class="navbar navbar-custom navbar-fixed-top navbar-default" role="navigation">
@@ -32,7 +32,7 @@
                             <i class="fa fa-bars"></i>
                         </button>
                         <a class="navbar-brand page-scroll" href="#/">
-                            <span>World of Warcraft</span>
+                            <span class="wow_theme_color">World of Warcraft</span>
                         </a>
                     </div>
 
@@ -44,10 +44,10 @@
                                 <a href="#"></a>
                             </li>
                             <li>
-                                <a class="page-scroll" href="#characterSearch">Characters</a>
+                                <a class="page-scroll wow_theme_color" href="#characterSearch">Characters</a>
                             </li>
                             <li>
-                                <a class="page-scroll" href="#realms">Realms</a>
+                                <a class="page-scroll wow_theme_color" href="#realms">Realms</a>
                             </li>    
                                 
                         </ul>
@@ -57,8 +57,9 @@
                 <!-- /.container -->
             </nav>                 
         </header>
+
         <div class="container">
-            <div class="section">
+            <div class="section ">
             
             <div ng-view class="top-margin"></div>
             </div>

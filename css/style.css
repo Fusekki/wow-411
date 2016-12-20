@@ -2,6 +2,32 @@
     /*border: 2px solid red;*/
 /*}*/
 
+body {
+    color: #fff;
+}
+
+.wow_theme_color {
+    color: #f8b700;
+}
+
+.zone_color {
+    color: #cacaca;
+
+}
+
+.text-black {
+    color: #000;
+}
+
+.character_color {
+    color: #fff468;
+}
+
+.background_image {
+    background-image: url(https://bnetcmsus-a.akamaihd.net/cms/template_resource/p8/P8LCY89PNXOK1466794718015.jpg);
+    height: 100vh;
+}
+
 .top-buffer {
     margin-top: 5%;
 }
@@ -17,6 +43,7 @@
     font-family: 'Sansation Bold';
     background-color: #f0f0f0;
     color: #999;
+    background: #211510 url(../components/SiteNav/sitenav-bar-bg-1fce1b9a3f.jpg) repeat-x 80px 0;
 }
 
 .navbar-custom .navbar-brand {
@@ -44,12 +71,13 @@
 }
 
 .navbar-custom .nav li a {
+    color: #f8b700;
     transition: background .3s ease-in-out;
 }
 
 .navbar-custom .nav li a:hover {
     outline: 0;
-    color: red;
+    color: #999;
     background-color: transparent;
 }
 
