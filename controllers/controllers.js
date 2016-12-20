@@ -119,9 +119,6 @@ angular.module('wowApp')
         // This kicks things off.
         characterService.init();
 
-        // These are used for the tooltips.  They work with $sce to sanitize the dynamic html so that it is rendered properly.
-        // If item is passed via Inventory Tooltip, it will pass a number.  If item is passed via feed Tooltip, it will pass an object.
-
         $scope.calcGold = function (idx) {
             if (typeof idx != 'undefined') {
                 return "Sell Price: " + searchService.getGold($scope.inventory[idx].sellPrice)
@@ -146,17 +143,6 @@ angular.module('wowApp')
             return characterService.getLevelValue(value);
         };
 
-        // $scope.showinfo = function(feedItem, bool) {
-        //     if(bool === true) {
-        //         $scope.showInfobox = true;
-        //         console.log('mouse enter for');
-        //     } else if (bool === false) {
-        //         $scope.showInfobox = false;
-        //         console.log(feedItem);
-        //         console.log('mouse leave for');
-        //     }
-        // };
-
         $scope.classMap = function(idx) {
             return searchService.getClass(idx);
         };
@@ -168,9 +154,10 @@ angular.module('wowApp')
             }
         };
 
-        // $scope.zoneMap = function(zoneId) {
-        //     return searchService.getZone(zoneId);
-        // };
+        $scope.zoneMap = function(zoneId) {
+            return searchService.getZone(zoneId);
+        };
+
 
         $scope.raceMap = function(idx) {
             return searchService.getRace(idx);
@@ -184,10 +171,6 @@ angular.module('wowApp')
             return searchService.getGender(idx);
         };
 
-        // $scope.itemqualityMap = function(idx) {
-        //     return searchService.getItemQuality(idx);
-        // };
-
         $scope.itemupgradableMap = function(idx) {
             return searchService.getItemUpgradable(idx);
         };
@@ -196,32 +179,13 @@ angular.module('wowApp')
             return searchService.getItemBind(idx);
         };
 
-        // $scope.characterImage = function(path) {
-        //     var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
-        //     imagePath += "profilemain.jpg";
-        //     return imagePath;
-        // };
-
-
-
-        //  var convertGold = function(sellValue) {
-        //     return searchService.getGold(sellValue);
-        // };
-
-
-
         $scope.convertToStandard = function(lastModified) {
-            return new Date(lastModified).toUTCString();
+            return new Date(lastModified).toLocaleString();
         };
 
-        // $scope.nameFromtitle = function(title) {
-        //     console.log(title);
-        //     console.log($scope.bossMap(title.substr(0, title.indexOf(' '))));
-        //     var bossName = title.substr(0, title.indexOf(' ')).toLowerCase();
-        //     console.log(bossName);
-        //     console.log($scope.bossMap(bossName));
-        //     return $scope.bossMap(bossName);
-        // };
+        $scope.convertToLocal = function(lastModified) {
+            return new Date(lastModified).toLocaleString().replace(/(.*)\D\d+/, '$1');
+        };
 
         $scope.capitalizeName = function(name) {
             if (name) {

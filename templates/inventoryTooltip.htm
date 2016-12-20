@@ -8,47 +8,15 @@
             </td>
             <td ng-switch-default>
                 <b ng-class= "{poor: i.quality == 9, common: i.quality == 1, uncommon: i.quality == 2, rare: i.quality == 3, epic: i.quality == 4, legendary: i.quality == 5, artifact: i.quality == 6, heirloom: i.quality == 7}"> {{  i.name }} </b> <br>
-
                 <span class="item-yellow-text">Item Level {{ calcLevel(i.itemLevel) }} <br> </span>
-
                 <span class="item-white-text"> {{ itembindMap(i.itemBind) }}</span> <br>
-
                 <span>{{ capitalizeName(i.slot) }}</span> <br>
-
                 <span ng-show="i.armor">{{ calcArmor(i.armor) }} Armor<br></span>
-
                 <span ng-bind-html="calcStats($index) | unsafe"></span> <br>
-
                 <span ng-show="i.maxDurability">Durability {{ i.maxDurability }} <br></span>
-
                 <span ng-show="i.requiredLevel">Requires level {{ i.requiredLevel }} <br></span>
-
                 <span ng-bind-html="calcGold($index) | unsafe"></span>
             </td>
         </tr>
     </tbody>
 </table>
-
-
-<!--<img src='http://media.blizzard.com/wow/icons/56/{{ i.icon }}.jpg'>-->
-<!--<table>-->
-    <!--<tbody>-->
-    <!--<tr ng-switch="i.quality">-->
-        <!--<td ng-switch-when="none">-->
-            <!--<b ng-show="i.name" class="item-white-text">{{ capitalizeName(i.name) }}</b> <br>-->
-            <!--<span class="item-yellow-text">Empty slot</span>-->
-        <!--</td>-->
-        <!--<td ng-switch-default>-->
-            <!--<b ng-class= "{poor: i.quality == 9, common: i.quality == 1, uncommon: i.quality == 2, rare: i.quality == 3, epic: i.quality == 4, legendary: i.quality == 5, artifact: i.quality == 6, heirloom: i.quality == 7}"> {{  i.name }} </b> <br>-->
-            <!--Item Level {{ i.itemLevel }} <br>-->
-            <!--<span class="item-white-text"> {{ itembindMap(i.itemBind) }}</span> <br>-->
-            <!--<span ng-show="i.armor"> {{ i.armor }} Armor<br></span>-->
-            <!--<span ng-bind-html="calcStats($index) | unsafe"></span>-->
-            <!--<br>-->
-            <!--<span ng-show="i.maxDurability">Durability {{ i.maxDurability }} <br></span>-->
-            <!--<span ng-show="i.requiredLevel">Requires level {{ i.requiredLevel }} <br></span>-->
-            <!--<span ng-bind-html="calcGold($index) | unsafe"></span>-->
-        <!--</td>-->
-    <!--</tr>-->
-    <!--</tbody>-->
-<!--</table>-->

@@ -213,9 +213,6 @@ angular.module('wowApp')
             getFaction: function(idx) {
                 return factionMap[idx];
             },
-            // getItemQuality: function(idx) {
-            //     return itemQualityMap[idx];
-            // },
             getItemUpgradable: function(isUpgradable) {
                 if (isUpgradable) {
                     return itemUpgradableMap[1];
@@ -263,15 +260,13 @@ angular.module('wowApp')
                 return combinedStats;
             },
 
-            // getZone: function(idx) {
-            //     for(var key in zoneMap) {
-            //         if(zoneMap[key].id === idx) {
-            //             return zoneMap[key].description;
-            //         }
-            //     }
-            //     console.log('not found in zones');
-            //     return "";
-            // },
+            getZone: function(zoneId) {
+                for(var key in zoneMap) {
+                    if(zoneMap[key].id === zoneId) {
+                        return zoneMap[key].description;
+                    }
+                }
+            },
 
             getInventorySlot: function(item) {
                 // This maps the item name to a slot value as defined by our array.
@@ -346,6 +341,12 @@ angular.module('wowApp')
                         setCacheStatus("zones", response.data.zones);
                         // Store in local array
                         zoneMap = response.data.zones;
+                        console.log(zoneMap);
+                        console.log(zoneMap[18535]);
+                        console.log(zoneMap[3265]);
+                        console.log(zoneMap[18528]);
+                        console.log(zoneMap[19698]);
+
                         if (getCacheStatus("zones")) {
                             console.log('zones are now defined.');
                             console.log('zones are cached: ');
@@ -372,18 +373,12 @@ angular.module('wowApp')
         var items = [];
         var count = 0;
         var idx = 0;
-        // var processedFeed = [];
+
 
         self.background = '';
         self.backgroundImage = '';
-
-
         self.list = {};
-        // self.processedFeed = [];
         self.filteredFeed = [];
-        // self.inventorySlots = [];
-        // self.inventoryArray = [];
-
 
         var getCacheStatus = function (cache) {
             return myCache.get(cache);
@@ -392,26 +387,6 @@ angular.module('wowApp')
         var setCacheStatus = function (key, items) {
             myCache.put(key, items);
         };
-
-        // var checkCharacterFeed = function() {
-        //     if (!myCache.get('Char:' + this.name + ':' + this.selectedRealm)) {
-        //         console.log('cache empty for character');
-        //     } else {
-        //         console.log('cache not empty.');
-        //         return myCache.get(this.name + ':' + this.selectedRealm);
-        //     }
-        // };
-
-        // var mapItem = function(idx) {
-        //     for(var key in bossMap) {
-        //         if(bossMap[key].name === idx) {
-        //             return bossMap[key];
-        //         }
-        //     }
-        //     console.log('not found in bosses');
-        //     return "";
-        // };
-
 
         var processFeed = function(name, realm, feed) {
 
@@ -451,10 +426,10 @@ angular.module('wowApp')
                     feedElement.type = itemElement.type;
                     feedElement.timestamp = itemElement.timestamp;
                     // Insert the feedElement into the feed array at the position of the original AJAX call index.
-                    // var i = items[idx].index - 1;
                     processedFeed.splice(items[idx].index, 0, feedElement);
                     idx++;
                 } else if (feed[x].type === 'BOSSKILL') {
+                    console.log(feed[x]);
                     feedElement.timestamp = feed[x].timestamp;
                     feedElement.type = feed[x].type;
                     feedElement.name = feed[x].name;
@@ -584,13 +559,9 @@ angular.module('wowApp')
 
             // Set the background images
             // this first one has problems loading sometimes.
-
             $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
-
             // Set background image for profile based on race
             $(".content-top").css("background", "url" + self.background + ") left top no-repeat" );
-
-
         };
 
          var characterImage = function(path) {
@@ -634,15 +605,6 @@ angular.module('wowApp')
                     $rootScope.$broadcast('character_retrieved');
                     $rootScope.$broadcast('feed_retrieved');
                     $rootScope.$broadcast('inventory_retrieved');
-                    // if (getCacheStatus('Feed:' +self.name.toLowerCase() + ':' + self.selectedRealm)) {
-                    //     console.log('feed is cached.');
-                    //     $rootScope.$broadcast('feed_retrieved');
-                    //
-                    //     if (getCacheStatus('Inv:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
-                    //      console.log('inventory is cached.');
-                    //      $rootScope.$broadcast('inventory_retrieved');
-                    //     }
-                    // }
                 } else {
                     console.log('character is not defined');
                     // Pass the parameters on to the service prior to the call.
@@ -656,6 +618,7 @@ angular.module('wowApp')
                     feedService.selectedRealm = this.selectedRealm;
                     feedService.getCharacterFeed(function(response){
                         console.log('Character Feed API Call.');
+                        console.log(response);
                         if (!race) {
                             race = response.data.race;
                         }
@@ -672,6 +635,8 @@ angular.module('wowApp')
                             'realm' : response.data.realm,
                             'thumbnail' : response.data.thumbnail,
                             'thk' : response.data.totalHonorableKills,
+                            'achievementPoints' : response.data.achievementPoints,
+                            'lastModified' : response.data.lastModified,
                             'backgroundImg' : "http://render-us.worldofwarcraft.com/character/" + characterImage(thumbnail),
                             'background' : "http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg"
                         };
