@@ -2,6 +2,14 @@
     /*border: 2px solid red;*/
 /*}*/
 
+.top-buffer {
+    margin-top: 5%;
+}
+
+.top-small-buffer {
+    margin-top: 20px;
+}
+
 .navbar-custom {
     margin-bottom: 0;
     border-bottom: 1px solid rgba(255,255,255,.3);
@@ -503,11 +511,11 @@
 }
 
 
-.frame-artifact {
+.frame_artifact {
     border: 1px solid #e6cc80;
 }
 
 
-.frame-heirloom {
+.frame_heirloom {
     border: 1px solid #e6cc80;
 }
