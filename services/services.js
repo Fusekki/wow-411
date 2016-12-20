@@ -15,7 +15,7 @@ angular.module('wowApp')
 
     })
 
-    .service('searchService', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService, dataService) {
+    .service('searchService', function (keys, $rootScope, myCache, raceService, classService, bossService, zoneService, realmService) {
         // Private Variables
         var self = this;
 
@@ -24,7 +24,7 @@ angular.module('wowApp')
         var genderMap = ["Male", "Female"];
 
         var factionMap = ["Alliance", "Horde"];
-        var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
+        // var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
         var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
         var itemBindMap =["Tradeable", "Binds when picked up", "Binds when equipped"];
         var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'tabard', 'trinket1', 'trinket2', 'waist', 'wrist'];
@@ -187,8 +187,7 @@ angular.module('wowApp')
                 var copper = Math.floor((n % 100));
                 if (!copper) {
                     copper = "";
-                } else
-                {
+                } else {
                     copper += ' <i class="fa fa-circle currency-copper"  aria-hidden="true"></i>';
                 }
                 if (!gold) {
@@ -230,15 +229,17 @@ angular.module('wowApp')
                 var line = "";
                 var combinedStats = "";
                 // Sort the order by stat number
-                var sortedStats = [];
-                sortedStats = statsArray.sort(function(a,b) {
+                // var sortedStats = [];
+                var sortedStats = statsArray.sort(function(a,b) {
                     return a.stat - b.stat;
                 });
 
                 for (var x = 0; x <= sortedStats.length -1; x++) {
                     line = itemStatMap[sortedStats[x].stat];
-                    // There is currently cofusion with stat 7 (stamina) and stat 36 (haste).  If the amount > 100, divide the amount by 0.046.  Otherwise, use the
-                    // provided amount.
+                    //  The API and documentation on the amount variable is lacking.  To find the correct value for some of the stats,
+                    //  a division needs to be done on the amount value.  The following stats (by number) have that issue.  Some of these
+                    // amounts only require division if the reported amount is roughly above 100.  This could require future tweaking if the
+                    // API retrieved values change.
                     if (sortedStats[x].stat == 74 ||
                         sortedStats[x].stat == 49 ||
                         (sortedStats[x].stat == 32 && sortedStats[x].amount > 100) ||
@@ -262,15 +263,15 @@ angular.module('wowApp')
                 return combinedStats;
             },
 
-            getZone: function(idx) {
-                for(var key in zoneMap) {
-                    if(zoneMap[key].id === idx) {
-                        return zoneMap[key].description;
-                    }
-                }
-                console.log('not found in zones');
-                return "";
-            },
+            // getZone: function(idx) {
+            //     for(var key in zoneMap) {
+            //         if(zoneMap[key].id === idx) {
+            //             return zoneMap[key].description;
+            //         }
+            //     }
+            //     console.log('not found in zones');
+            //     return "";
+            // },
 
             getInventorySlot: function(item) {
                 // This maps the item name to a slot value as defined by our array.
@@ -355,7 +356,6 @@ angular.module('wowApp')
                 }
             },
 
-
             initRealms: function() {
                 initRealms();
 
@@ -364,7 +364,7 @@ angular.module('wowApp')
         };
     })
 
-    .service('characterService', function($http, $rootScope, myCache, searchService, itemService, feedService, inventoryService, dataService, keys) {
+    .service('characterService', function($http, $rootScope, myCache, searchService, itemService, feedService, inventoryService, keys) {
 
         var race;
         var thumbnail;
@@ -372,16 +372,17 @@ angular.module('wowApp')
         var items = [];
         var count = 0;
         var idx = 0;
+        // var processedFeed = [];
 
         self.background = '';
         self.backgroundImage = '';
 
 
         self.list = {};
-        self.processedFeed = [];
+        // self.processedFeed = [];
         self.filteredFeed = [];
-        self.inventorySlots = [];
-        self.inventoryArray = [];
+        // self.inventorySlots = [];
+        // self.inventoryArray = [];
 
 
         var getCacheStatus = function (cache) {
@@ -401,15 +402,15 @@ angular.module('wowApp')
         //     }
         // };
 
-        var mapItem = function(idx) {
-            for(var key in bossMap) {
-                if(bossMap[key].name === idx) {
-                    return bossMap[key];
-                }
-            }
-            console.log('not found in bosses');
-            return "";
-        };
+        // var mapItem = function(idx) {
+        //     for(var key in bossMap) {
+        //         if(bossMap[key].name === idx) {
+        //             return bossMap[key];
+        //         }
+        //     }
+        //     console.log('not found in bosses');
+        //     return "";
+        // };
 
 
         var processFeed = function(name, realm, feed) {
@@ -417,6 +418,14 @@ angular.module('wowApp')
             self.name = name.toLowerCase();
             self.selectedRealm = realm;
             console.log('in Process Feed.');
+
+            // clear processedFeed first
+            if (processedFeed) {
+                console.log('Clearing processedFeed.');
+                processedFeed = [];
+            } else {
+                var processedFeed = [];
+            }
 
             // Process through items in reponse and determine the category each falls under.
 
@@ -443,7 +452,7 @@ angular.module('wowApp')
                     feedElement.timestamp = itemElement.timestamp;
                     // Insert the feedElement into the feed array at the position of the original AJAX call index.
                     // var i = items[idx].index - 1;
-                    self.processedFeed.splice(items[idx].index, 0, feedElement);
+                    processedFeed.splice(items[idx].index, 0, feedElement);
                     idx++;
                 } else if (feed[x].type === 'BOSSKILL') {
                     feedElement.timestamp = feed[x].timestamp;
@@ -458,7 +467,7 @@ angular.module('wowApp')
                     } else {
                         feedElement.tooltip = "BOSS-NO";
                     }
-                   self.processedFeed.push(feedElement);
+                   processedFeed.push(feedElement);
 
                 } else if (feed[x].type === 'ACHIEVEMENT') {
                     feedElement.timestamp = feed[x].timestamp;
@@ -467,11 +476,11 @@ angular.module('wowApp')
                     feedElement.description = feed[x].achievement.description;
                     feedElement.icon = feed[x].achievement.icon;
                     feedElement.tooltip = "ACHIEVEMENT";
-                   self.processedFeed.push(feedElement);
+                   processedFeed.push(feedElement);
                 }
             }
 
-            myCache.put('Feed:'+ self.name + ':' + self.selectedRealm, self.processedFeed);
+            myCache.put('Feed:'+ self.name + ':' + self.selectedRealm, processedFeed);
 
             console.log('Feed is now cached.');
             $rootScope.$broadcast('feed_retrieved');
@@ -483,7 +492,13 @@ angular.module('wowApp')
 
             self.name = name;
             self.selectedRealm = realm;
+            var inventorySlots = [];
+            var inventoryArray = [];
 
+            if (self.inventory){
+                console.log('clearing self.inventory of legacy items.');
+                self.inventory = [];
+            }
             console.log('in getItemWrapper for Inventory Items.');
 
             // This is the API call for the character Items.  This call populates the inventory slots.
@@ -505,9 +520,7 @@ angular.module('wowApp')
                     } else {
                         inventorySlot.value = "none";
                     }
-
-
-                    self.inventorySlots.push(inventorySlot);
+                    inventorySlots.push(inventorySlot);
                     var inventoryElement = {};
                     if (slots[x] in response.data.items) {
                         inventoryElement = callItemService(inventorySlot);
@@ -519,11 +532,11 @@ angular.module('wowApp')
                         inventoryElement.quality = 'none';
                     }
                     // Pushing element either way.
-                    self.inventoryArray.push(inventoryElement);
+                    inventoryArray.push(inventoryElement);
                 }
 
 
-                self.inventory = self.inventoryArray.sort(function (a, b) {
+                self.inventory = inventoryArray.sort(function (a, b) {
                     return searchService.getInventorySlot(a.slot) - searchService.getInventorySlot(b.slot);
                 });
 
@@ -566,69 +579,6 @@ angular.module('wowApp')
             return item;
         };
 
-        // var checkFeedCache = function(item) {
-        //
-        //     if (!myCache.get(item.timestamp + ':' + item.id)) {
-        //         console.log('cache empty for item.');
-        //         var result = callItemService(item);
-        //         console.log('placing item in cache.');
-        //         myCache.put(item.timestamp + ':' + item.id, result);
-        //         console.log(result);
-        //         return result;
-        //
-        //     } else {
-        //         console.log('cache has item. Retrieving item from cache.');
-        //         return myCache.get(item.timestamp + ':' + item.id);
-        //     }
-        //
-        // };
-
-        // var checkItemCache = function(item) {
-        //
-        //     if (!myCache.get(item.type + ':' + item.id)) {
-        //         console.log('cache empty for item.');
-        //         // return getItem(item.type + ':' + item.id);
-        //         var result = callItemService(item);
-        //         console.log('placing item in cache.');
-        //         myCache.put(item.type + ':' + item.id, result);
-        //         return result;
-        //
-        //     } else
-        //     {
-        //         console.log('cache not empty.');
-        //         return myCache.get(item.type + ':' + item.id);
-        //     }
-        //
-        // };
-
-        var clearItems = function() {
-            // First clear the array if it has any items from previous calls.
-            if (self.inventorySlots){
-                console.log('clearing inventory slots of extra items.');
-                self.inventorySlots = [];
-            }
-
-            if (self.processedFeed) {
-                console.log('clearing processedFeed.');
-                self.processedFeed = [];
-            }
-
-            if (self.inventoryArray) {
-                console.log('clearing inventoryArray.');
-                self.inventoryArray = [];
-            }
-
-            if (self.inventorySlots) {
-                console.log('clearing inventorySlots.');
-                self.inventorySlots = [];
-            }
-
-        };
-
-        var getCacheItems = function(cacheName) {
-            return myCache.get(cacheName);
-        };
-
         var setBackground = function() {
             console.log('setting background.');
 
@@ -645,8 +595,7 @@ angular.module('wowApp')
 
          var characterImage = function(path) {
             var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
-            imagePath += "profilemain.jpg";
-            return imagePath;
+            return imagePath += "profilemain.jpg";
         };
 
         // Character Profile API Call - Charcater Profile
@@ -683,23 +632,23 @@ angular.module('wowApp')
                     console.log('character is cached. skipping API call.');
                     console.log('Checking cache for feed.');
                     $rootScope.$broadcast('character_retrieved');
-
-                    if (getCacheStatus('Feed:' +self.name.toLowerCase() + ':' + self.selectedRealm)) {
-                        console.log('feed is cached.');
-                        $rootScope.$broadcast('feed_retrieved');
-
-                        if (getCacheStatus('Inv:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
-                         console.log('inventory is cached.');
-                         $rootScope.$broadcast('inventory_retrieved');
-                        }
-                    }
+                    $rootScope.$broadcast('feed_retrieved');
+                    $rootScope.$broadcast('inventory_retrieved');
+                    // if (getCacheStatus('Feed:' +self.name.toLowerCase() + ':' + self.selectedRealm)) {
+                    //     console.log('feed is cached.');
+                    //     $rootScope.$broadcast('feed_retrieved');
+                    //
+                    //     if (getCacheStatus('Inv:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
+                    //      console.log('inventory is cached.');
+                    //      $rootScope.$broadcast('inventory_retrieved');
+                    //     }
+                    // }
                 } else {
                     console.log('character is not defined');
-                    // Clear any previous memory
-                    clearItems();
                     // Pass the parameters on to the service prior to the call.
                     inventoryService.name = this.name;
                     inventoryService.selectedRealm = this.selectedRealm;
+
                     getItemWrapper(this.name, this.selectedRealm);
 
                     // Setting up the feedService call.
@@ -723,7 +672,6 @@ angular.module('wowApp')
                             'realm' : response.data.realm,
                             'thumbnail' : response.data.thumbnail,
                             'thk' : response.data.totalHonorableKills,
-                            // 'backgroundImg' : "http://render-api-us.worldofwarcraft.com/static-render/us/" + characterImage(thumbnail),
                             'backgroundImg' : "http://render-us.worldofwarcraft.com/character/" + characterImage(thumbnail),
                             'background' : "http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg"
                         };
@@ -770,15 +718,15 @@ angular.module('wowApp')
         };
     })
 
-    .service('dataService', function($http, keys) {
-
-        // DATA Resources - Charcater Achievements
-        this.getAchievements = function(callback, err) {
-            $http.jsonp('https://us.api.battle.net/wow/data/character/achievements?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey } } )
-                .then(callback,err);
-        };
-
-    })
+    // .service('dataService', function($http, keys) {
+    //
+    //     // DATA Resources - Charcater Achievements
+    //     this.getAchievements = function(callback, err) {
+    //         $http.jsonp('https://us.api.battle.net/wow/data/character/achievements?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey } } )
+    //             .then(callback,err);
+    //     };
+    //
+    // })
 
 
     .service('realmService', function($http, keys, myCache) {
