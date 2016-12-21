@@ -1,8 +1,10 @@
+<div class="padding-results">
 <p>
     <a href = "#/">Back to Search</a>
 </p>
 Results for {{ name }} on {{ selectedRealm }}
-<hr />
+<!--<hr />-->
+</div>
 <div class="media" ng-show="characterResult">
     <div class="wrapper">
         <div class="content">
@@ -55,13 +57,13 @@ Results for {{ name }} on {{ selectedRealm }}
             </div>
         </div>
     </div>
-      <div class="media-left media-top">
-        <a href="#">
-          <img class="media-object image-hover" src="http://render-api-us.worldofwarcraft.com/static-render/us/{{ characterResult.thumbnail }}" alt="...">
-        </a>
-      </div>
-      <div class="media-body">
-        <h2 class="media-heading">{{ characterResult.name }}</h2>
+      <!--<div class="media-left media-top">-->
+        <!--<a href="#">-->
+          <!--<img class="media-object image-hover" src="http://render-api-us.worldofwarcraft.com/static-render/us/{{ characterResult.thumbnail }}" alt="...">-->
+        <!--</a>-->
+      <!--</div>-->
+      <div class="media-body padding-table">
+        <!--<h2 class="media-heading">{{ characterResult.name }}</h2>-->
           <div class="panel panel-primary">
               <div class="panel-heading">
                 <h3 class="panel-title">{{ characterResult.level }} {{ raceMap(characterResult.race) }} {{ classMap(characterResult.class) }}, {{ characterResult.realm }}</h3>
@@ -78,7 +80,7 @@ Results for {{ name }} on {{ selectedRealm }}
           <div class="panel panel-success" >
               <div class="panel-heading" id="panel-heading">
                   <h3 class="panel-title">Feed</h3>
-                  <button ng-class="{ 'btn-blue': showFeed, 'btn-blue-selected': !showFeed }" ng-click="showFeed =! showFeed"> {{ buttonText }} </button>
+                  <button  ng-class="{ 'btn-blue': showFeed, 'btn-blue-selected': !showFeed }" ng-click="showFeed =! showFeed"> {{ buttonText }} </button>
               </div>
               <div class="panel-body" ng-show="showFeed">
                   <form>
@@ -99,3 +101,4 @@ Results for {{ name }} on {{ selectedRealm }}
 <div ng-hide="characterResult">
     No characters found with that name.
 </div>
+

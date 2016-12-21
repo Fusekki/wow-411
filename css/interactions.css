@@ -11,11 +11,13 @@
 */
 
 .row-even {
-    background: #bce8f1;
+    /*background: #bce8f1;*/
+    background: #1a0f08 !important
 }
 
 .row-odd {
-    background: #dff0d8;
+    /*background: #dff0d8;*/
+    background: #331d10;
 }
 
  .table>tbody>tr {
@@ -23,9 +25,9 @@
     transition-duration: .4s;
 }
 
- .table>tbody>tr:hover {
-    background: silver;
-}
+ /*.table>tbody>tr:hover {*/
+    /*background: silver;*/
+/*}*/
 
 .button {
     color: #211510;
@@ -64,17 +66,26 @@
 .btn-blue,
 .btn-blue:hover {
     font-weight: bold;
-    color: #4a99ca;
-    background: #fff;
-    border: 2px solid;
+    /*color: #4a99ca;*/
+    color: #33190f;
+    background: #f8b700;
+
+    /*border: 2px solid;*/
     border-radius: 0;
+    border: #33190f;
+    outline: none;
 }
 
 .btn-blue-selected,
 .btn-blue-selected:hover {
-    color: #fff;
-    background: #4a89ca;
+    color: #f8b700;
+    /*color: #fff;*/
+    /*background: #4a89ca;*/
+    background: #33190f;
     border-radius: 0;
+    border: #33190f;
+    outline: none;
+
 }
 
 

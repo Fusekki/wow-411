@@ -555,6 +555,8 @@ angular.module('wowApp')
             $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
             // Set background image for profile based on race
             $(".content-top").css("background", "url" + self.background + ") left top no-repeat" );
+
+            $(".background_image").css("background", "#070604 url(css/images/body-bg-baked-without-nav.jpg) 51% 51px no-repeat");
         };
 
          var characterImage = function(path) {

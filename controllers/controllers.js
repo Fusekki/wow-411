@@ -89,7 +89,20 @@ angular.module('wowApp')
 
         $scope.$watch('showFeed', function() {
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
+            $scope.showFeed ? $(".padding-table").css("width", "71%") : $(".padding-table").css("width", "34%");
+            // if ($scope.showFeed == 'Show') {
+            //     console.log('changine style for hide');
+            //     $(".padding-table").css("width", "34%");
+            // }
+            // else {
+            //     console.log('changine style for show');
+            //     $(".padding-table").css("width", "71%");
+            // }
+
         });
+
+
+
 
 
         $scope.$on('character_retrieved', function() {

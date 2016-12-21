@@ -2,6 +2,15 @@
     /*border: 2px solid red;*/
 /*}*/
 
+/*html {*/
+    /*background-color: #000;*/
+/*}*/
+
+a {
+    color: #7e3406;
+    color: #c35009;
+}
+
 body {
     color: #fff;
 }
@@ -24,7 +33,7 @@ body {
 }
 
 .background_image {
-    background-image: url(https://bnetcmsus-a.akamaihd.net/cms/template_resource/p8/P8LCY89PNXOK1466794718015.jpg);
+    background-image: url(images/P8LCY89PNXOK1466794718015.jpg);
     height: 100vh;
 }
 
@@ -34,6 +43,32 @@ body {
 
 .top-small-buffer {
     margin-top: 20px;
+}
+
+.panel-success > .panel-heading {
+    color: #c09a67;
+}
+
+.padding-results {
+    text-align: right;
+    /*padding-left: 80px;*/
+    padding-top: 10px;
+    width: 91%;
+}
+
+.padding-table {
+    padding-left: 7%;
+    width: 71%;
+    margin-top: -25%;
+    top: -90px;
+}
+
+#table-feed {
+    background: #472315;
+}
+
+.media-body {
+    position: relative;
 }
 
 .navbar-custom {
@@ -99,12 +134,30 @@ body {
     color: red;
 }
 
+#panel-heading {
+    background: #472315;
+}
+
+.panel-primary {
+    color: #c09a67;
+    background: #33190f;
+    border-color: #33190f;
+}
+
 .section {
-    margin-top: 150px;
+    margin-top: 200px;
+}
+
+#bg {
+    background-image: url(images/P8LCY89PNXOK1466794718015.jpg);
 }
 
 .top-margin {
     margin-top: 51px;
+}
+
+.panel-body {
+    background: #33190f;
 }
 
 #panel-heading h3,
@@ -120,11 +173,30 @@ body {
     border: hidden;
 }
 
+.table > tbody > tr > td {
+    border-top: none;
+}
+
+.row_loot {
+    color: #00aeff;
+}
+
+.row_boss {
+    color: #FEF092;
+}
+
+.row_ach {
+    color: #ffb100;
+}
+
 /*top tooltip*/
 .tooltip.top > .tooltip-arrow {
     border-top-color: orange;
 }
 
+.table_row {
+    color: #c09a67;
+}
 
 /*tooltip inner*/
 .tooltip > .tooltip-inner {
@@ -204,7 +276,7 @@ body {
     padding: 0;
     border: 0;
     outline: 0;
-    margin-bottom: 10%;
+    /*margin-bottom: 10%;*/
 }
 
 .content {
@@ -218,7 +290,7 @@ body {
 }
 
 .panel-primary>.panel-heading {
-    background: #c09a67;
+    background: #472315;
 }
 .profile-wrapper {
     height: 100%;

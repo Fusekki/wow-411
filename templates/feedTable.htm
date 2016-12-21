@@ -1,4 +1,4 @@
-<table class="table table-bordered" id="table-feed">
+<table class="table" id="table-feed">
     <thead>
     <tr>
         <td>
@@ -26,11 +26,11 @@
     </thead>
     <tbody>
     <tr ng-switch on="feedItem.type" ng-show="feedItem.name || feedItem.title" ng-repeat="feedItem in list | orderBy:sortType:sortReverse | filter:searchFeed" ng-class="'row-glow'" ng-class-even="'row-even'" ng-class-odd="'row-odd'">
-        <td>{{ feedItem.type }}</td>
-        <td ng-switch-when="LOOT" tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip-template="'templates/lootTooltip.htm'">{{ feedItem.name  || feedItem.title }}</td>
-        <td ng-switch-when="BOSSKILL" tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip-template="'templates/bossTooltip.htm'"> {{feedItem.quantity }} {{ feedItem.title }}</td>
-        <td ng-switch-default tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip-template="'templates/achievementTooltip.htm'">{{ feedItem.name  || feedItem.title }}</td>
-        <td> {{ convertToStandard(feedItem.timestamp) }}</td>
+        <td ng-class="{row_loot: feedItem.type == 'LOOT', row_boss: feedItem.type =='BOSSKILL', row_ach: feedItem.type == 'ACHIEVEMENT'}">{{ feedItem.type }}</td>
+        <td ng-switch-when="LOOT" tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip-template="'templates/lootTooltip.htm'"><span class="table_row">{{ feedItem.name  || feedItem.title }}</span></td>
+        <td ng-switch-when="BOSSKILL" tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip-template="'templates/bossTooltip.htm'"><span class="table_row"> {{feedItem.quantity }} {{ feedItem.title }}</span></td>
+        <td ng-switch-default tooltip-append-to-body="true" tooltip-placement="top" uib-tooltip-template="'templates/achievementTooltip.htm'"><span class="table_row">{{ feedItem.name  || feedItem.title }}</span></td>
+        <td class="table_row"> {{ convertToStandard(feedItem.timestamp) }}</td>
     </tr>
     </tbody>
 </table>
