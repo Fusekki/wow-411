@@ -19,6 +19,7 @@ body {
     color: #f8b700;
 }
 
+
 .zone_color {
     color: #cacaca;
 
@@ -32,10 +33,19 @@ body {
     color: #fff468;
 }
 
-.background_image {
+.home_bg {
     background-image: url(images/P8LCY89PNXOK1466794718015.jpg);
     height: 100vh;
 }
+
+.char_bg {
+    background: #070604 url(images/body-bg-baked-without-nav.jpg) 51% 51px no-repeat;
+}
+
+/*.background_image {*/
+    /*background-image: url(images/P8LCY89PNXOK1466794718015.jpg);*/
+    /*height: 100vh;*/
+/*}*/
 
 .top-buffer {
     margin-top: 5%;
@@ -51,20 +61,19 @@ body {
 
 .padding-results {
     text-align: right;
-    /*padding-left: 80px;*/
+    padding-left: 80px;
     padding-top: 10px;
     width: 91%;
 }
 
-.padding-table {
-    padding-left: 7%;
-    width: 71%;
-    margin-top: -25%;
+.table-wrapper {
     top: -90px;
+    width: 984px;
 }
 
 #table-feed {
     background: #472315;
+    table-layout: fixed;
 }
 
 .media-body {

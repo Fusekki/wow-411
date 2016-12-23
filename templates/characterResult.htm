@@ -1,6 +1,6 @@
 <div class="padding-results">
 <p>
-    <a href = "#/">Back to Search</a>
+    <a href = "#/characterSearch">Back to Search</a>
 </p>
 Results for {{ name }} on {{ selectedRealm }}
 <!--<hr />-->
@@ -9,8 +9,11 @@ Results for {{ name }} on {{ selectedRealm }}
     <div class="wrapper">
         <div class="content">
             <div class="content-top">
-                <div class="profile-wrapper">
-                    <div class="profile-sidebar-anchor">
+                <!--<div class="profile-wrapper" ng-style="{'background-image': pw_bg}">-->
+                <div class="profile-wrapper" ng-style="setPwBg()">
+                    "background", "url(" + first_url + ") left top no-repeat" );
+
+                <div class="profile-sidebar-anchor">
                         <div class="profile-sidebar-outer">
                             <div class="profile-sidebar-inner">
                                 <div class="profile-info-anchor">
@@ -56,13 +59,13 @@ Results for {{ name }} on {{ selectedRealm }}
                 </div>
             </div>
         </div>
-    </div>
+
       <!--<div class="media-left media-top">-->
         <!--<a href="#">-->
           <!--<img class="media-object image-hover" src="http://render-api-us.worldofwarcraft.com/static-render/us/{{ characterResult.thumbnail }}" alt="...">-->
         <!--</a>-->
       <!--</div>-->
-      <div class="media-body padding-table">
+      <div class="media-body table-wrapper">
         <!--<h2 class="media-heading">{{ characterResult.name }}</h2>-->
           <div class="panel panel-primary">
               <div class="panel-heading">
@@ -101,4 +104,4 @@ Results for {{ name }} on {{ selectedRealm }}
 <div ng-hide="characterResult">
     No characters found with that name.
 </div>
-
+</div>

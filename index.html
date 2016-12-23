@@ -22,8 +22,9 @@
 
 
     </head>
-    <body class="background_image" ng-app="wowApp">
-        <header>
+    <!--<body class="background_image" ng-app="wowApp">-->
+    <body ng-app="wowApp" ng-controller="homeCtrl" ng-class="backgroundService.getCurrentBg()">
+    <header>
             <!-- Navigation -->
             <nav class="navbar navbar-custom navbar-fixed-top navbar-default" role="navigation">
                 <div class="container">

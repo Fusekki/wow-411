@@ -547,17 +547,18 @@ angular.module('wowApp')
             return item;
         };
 
-        var setBackground = function() {
-            console.log('setting background.');
-
-            // Set the background images
-            // this first one has problems loading sometimes.
-            $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
-            // Set background image for profile based on race
-            $(".content-top").css("background", "url" + self.background + ") left top no-repeat" );
-
-            $(".background_image").css("background", "#070604 url(css/images/body-bg-baked-without-nav.jpg) 51% 51px no-repeat");
-        };
+        // var setBackground = function() {
+        //     console.log('setting background.');
+        //     console.log(characterResult.background);
+        //     console.log(characterResult.backgroundImg);
+        //     // Set the background images
+        //     // this first one has problems loading sometimes.
+        //     $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
+        //     // Set background image for profile based on race
+        //     $(".content-top").css("background", "url" + self.background + ") left top no-repeat" );
+        //
+        //     // $(".background_image").css("background", "#070604 url(css/images/body-bg-baked-without-nav.jpg) 51% 51px no-repeat");
+        // };
 
          var characterImage = function(path) {
             var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
@@ -634,9 +635,6 @@ angular.module('wowApp')
                             'backgroundImg' : "http://render-us.worldofwarcraft.com/character/" + characterImage(thumbnail),
                             'background' : "http://us.battle.net/wow/static/images/character/summary/backgrounds/race/" + race + ".jpg"
                         };
-
-                        // Set the background based on the recent API call.
-                        setBackground(character.backgroundImg, character.background);
 
                         setCacheStatus('Char:' + character.name.toLowerCase() + ':' + character.realm, character);
 
@@ -765,5 +763,22 @@ angular.module('wowApp')
             $http.jsonp('https://us.api.battle.net/wow/character/' + this.selectedRealm + '/' + this.name +  '?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey, fields: "items" } } )
                 .then(callback,err);
         };
+
+    })
+
+    .service('backgroundService', function() {
+
+        console.log('in bg service');
+
+        var currentBackgroundClass = 'home_bg';
+        return {
+            setCurrentBg: function (someClass) {
+                currentBackgroundClass = someClass;
+            },
+            getCurrentBg: function () {
+                return currentBackgroundClass;
+            }
+        }
+
 
     });

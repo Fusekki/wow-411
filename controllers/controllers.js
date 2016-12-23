@@ -2,7 +2,12 @@
 
 angular.module('wowApp')
 
-    .controller('homeCtrl', function () {
+    .controller('homeCtrl', function ($scope, backgroundService) {
+        console.log('here');
+        $scope.backgroundService = backgroundService;
+        console.log(backgroundService.getCurrentBg());
+
+
     })
 
     // This is the controller for the realms page
@@ -30,11 +35,17 @@ angular.module('wowApp')
     })
 
 
-    .controller('searchCtrl', function ($scope, $location, searchService, characterService, itemService) {
+    .controller('searchCtrl', function ($scope, $location, searchService, characterService, itemService, backgroundService) {
+
+
+        backgroundService.setCurrentBg("home_bg");
+
         // Start the searchService service.  This is going to check/populate races, classes, bosses, and zones.
 
         // First check what API calls need to be performed and call them if cache items are not present.
         searchService.init();
+
+
 
         // Populate realmsResult with cached items (if there are any).
         $scope.realmsResult = searchService.getCacheItems("realms");
@@ -62,8 +73,10 @@ angular.module('wowApp')
 
     })
 
-    .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, searchService, characterService, itemService) {
+    .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, searchService, characterService, backgroundService) {
 
+
+        backgroundService.setCurrentBg("char_bg");
         var self = this;
 
         self.feed = [];
@@ -83,33 +96,30 @@ angular.module('wowApp')
         $scope.name = characterService.name;
         $scope.selectedRealm = characterService.selectedRealm;
 
-
         // Populate realmsResult with cached items (if there are any).
         $scope.realmsResult = searchService.getCacheItems("realms");
 
         $scope.$watch('showFeed', function() {
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
-            $scope.showFeed ? $(".padding-table").css("width", "71%") : $(".padding-table").css("width", "34%");
-            // if ($scope.showFeed == 'Show') {
-            //     console.log('changine style for hide');
-            //     $(".padding-table").css("width", "34%");
-            // }
-            // else {
-            //     console.log('changine style for show');
-            //     $(".padding-table").css("width", "71%");
-            // }
-
         });
 
-
-
+        $scope.setPwBg = function() {
+            return {
+                'background-image': 'url(' + $scope.characterResult.background + ') no-repeat 182px 115px'
+            }
+        }
 
 
         $scope.$on('character_retrieved', function() {
             console.log('broadcast received');
             $scope.characterResult = characterService.getCacheItems('Char:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
             // Set the bavkground following the cache success.
-            characterService.setBackground($scope.characterResult.background, $scope.characterResult.backgroundImg);
+            // $scope.pw_style = "url(" + $scope.characterResult.background + ") no-repeat 182px 115px";
+            // $scope.pw_style = "url(" + $scope.characterResult.background + ") no-repeat 182px 115px";
+
+            // console.log($scope.pw_style);
+            // console.log($scope.characterResult.background);
+            // characterService.setBackground($scope.characterResult.background, $scope.characterResult.backgroundImg);
         });
 
         $scope.$on('feed_retrieved', function() {
