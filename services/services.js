@@ -547,22 +547,8 @@ angular.module('wowApp')
             return item;
         };
 
-        // var setBackground = function() {
-        //     console.log('setting background.');
-        //     console.log(characterResult.background);
-        //     console.log(characterResult.backgroundImg);
-        //     // Set the background images
-        //     // this first one has problems loading sometimes.
-        //     $(".profile-wrapper").css("background", "url(" + self.backgroundImg + ") no-repeat 182px 115px");
-        //     // Set background image for profile based on race
-        //     $(".content-top").css("background", "url" + self.background + ") left top no-repeat" );
-        //
-        //     // $(".background_image").css("background", "#070604 url(css/images/body-bg-baked-without-nav.jpg) 51% 51px no-repeat");
-        // };
-
          var characterImage = function(path) {
-            var imagePath = path.substr(0, path.indexOf('avatar.jpg'));
-            return imagePath += "profilemain.jpg";
+            return path.substr(0, path.indexOf('avatar.jpg')) + "profilemain.jpg";
         };
 
         // Character Profile API Call - Charcater Profile
@@ -652,11 +638,28 @@ angular.module('wowApp')
 
             setBackground: function(first_url, second_url) {
 
-                // Set the background images
-                $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat 182px 115px");
+                var mq = window.matchMedia( "(max-width: 1024px" );
+                var mqs = window.matchMedia( "(max-width: 500px" );
 
+                // Set the background images
                 // Set background image for profile based on race
-                $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
+
+                if (mqs.matches) {
+                    $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat -250px center");
+                    $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
+                }
+                else if (mq.matches) {
+                    $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat center");
+                    $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
+                }
+
+                else {
+                    $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat 182px 115px");
+                    $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
+                }
+
+
+
             },
 
             getArmorValue: function(val){
@@ -771,9 +774,16 @@ angular.module('wowApp')
         console.log('in bg service');
 
         var currentBackgroundClass = 'home_bg';
+        var mq = window.matchMedia( "(max-width: 1024px" );
         return {
             setCurrentBg: function (someClass) {
-                currentBackgroundClass = someClass;
+                if (mq.matches) {
+                    currentBackgroundClass = someClass + "-sm"
+                }
+
+                else {
+                    currentBackgroundClass = someClass;
+                }
             },
             getCurrentBg: function () {
                 return currentBackgroundClass;

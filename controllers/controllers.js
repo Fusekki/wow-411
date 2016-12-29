@@ -5,17 +5,23 @@ angular.module('wowApp')
     .controller('homeCtrl', function ($scope, backgroundService) {
         console.log('here');
         $scope.backgroundService = backgroundService;
-        console.log(backgroundService.getCurrentBg());
+        backgroundService.setCurrentBg("home_bg");
+        // console.log(backgroundService.getCurrentBg());
 
 
     })
 
     // This is the controller for the realms page
-    .controller('realmCtrl', function ($scope, searchService) {
+    .controller('realmCtrl', function ($scope, searchService, backgroundService) {
+
+        $scope.backgroundService = backgroundService;
+        backgroundService.setCurrentBg("home_bg");
 
         $scope.sortType = 'name';
         $scope.sortReverse = false;
         $scope.searchRealms = '';
+
+        $scope.region = "US/North America";
 
         // First check the Realms cache to see if the API needs to be called.
         searchService.initRealms();
@@ -71,6 +77,22 @@ angular.module('wowApp')
             $location.path("/characterResult");
         };
 
+        $scope.choose_character_one = function() {
+            // console.log('clicked');
+            $scope.name = "leouric";
+            $scope.selectedRealm = "Emerald Dream";
+            $location.path("/characterResult");
+
+        };
+
+        $scope.choose_character = function(name, realm) {
+            // console.log('clicked');
+            $scope.name = name;
+            $scope.selectedRealm = realm;
+            $location.path("/characterResult");
+
+        };
+
     })
 
     .controller('characterCtrl', function ($scope, $sce, $resource, $location, $http, searchService, characterService, backgroundService) {
@@ -103,23 +125,20 @@ angular.module('wowApp')
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
         });
 
-        $scope.setPwBg = function() {
-            return {
-                'background-image': 'url(' + $scope.characterResult.background + ') no-repeat 182px 115px'
-            }
-        }
+
+
+        // $scope.setPwBg = function() {
+        //     return {
+        //         'background-image': 'url(' + $scope.characterResult.background + ') no-repeat 182px 115px'
+        //     }
+        // }
 
 
         $scope.$on('character_retrieved', function() {
             console.log('broadcast received');
             $scope.characterResult = characterService.getCacheItems('Char:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
-            // Set the bavkground following the cache success.
-            // $scope.pw_style = "url(" + $scope.characterResult.background + ") no-repeat 182px 115px";
-            // $scope.pw_style = "url(" + $scope.characterResult.background + ") no-repeat 182px 115px";
-
-            // console.log($scope.pw_style);
-            // console.log($scope.characterResult.background);
-            // characterService.setBackground($scope.characterResult.background, $scope.characterResult.backgroundImg);
+            // Set the background following the cache success.
+            characterService.setBackground($scope.characterResult.background, $scope.characterResult.backgroundImg);
         });
 
         $scope.$on('feed_retrieved', function() {

@@ -5,7 +5,7 @@
             <div class="form-group">
                 <input type="text" ng-model="name" class="form-control form__input" placeholder="Enter a name"/>
             </div>
-                <label for="realmSelect"> Realm: </label>
+                <label id="label_realm" for="realmSelect">Realm: </label>
                 <select class="text-black" name="realmSelect" ng-model="selectedRealm">
 
                   <option ng-repeat="r in realmsResult.realms" value="{{ r.name }}" >{{ r.name }}</option>
@@ -35,47 +35,49 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr ng-click="choose_character('Leouric', 'Emerald Dream')">
+                <!--<a ng-href="#/characterResult">-->
                 <td class="character_color">
                     Leouric
                 </td>
                 <td class="zone_color">
                     Emerald Dream
                 </td>
+                <!--</a>-->
             </tr>
-            <tr>
+            <tr ng-click="choose_character('Doreius', 'Emerald Dream')">
                 <td class="character_color">
-                    Deouric
+                    Doreius
                 </td>
                 <td class="zone_color">
                     Emerald Dream
                 </td>
             </tr>
-            <tr>
+            <tr ng-click="choose_character('Swifty', 'Smolderthorn')">
                 <td class="character_color">
                     Swifty
                 </td>
                 <td class="zone_color">
-                    Smolderhorn
+                    Smolderthorn
                 </td>
             </tr>
-            <tr>
+            <tr ng-click="choose_character('Swifty', 'Garithos')">
                 <td class="character_color">
                     Swifty
                 </td>
                 <td class="zone_color">
-                    Shu'Halo
+                    Garithos
                 </td>
             </tr>
-            <tr>
+            <tr ng-click="choose_character('Swifty', 'Scilla')">
                 <td class="character_color">
                     Swifty
                 </td>
                 <td class="zone_color">
-                    Darkspear
+                    Scilla
                 </td>
             </tr>
-            <tr>
+            <tr ng-click="choose_character('Towelliee', 'Stormrage')">
                 <td class="character_color">
                     Towelliee
                 </td>
@@ -83,12 +85,12 @@
                     Stormrage
                 </td>
             </tr>
-            <tr>
+            <tr ng-click="choose_character('Towelliee', 'Ravenholdt')">
                 <td class="character_color">
                     Towelliee
                 </td>
                 <td class="zone_color">
-                    Ekdre'Thalas
+                    Ravenholdt
                 </td>
             </tr>
             </tbody>
