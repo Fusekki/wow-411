@@ -24,7 +24,6 @@ angular.module('wowApp')
         var genderMap = ["Male", "Female"];
 
         var factionMap = ["Alliance", "Horde"];
-        // var itemQualityMap = ["poor", "common", "uncommon", "rare", "epic", "legendary", "artifact", "heirloom"];
         var itemUpgradableMap = ["Item is not upgradable", "Item is upgradable"];
         var itemBindMap =["Tradeable", "Binds when picked up", "Binds when equipped"];
         var inventorySlots = ['back', 'chest', 'feet', 'finger1', 'finger2', 'hands', 'head', 'legs', 'mainHand', 'neck', 'offHand', 'shirt', 'shoulder', 'tabard', 'trinket1', 'trinket2', 'waist', 'wrist'];
@@ -638,25 +637,10 @@ angular.module('wowApp')
 
             setBackground: function(first_url, second_url) {
 
-                var mq = window.matchMedia( "(max-width: 1024px" );
-                var mqs = window.matchMedia( "(max-width: 500px" );
 
-                // Set the background images
-                // Set background image for profile based on race
-
-                if (mqs.matches) {
-                    $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat -250px center");
-                    $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
-                }
-                else if (mq.matches) {
-                    $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat center");
-                    $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
-                }
-
-                else {
                     $(".profile-wrapper").css("background", "url(" + second_url + ") no-repeat 182px 115px");
                     $(".content-top").css("background", "url(" + first_url + ") left top no-repeat" );
-                }
+
 
 
 
@@ -677,17 +661,6 @@ angular.module('wowApp')
             }
         };
     })
-
-    // .service('dataService', function($http, keys) {
-    //
-    //     // DATA Resources - Charcater Achievements
-    //     this.getAchievements = function(callback, err) {
-    //         $http.jsonp('https://us.api.battle.net/wow/data/character/achievements?jsonp=JSON_CALLBACK',  {cache: true, params: {  locale: keys.region, apikey: keys.privateKey } } )
-    //             .then(callback,err);
-    //     };
-    //
-    // })
-
 
     .service('realmService', function($http, keys, myCache) {
 

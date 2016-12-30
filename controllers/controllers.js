@@ -6,9 +6,6 @@ angular.module('wowApp')
         console.log('here');
         $scope.backgroundService = backgroundService;
         backgroundService.setCurrentBg("home_bg");
-        // console.log(backgroundService.getCurrentBg());
-
-
     })
 
     // This is the controller for the realms page
@@ -47,7 +44,6 @@ angular.module('wowApp')
         backgroundService.setCurrentBg("home_bg");
 
         // Start the searchService service.  This is going to check/populate races, classes, bosses, and zones.
-
         // First check what API calls need to be performed and call them if cache items are not present.
         searchService.init();
 
@@ -124,15 +120,6 @@ angular.module('wowApp')
         $scope.$watch('showFeed', function() {
             $scope.buttonText = $scope.showFeed ? 'Hide' : 'Show';
         });
-
-
-
-        // $scope.setPwBg = function() {
-        //     return {
-        //         'background-image': 'url(' + $scope.characterResult.background + ') no-repeat 182px 115px'
-        //     }
-        // }
-
 
         $scope.$on('character_retrieved', function() {
             console.log('broadcast received');

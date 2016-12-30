@@ -2,10 +2,6 @@
     /*border: 2px solid red;*/
 /*}*/
 
-/*html {*/
-    /*background-color: #000;*/
-/*}*/
-
 a {
     color: #7e3406;
     color: #c35009;
@@ -50,12 +46,9 @@ body {
 }
 
 .char_bg-sm {
-    background: #070604 url(images/body-bg-baked-without-nav.jpg) -197px 0 no-repeat
+    background: #28130b;
 }
 
-.realm_bg {
-
-}
 
 .videoPane_bg {
     position: absolute;
@@ -79,10 +72,6 @@ body {
     width: auto;
 }
 
-/*.background_image {*/
-    /*background-image: url(images/P8LCY89PNXOK1466794718015.jpg);*/
-    /*height: 100vh;*/
-/*}*/
 
 .top-buffer {
     margin-top: 5%;
@@ -90,6 +79,10 @@ body {
 
 .top-small-buffer {
     margin-top: 20px;
+}
+
+.top-mobile-buffer {
+    margin-top: 40px;
 }
 
 .panel-success > .panel-heading {
@@ -679,6 +672,10 @@ body {
     border: 1px solid #e6cc80;
 }
 
+.mobile_display {
+    display: none;
+}
+
 @media screen and (max-width: 1024px) {
 
     .container_body {
@@ -689,13 +686,6 @@ body {
         padding-left: 15px;
         padding-right: 15px;
     }
-
-    /*.navbar-header,*/
-    /*.section,*/
-    /*.navbar-collapse {*/
-        /*padding-left: 15px;*/
-        /*padding-right: 15px;*/
-    /*}*/
 
     .videoPane_bg {
         display: none;
@@ -730,4 +720,61 @@ body {
     .profile-wrapper {
         background-position: 0;
     }
+
+    .desktop_display {
+        display: none;
+    }
+
+    .mobile_display {
+        display: block;
+    }
+
+    .img_responsive {
+        width: 100%;
+        border: 1px solid rgba(255,255,255,.3);
+    }
+
+    .summary-top {
+        margin-left: 0;
+    }
+
+    .summary-inventory {
+        left: 0;
+        top: 0;
+        width: 300px;
+    }
+
+    .summary-top-inventory {
+        height: 1100px;
+    }
+
+    .summary-inventory .mobile_slot {
+        height: 60px;
+        border-radius: 4px;
+    }
+
+    .summary-inventory .item {
+        position: relative;
+        top : 4px;
+    }
+
+    .table_inventory {
+        margin: 0 auto;
+        width: 80%;
+    }
+
+    .table-bordered {
+        /*border: 1px solid #c09a67;*/
+        font-size: 9px;
+    }
+
+    .table-wrapper {
+        top: 0;
+        font-size: 10px;
+    }
+
+    .panel-title {
+        font-size: 14px;
+    }
 }
+
