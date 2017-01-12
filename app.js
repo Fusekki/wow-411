@@ -25,9 +25,3 @@ wowApp.config(['$resourceProvider', function($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
 
-// wowApp.config(['$sceProvider', function($sceProvider) {
-//
-//     $sceProvider.enabled(false);
-// }]);
-
-

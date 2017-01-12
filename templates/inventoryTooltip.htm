@@ -12,10 +12,10 @@
                 <span class="item-white-text"> {{ itembindMap(i.itemBind) }}</span> <br>
                 <span>{{ capitalizeName(i.slot) }}</span> <br>
                 <span ng-show="i.armor">{{ calcArmor(i.armor) }} Armor<br></span>
-                <span ng-bind-html="calcStats($index) | unsafe"></span> <br>
+                <span ng-bind-html="calcStats(i) | unsafe"></span> <br>
                 <span ng-show="i.maxDurability">Durability {{ i.maxDurability }} <br></span>
                 <span ng-show="i.requiredLevel">Requires level {{ i.requiredLevel }} <br></span>
-                <span ng-bind-html="calcGold($index) | unsafe"></span>
+                <span ng-show="i.sellPrice" ng-bind-html="calcGold(i) | unsafe"></span>
             </td>
         </tr>
     </tbody>

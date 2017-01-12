@@ -7,11 +7,11 @@
             <span class='item-yellow-text'>Item Level {{ feedItem.itemLevel }} <br> {{ itemupgradableMap(feedItem.upgradable) }} </span> <br>
             <span> {{ itembindMap(feedItem.itemBind) }}</span> <br>
             <span ng-show="feedItem.armor"> {{ feedItem.armor }} Armor <br></span>
-            <span ng-bind-html="calcStats($index) | unsafe"><br></span>
+            <span ng-bind-html="calcStats(feedItem) | unsafe"><br></span>
 
             <span ng-show="feedItem.maxDurability">Durability {{ feedItem.maxDurability }} <br></span>
-            Requires level {{ feedItem.requiredLevel }} <br>
-            <span ng-bind-html="calcGold($index) | unsafe"></span>
+            <span ng-show="feedItem.requiredLevel">Requires level {{ feedItem.requiredLevel }}</span> <br>
+            <span ng-show="feedItem.sellPrice" ng-bind-html="calcGold(feedItem) | unsafe"></span>
         </td>
     </tr>
     </tbody>

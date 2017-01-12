@@ -124,20 +124,20 @@ angular.module('wowApp')
 
         var initRealms = function() {
             if (getCacheStatus("realms")) {
-                console.log('realms are defined');
+                // console.log('realms are defined');
             } else {
-                console.log('Realms are not defined');
+                // console.log('Realms are not defined');
                 realmService.getRealms(function(response){
-                    console.log('Get Realms API Call.');
+                    // console.log('Get Realms API Call.');
                     setCacheStatus("realms", response.data);
                     // Store in local array
                     realmMap = response.data;
                     // Send broadcast to controller
                     $rootScope.$broadcast('realms_update');
-                    console.log('just sent update');
+                    // console.log('just sent update');
                     if (getCacheStatus("realms")) {
-                        console.log('realms are now defined.');
-                        console.log('realms are cached: ');
+                        // console.log('realms are now defined.');
+                        // console.log('realms are cached: ');
                     }
                 }, function(err) {
                     console.log(err.status);
@@ -161,7 +161,7 @@ angular.module('wowApp')
                         return bossMap[key];
                     }
                 }
-                console.log('not found in bosses');
+                // console.log('not found in bosses');
                 return "";
             },
             getClass: function(idx) {
@@ -276,18 +276,18 @@ angular.module('wowApp')
                 initRealms();
                 // Build the races map
                 if (getCacheStatus("races")) {
-                    console.log('races are defined. skipping API call.');
+                    // console.log('races are defined. skipping API call.');
                 } else {
-                    console.log('races are not defined');
+                    // console.log('races are not defined');
                     raceService.getRaces(function(response){
-                        console.log('Race API Call.');
+                        // console.log('Race API Call.');
                         setCacheStatus("races", response.data.races);
                         // Store data in local array.
                         raceMap = response.data.races;
                         setCacheStatus("races", response.data.races);
                         if (getCacheStatus("races")) {
-                            console.log('races are now defined.');
-                            console.log('races are cached: ');
+                            // console.log('races are now defined.');
+                            // console.log('races are cached: ');
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -296,17 +296,17 @@ angular.module('wowApp')
 
                 // Build the classes map
                 if (getCacheStatus("classes")) {
-                    console.log('classes are defined. skipping API call.');
+                    // console.log('classes are defined. skipping API call.');
                 } else {
-                    console.log('classes are not defined');
+                    // console.log('classes are not defined');
                     classService.getClasses(function(response){
-                        console.log('Classes API Call.');
+                        // console.log('Classes API Call.');
                         setCacheStatus("classes", response.data.classes);
                         // Store response in local array
                         classMap = response.data.classes;
                         if (getCacheStatus("classes")) {
-                            console.log('classes are now defined.');
-                            console.log('classes are cached: ');
+                            // console.log('classes are now defined.');
+                            // console.log('classes are cached: ');
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -314,17 +314,17 @@ angular.module('wowApp')
                 }
 
                 if (getCacheStatus("bosses")) {
-                    console.log('they are defined');
+                    // console.log('they are defined');
                 } else {
-                    console.log('Bosses are not defined');
+                    // console.log('Bosses are not defined');
                     bossService.getBosses(function(response){
-                        console.log('Boss API Call.');
+                        // console.log('Boss API Call.');
                         setCacheStatus("bosses", response.data.bosses);
                         // Store in local array
                         bossMap = response.data.bosses;
                         if (getCacheStatus("bosses")) {
-                            console.log('Bosses are now defined.');
-                            console.log('bosses are cached: ');
+                            // console.log('Bosses are now defined.');
+                            // console.log('bosses are cached: ');
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -332,17 +332,17 @@ angular.module('wowApp')
                 }
 
                 if (getCacheStatus("zones")) {
-                    console.log('zones are defined');
+                    // console.log('zones are defined');
                 } else {
-                    console.log('Zones are not defined');
+                    // console.log('Zones are not defined');
                     zoneService.getZones(function(response){
-                        console.log('Get Zones API Call.');
+                        // console.log('Get Zones API Call.');
                         setCacheStatus("zones", response.data.zones);
                         // Store in local array
                         zoneMap = response.data.zones;
                         if (getCacheStatus("zones")) {
-                            console.log('zones are now defined.');
-                            console.log('zones are cached: ');
+                            // console.log('zones are now defined.');
+                            // console.log('zones are cached: ');
                         }
                     }, function(err) {
                         console.log(err.status);
@@ -385,11 +385,11 @@ angular.module('wowApp')
 
             self.name = name.toLowerCase();
             self.selectedRealm = realm;
-            console.log('in Process Feed.');
+            // console.log('in Process Feed.');
 
             // clear processedFeed first
             if (processedFeed) {
-                console.log('Clearing processedFeed.');
+                // console.log('Clearing processedFeed.');
                 processedFeed = [];
             } else {
                 var processedFeed = [];
@@ -449,7 +449,7 @@ angular.module('wowApp')
 
             myCache.put('Feed:'+ self.name + ':' + self.selectedRealm, processedFeed);
 
-            console.log('Feed is now cached.');
+            // console.log('Feed is now cached.');
             $rootScope.$broadcast('feed_retrieved');
 
         };
@@ -463,15 +463,15 @@ angular.module('wowApp')
             var inventoryArray = [];
 
             if (self.inventory){
-                console.log('clearing self.inventory of legacy items.');
+                // console.log('clearing self.inventory of legacy items.');
                 self.inventory = [];
             }
-            console.log('in getItemWrapper for Inventory Items.');
+            // console.log('in getItemWrapper for Inventory Items.');
 
             // This is the API call for the character Items.  This call populates the inventory slots.
 
             inventoryService.getItem(function (response) {
-                console.log('Get Item API Call for inventory items');
+                // console.log('Get Item API Call for inventory items');
                 // Mapping the array by item slot name
                 var slots = searchService.getInventorySlots();
                 for (var x = 0; x < slots.length; x++) {
@@ -493,7 +493,7 @@ angular.module('wowApp')
                         inventoryElement = callItemService(inventorySlot);
                         inventoryElement.slot = slots[x];
                     } else {
-                        console.log('key does not exist. Moving on to next item.');
+                        // console.log('key does not exist. Moving on to next item.');
                         inventoryElement.slot = slots[x];
                         inventoryElement.name = slots[x];
                         inventoryElement.quality = 'none';
@@ -509,7 +509,7 @@ angular.module('wowApp')
 
                 myCache.put('Inv:'+ self.name.toLowerCase() + ':' + self.selectedRealm, self.inventory);
 
-                console.log('inventory is now cached.');
+                // console.log('inventory is now cached.');
                 $rootScope.$broadcast('inventory_retrieved');
 
             }, function (err) {
@@ -581,13 +581,13 @@ angular.module('wowApp')
                 var self = this;
 
                 if (getCacheStatus('Char:' + self.name.toLowerCase() + ':' + self.selectedRealm)) {
-                    console.log('character is cached. skipping API call.');
-                    console.log('Checking cache for feed.');
+                    // console.log('character is cached. skipping API call.');
+                    // console.log('Checking cache for feed.');
                     $rootScope.$broadcast('character_retrieved');
                     $rootScope.$broadcast('feed_retrieved');
                     $rootScope.$broadcast('inventory_retrieved');
                 } else {
-                    console.log('character is not defined');
+                    // console.log('character is not defined');
                     // Pass the parameters on to the service prior to the call.
                     inventoryService.name = this.name;
                     inventoryService.selectedRealm = this.selectedRealm;
@@ -598,7 +598,7 @@ angular.module('wowApp')
                     feedService.name = this.name;
                     feedService.selectedRealm = this.selectedRealm;
                     feedService.getCharacterFeed(function(response){
-                        console.log('Character Feed API Call.');
+                        // console.log('Character Feed API Call.');
                         if (!race) {
                             race = response.data.race;
                         }
@@ -624,7 +624,7 @@ angular.module('wowApp')
                         setCacheStatus('Char:' + character.name.toLowerCase() + ':' + character.realm, character);
 
                         $rootScope.$broadcast('character_retrieved');
-                        console.log('just sent character retrieve update');
+                        // console.log('just sent character retrieve update');
                         processFeed(self.name, self.selectedRealm, response.data.feed);
 
                     }, function(err) {
@@ -632,7 +632,7 @@ angular.module('wowApp')
 
                     });
                 }
-                console.log('end of init function.');
+                // console.log('end of init function.');
             },
 
             setBackground: function(first_url, second_url) {
@@ -744,7 +744,7 @@ angular.module('wowApp')
 
     .service('backgroundService', function() {
 
-        console.log('in bg service');
+        // console.log('in bg service');
 
         var currentBackgroundClass = 'home_bg';
         var mq = window.matchMedia( "(max-width: 1024px" );

@@ -3,7 +3,7 @@
 angular.module('wowApp')
 
     .controller('homeCtrl', function ($scope, backgroundService) {
-        console.log('here');
+        // console.log('here');
         $scope.backgroundService = backgroundService;
         backgroundService.setCurrentBg("home_bg");
     })
@@ -122,25 +122,25 @@ angular.module('wowApp')
         });
 
         $scope.$on('character_retrieved', function() {
-            console.log('broadcast received');
+            // console.log('broadcast received');
             $scope.characterResult = characterService.getCacheItems('Char:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
             // Set the background following the cache success.
             characterService.setBackground($scope.characterResult.background, $scope.characterResult.backgroundImg);
         });
 
         $scope.$on('feed_retrieved', function() {
-            console.log('feed broadcast received');
+            // console.log('feed broadcast received');
             $scope.list = characterService.getCacheItems('Feed:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
         });
 
         $scope.$on('inventory_retrieved', function() {
-            console.log('broadcast received for inventory');
+            // console.log('broadcast received for inventory');
             $scope.inventory = characterService.getCacheItems('Inv:' + $scope.name.toLowerCase() + ':' + $scope.selectedRealm);
         });
 
 
         $scope.$on('achievements_retrieved', function() {
-            console.log('achievements broadcast received');
+            // console.log('achievements broadcast received');
             $scope.ach = characterService.getCacheItems('Ach');
         });
 
@@ -148,18 +148,16 @@ angular.module('wowApp')
         // This kicks things off.
         characterService.init();
 
-        $scope.calcGold = function (idx) {
-            if (typeof idx != 'undefined') {
-                return "Sell Price: " + searchService.getGold($scope.inventory[idx].sellPrice)
+        $scope.calcGold = function (el) {
+            if (typeof el != 'undefined') {
+                return "Sell Price: " + searchService.getGold(el.sellPrice);
             }
             return null;
         };
 
-        $scope.calcStats =  function (idx) {
-            if (typeof idx !== 'undefined') {
-                if ($scope.inventory[idx].bonusStats) {
-                    return searchService.getBonusstatsparse($scope.inventory[idx].bonusStats);
-                }
+        $scope.calcStats =  function (el) {
+            if (typeof el !== 'undefined') {
+                    return searchService.getBonusstatsparse(el.bonusStats);
             }
             return null;
         };
