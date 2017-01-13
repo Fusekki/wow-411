@@ -3,7 +3,7 @@
 
 ## Display any character of choice with current inventory and a live feed, or display the current status of the gameplay realms.
 
-[![screenshot](https://github.com/staffordp/wow-411/blob/master/screenshot.jpg)]
+[![screenshot](https://github.com/staffordp/wow-411/blob/master/screenshot.jpg)
 
 [Live Version](http://philliprstafford.com/projects/wow)
 
