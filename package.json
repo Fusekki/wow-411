@@ -1,0 +1,24 @@
+{
+  "name": "wow-411",
+  "version": "1.0.0",
+  "description": "[![screenshot](https://github.com/staffordp/wow-411/blob/master/screenshot.jpg)",
+  "main": "app.js",
+  "scripts": {
+    "start": "http-server -p 8080 -c-1",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fusekki/wow-411.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fusekki/wow-411/issues"
+  },
+  "homepage": "https://github.com/Fusekki/wow-411#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
