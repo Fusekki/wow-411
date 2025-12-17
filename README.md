@@ -32,3 +32,5 @@ Set the server to run the app.
     npm run start
 
 ```
+
+Note: Due to changes in Blizzard's API, this application is currently not functional.  It should be updated soon.
